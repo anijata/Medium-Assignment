@@ -1,0 +1,70 @@
+﻿@model Medium_Assignment.ViewModels.DetailsViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Organization </h2>
+
+<div>
+    <ul>
+        <li>
+
+            @Html.DisplayNameFor(model => model.Organization.Name): @Model.Organization.Name
+        </li>
+
+        <li>
+
+            @Html.DisplayNameFor(model => model.Organization.PhoneNumber): @Model.Organization.PhoneNumber
+        </li>
+
+        <li>
+
+            @Html.DisplayNameFor(model => model.Organization.Email): @Model.Organization.Email
+        </li>
+
+
+        <li>
+
+            @Html.DisplayNameFor(model => model.Organization.UserId): @Model.Organization.UserId
+        </li>
+
+        <li>
+            Address: @(Model.Organization.Address1 + ", " + Model.Organization.Address2)
+        </li>
+
+        <li>
+
+            @Html.DisplayNameFor(model => model.Organization.Country): @Model.Organization.Country.Name
+        </li>
+
+        <li>
+
+            @Html.DisplayNameFor(model => model.Organization.State): @Model.Organization.State.Name
+        </li>
+
+
+        <li>
+
+            @Html.DisplayNameFor(model => model.Organization.City): @Model.Organization.City.Name
+        </li>
+
+
+        <li>
+
+            @Html.DisplayNameFor(model => model.Organization.Status): @Model.Organization.Status
+        </li>
+
+
+
+        <li>
+
+            @Html.DisplayNameFor(model => model.Organization.Description): @Model.Organization.Description
+        </li>
+
+
+
+        
+    </ul>
+            
+</div>
