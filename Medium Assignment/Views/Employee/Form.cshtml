@@ -1,83 +1,68 @@
-﻿@model Medium_Assignment.Models.OrganizationViewModels
+﻿@using Medium_Assignment.Models.OrganizationFormViewModels
+
+@model OrganizationFormViewModel
 
 @{
     ViewBag.Title = "Form";
 }
 
-@{var submitaction = ""; }
-
 @if (ViewContext.RouteData.Values["action"].ToString().Equals("Edit"))
 {
-    submitaction = "Edit";
-
     <h2>Edit Organization</h2>
 
 }
 else
 {
-    submitaction = "New";
 
     <h2>Create Organization</h2>
 
 }
 
 
-@using (@Html.BeginForm(submitaction, "Organization", FormMethod.Post))
+@using (@Html.BeginForm("Save", "Organization", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-
-    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-
-
     @Html.HiddenFor(m => m.Organization.Id)
-
     @Html.HiddenFor(m => m.Organization.ApplicationUserId)
-
     <div class="form-group">
         @Html.LabelFor(m => m.Organization.Name)
-        @Html.TextBoxFor(m => m.Organization.Name, new { @class = "form-control text-danger" })
+        @Html.TextBoxFor(m => m.Organization.Name, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.Organization.Name)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.PhoneNumber)
-        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.PhoneNumber)
+        @Html.LabelFor(m => m.Organization.PhoneNumber)
+        @Html.TextBoxFor(m => m.Organization.PhoneNumber, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Organization.PhoneNumber)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Email)
-        @Html.TextBoxFor(m => m.Email, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.Email)
+        @Html.LabelFor(m => m.Organization.Email)
+        @Html.TextBoxFor(m => m.Organization.Email, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Organization.Email)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.UserName)
-        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.UserName)
+        @Html.LabelFor(m => m.Organization.UserId)
+        @Html.TextBoxFor(m => m.Organization.UserId, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Organization.UserId)
     </div>
 
-    if (submitaction.Equals("New"))
-    {
-        <div class="form-group">
-            @Html.LabelFor(m => m.Password)
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control text-danger" })
-            @Html.ValidationMessageFor(m => m.Password)
-        </div>
-
-
-    }
-
+    <div class="form-group">
+        @Html.LabelFor(m => m.Organization.Password)
+        @Html.PasswordFor(m => m.Organization.Password, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Organization.Password)
+    </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Organization.Address1)
-        @Html.TextBoxFor(m => m.Organization.Address1, new { @class = "form-control text-danger" })
+        @Html.TextBoxFor(m => m.Organization.Address1, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.Organization.Address1)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Organization.Address2)
-        @Html.TextBoxFor(m => m.Organization.Address2, new { @class = "form-control text-danger" })
+        @Html.TextBoxFor(m => m.Organization.Address2, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.Organization.Address2)
     </div>
 
@@ -90,13 +75,13 @@ else
 
     <div class="form-group">
         @Html.LabelFor(m => m.Organization.State)
-        @Html.DropDownListFor(m => m.Organization.StateId, Model.StatesSelectList, "Select State", new { @class = "form-control text-danger", id = "States" })
+        @Html.DropDownListFor(m => m.Organization.StateId, Model.StatesSelectList, "Select State", new { @class = "form-control", id = "States" })
         @Html.ValidationMessageFor(m => m.Organization.State)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Organization.City)
-        @Html.DropDownListFor(m => m.Organization.CityId, Model.CitiesSelectList, "Select City", new { @class = "form-control text-danger", id = "Cities" })
+        @Html.DropDownListFor(m => m.Organization.CityId, Model.CitiesSelectList, "Select City", new { @class = "form-control", id = "Cities" })
         @Html.ValidationMessageFor(m => m.Organization.City)
     </div>
 
@@ -118,7 +103,7 @@ else
 
     <div class="form-group">
         @Html.LabelFor(m => m.Organization.Description)
-        @Html.TextAreaFor(m => m.Organization.Description, new { @class = "form-control text-danger" })
+        @Html.TextAreaFor(m => m.Organization.Description, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.Organization.Description)
     </div>
 
@@ -127,11 +112,16 @@ else
     </button>
 
 
+
 }
+
+
+
 
 @section Scripts {
 
-
+    @Scripts.Render("~/bundles/lib")
+    @Scripts.Render("~/bundles/jqueryval")
 
     <script>
         $(document).ready(function () {
@@ -210,6 +200,5 @@ else
     </script>
 
 }
-
 
 

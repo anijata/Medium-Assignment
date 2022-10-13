@@ -44,28 +44,19 @@ namespace Medium_Assignment.Models
         [Required]
         public string Address { get; set; }
 
+        
+        
+        public EmployeeType EmployeeType { get; set; }
+
         [Required]
         [Display(Name = "Employee Type")]
-        public string EmployeeType { get; set; }
+        public int EmployeeTypeId { get; set; }
 
-        [Required]
-        [Phone]
-        [Display(Name = "Phone Number")]
-        string PhoneNumber { get; set; }
-
-        [Required]
-        [EmailAddress]
-        string Email { get; set; }
 
         [Required]
         string Status { get; set; }
 
-        [Required]
-        [Display(Name = "User Name")]
-        string UserName { get; set; }
 
-        [Required]
-        string Password { get; set; }
 
 
     }

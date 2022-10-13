@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -27,6 +28,7 @@ namespace Medium_Assignment.Controllers
         {
             UserManager = userManager;
             SignInManager = signInManager;
+
         }
 
         public ApplicationSignInManager SignInManager
@@ -76,7 +78,7 @@ namespace Medium_Assignment.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -140,8 +142,10 @@ namespace Medium_Assignment.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+             return View();
         }
+
+       
 
         //
         // POST: /Account/Register
@@ -150,6 +154,8 @@ namespace Medium_Assignment.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
@@ -159,10 +165,10 @@ namespace Medium_Assignment.Controllers
 
                     //temp code - Start
 
-                    var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
-                    var roleManager = new RoleManager<IdentityRole>(roleStore);
-                    await roleManager.CreateAsync(new IdentityRole("SuperAdmin"));
-                    await UserManager.AddToRoleAsync(user.Id, "SuperAdmin");
+                    //var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
+                    //var roleManager = new RoleManager<IdentityRole>(roleStore);
+                    //await roleManager.CreateAsync(new IdentityRole("SuperAdmin"));
+                    //await UserManager.AddToRoleAsync(user.Id, "SuperAdmin");
 
 
                     //temp code - End

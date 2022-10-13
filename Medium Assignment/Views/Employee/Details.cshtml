@@ -1,10 +1,12 @@
-﻿@model Medium_Assignment.Models.OrganizationDetailsViewModel
+﻿@using Medium_Assignment.Models
+
+@model OrganizationDetailsViewModel
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>Organization </h2>
 
 <div>
     <ul>
@@ -15,35 +17,23 @@
 
         <li>
 
-            @Html.DisplayNameFor(model => model.Organization.ApplicationUser.PhoneNumber): @Model.Organization.ApplicationUser.PhoneNumber
+            @Html.DisplayNameFor(model => model.Organization.PhoneNumber): @Model.Organization.PhoneNumber
         </li>
 
         <li>
 
-            @Html.DisplayNameFor(model => model.Organization.ApplicationUser.Email): @Model.Organization.ApplicationUser.Email
+            @Html.DisplayNameFor(model => model.Organization.Email): @Model.Organization.Email
         </li>
 
 
         <li>
 
-            @Html.DisplayNameFor(model => model.Organization.ApplicationUser.UserName): @Model.Organization.ApplicationUser.UserName
+            @Html.DisplayNameFor(model => model.Organization.UserId): @Model.Organization.UserId
         </li>
 
-        @if (!String.IsNullOrEmpty((Model.Organization.Address2))
-        {
-            <li>
-                Address: @(Model.Organization.Address1 + ", " + Model.Organization.Address2)
-            </li>
-        }
-        else
-        {
-            <li> Address: @Model.Organization.Address1 </li>
-
-        }
-
-
-
-        
+        <li>
+            Address: @(Model.Organization.Address1 + ", " + Model.Organization.Address2)
+        </li>
 
         <li>
 

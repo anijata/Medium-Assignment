@@ -4,138 +4,230 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Medium_Assignment.Models;
-using Medium_Assignment.ViewModels;
+using Microsoft.AspNet.Identity;
 using System.Data.Entity;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 
-
-namespace Simple_Assignment.Controllers
+namespace Medium_Assignment.Controllers
 {
+    [Authorize]
     public class OrganizationController : Controller
     {
         // GET: Organization
 
         private ApplicationDbContext Context;
+        private ApplicationUserManager _userManager;
 
-        public OrganizationController() {
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
+        public OrganizationController()
+        {
             Context = new ApplicationDbContext();
 
         }
 
+        
+
         public ActionResult Index()
         {
-            var model = new IndexOrganizationViewModel {
+            var model = new OrganizationIndexViewModel
+            {
                 Organizations = Context.Organizations
                 .Include(c => c.Country)
                 .Include(c => c.State)
                 .Include(c => c.City)
                 .Include(c => c.ApplicationUser)
-                .Where(c => c.Status.Equals("Active"))
                 .ToList()
             };
 
             return View(model);
         }
 
+
+
         public ActionResult New()
         {
             var countries = Context.Countries.ToList();
 
-            var model = new OrganizationFormViewModel
+            var model = new OrganizationNewFormViewModel
             {
-                //Organization = new Organization(),
-                //CountriesSelectList = new SelectList(countries, "Id", "Name"),
-                //StatesSelectList = new SelectList(new List<State>()),
-                //CitiesSelectList = new SelectList(new List<City>())
+                Organization = new Organization(),
+                CountriesSelectList = new SelectList(countries, "Id", "Name"),
+                StatesSelectList = new SelectList(new List<State>()),
+                CitiesSelectList = new SelectList(new List<City>())
 
             };
 
             return View("Form", model);
         }
 
-        public ActionResult Edit(int Id) {
-            var organization = Context.Organizations.SingleOrDefault(c => c.Id == Id);
+
+        [HttpPost]
+        public async Task<ActionResult> New(OrganizationNewFormViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, PhoneNumber = model.PhoneNumber };
+                var result = await UserManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    result = await UserManager.AddToRoleAsync(user.Id, "OrganizationAdmin");
+
+                    if (result.Succeeded)
+                    {
+                        model.Organization.ApplicationUserId = user.Id;
+                        Context.Organizations.Add(model.Organization);
+                        Context.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    AddErrors(result);
+
+                }
+                AddErrors(result);
+
+            }
+
+
+            var countries = Context.Countries.ToList();
+            var states = Context.States.Where(c => c.CountryId == model.Organization.CountryId).ToList();
+            var cities = Context.Cities.Where(c => c.StateId == model.Organization.StateId).ToList();
+
+
+            model.CountriesSelectList = new SelectList(countries, "Id", "Name", model.Organization.CountryId);
+            model.StatesSelectList = new SelectList(states, "Id", "Name", model.Organization.StateId);
+            model.CitiesSelectList = new SelectList(cities, "Id", "Name", model.Organization.CityId);
+
+
+            return View("Form", model);
+
+
+        }
+
+        public ActionResult Edit(int Id)
+        {
+            var organization = Context.Organizations.Include(c => c.ApplicationUser).SingleOrDefault(c => c.Id == Id);
             var countries = Context.Countries.ToList();
             var states = Context.States.Where(c => c.CountryId == organization.CountryId).ToList();
             var cities = Context.Cities.Where(c => c.StateId == organization.StateId).ToList();
 
-            if (organization == null) {
-                return HttpNotFound();          
+            if (organization == null)
+            {
+                return HttpNotFound();
             }
 
-            var model = new OrganizationFormViewModel
+            var model = new OrganizationEditFormViewModel
             {
-                //Organization = organization,
-                //CountriesSelectList = new SelectList(countries, "Id", "Name", organization.CountryId),
-                //StatesSelectList = new SelectList(states, "Id", "Name", organization.StateId),
-                //CitiesSelectList = new SelectList(cities, "Id", "Name", organization.CityId)
+                Organization = organization,
+                UserName = organization.ApplicationUser.UserName,
+                PhoneNumber = organization.ApplicationUser.PhoneNumber,
+                Email = organization.ApplicationUser.Email,
+                CountriesSelectList = new SelectList(countries, "Id", "Name", organization.CountryId),
+                StatesSelectList = new SelectList(states, "Id", "Name", organization.StateId),
+                CitiesSelectList = new SelectList(cities, "Id", "Name", organization.CityId)
 
             };
 
             return View("Form", model);
 
-        }
+         }
 
         [HttpPost]
-        public ActionResult Save(Organization organization) {
-            if (!ModelState.IsValid) {
-                var countries = Context.Countries.ToList();
-                var states = Context.States.Where(c => c.CountryId == organization.CountryId).ToList();
-                var cities = Context.Cities.Where(c => c.StateId == organization.StateId).ToList();
 
-
-                var model = new OrganizationFormViewModel
-                {
-                    //Organization = organization,
-                    //CountriesSelectList = new SelectList(countries, "Id", "Name", organization.CountryId),
-                    //StatesSelectList = new SelectList(states, "Id", "Name", organization.StateId),
-                    //CitiesSelectList = new SelectList(cities, "Id", "Name", organization.CityId)
-
-            };
-
-                return View("Form", model);
-
-            }
-
-
-            if (organization.Id == 0)
+        public async Task<ActionResult> Edit(OrganizationNewFormViewModel model)
+        {
+            if (ModelState.IsValid)
             {
-                Context.Organizations.Add(organization);
+                var user = await UserManager.FindByIdAsync(model.Organization.ApplicationUserId);
+
+                user.Email = model.Email;
+                user.UserName = model.UserName;
+                user.PhoneNumber = model.PhoneNumber;
+
+                var result = await UserManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+
+                    var token = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+
+                    result = await UserManager.ResetPasswordAsync(user.Id, token, model.Password);
+
+                    if (result.Succeeded)
+                    {
+                        var _organization = Context.Organizations.SingleOrDefault(m => m.Id == model.Organization.Id);
+
+                        _organization.Name = model.Organization.Name;
+                        _organization.Address1 = model.Organization.Address1;
+                        _organization.Address2 = model.Organization.Address2;
+                        _organization.CountryId = model.Organization.CountryId;
+                        _organization.StateId = model.Organization.StateId;
+                        _organization.CityId = model.Organization.CityId;
+                        _organization.Status = model.Organization.Status;
+                        _organization.Description = model.Organization.Description;
+
+                        Context.SaveChanges();
+
+
+                        return RedirectToAction("Index");
+                    }
+                    AddErrors(result);
+
+
+                }
+                AddErrors(result);
+
             }
-            else {
-
-                var _organization = Context.Organizations.SingleOrDefault(m => m.Id == organization.Id);
-
-                //_organization.Name = organization.Name;
-                //_organization.PhoneNumber = organization.PhoneNumber;
-                //_organization.Email = organization.Email;
-                //_organization.UserId = organization.UserId;
-                //_organization.Password = organization.Password;
-                //_organization.Address1 = organization.Address1;
-                //_organization.Address2 = organization.Address2;
-                //_organization.Country = organization.Country;
-                //_organization.StateId = organization.StateId;
-                //_organization.CityId = organization.CityId;
-                //_organization.Status = organization.Status;
-                //_organization.Description = organization.Description;
 
 
-            }
+
+            var countries = Context.Countries.ToList();
+            var states = Context.States.Where(c => c.CountryId == model.Organization.CountryId).ToList();
+            var cities = Context.Cities.Where(c => c.StateId == model.Organization.StateId).ToList();
 
 
-            Context.SaveChanges();
+            model.CountriesSelectList = new SelectList(countries, "Id", "Name", model.Organization.CountryId);
+            model.StatesSelectList = new SelectList(states, "Id", "Name", model.Organization.StateId);
+            model.CitiesSelectList = new SelectList(cities, "Id", "Name", model.Organization.CityId);
 
-            return RedirectToAction("Index");
+
+            return View("Form", model);
         }
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
+
+
+
 
         public ActionResult Delete(int Id)
         {
-            var organization = Context.Organizations.SingleOrDefault(c => c.Id == Id);
+            var organization = Context.Organizations.Include(c => c.ApplicationUser).SingleOrDefault(c => c.Id == Id);
+
+            // TODO:
+            // Remove user using user manager
+            // Remove role using role manager
 
             if (organization == null)
                 return HttpNotFound();
 
-            organization.Status = "Inactive";
-
             Context.SaveChanges();
 
             return RedirectToAction("Index");
@@ -143,18 +235,20 @@ namespace Simple_Assignment.Controllers
 
         }
 
-        public ActionResult Details(int Id) {
+        public ActionResult Details(int Id)
+        {
             var organization = Context.Organizations
                 .Include(c => c.Country)
                 .Include(c => c.State)
                 .Include(c => c.City)
+                .Include(c => c.ApplicationUser)
                 .SingleOrDefault(c => c.Id == Id);
 
             if (organization == null)
                 return HttpNotFound();
 
 
-            var viewModel = new DetailsViewModel { Organization = organization };
+            var viewModel = new OrganizationDetailsViewModel { Organization = organization };
 
 
             return View(viewModel);
@@ -162,26 +256,28 @@ namespace Simple_Assignment.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetStates(string countryId) {
+        public ActionResult GetStates(string countryId)
+        {
 
             List<SelectListItem> items = new List<SelectListItem>();
 
 
-            if (string.IsNullOrEmpty(countryId)) { 
+            if (string.IsNullOrEmpty(countryId))
+            {
                 return Json(items);
             }
 
             var id = Convert.ToInt32(countryId);
 
-            
+
             var states = Context.States.Where(c => c.CountryId == id).ToList();
 
 
-            states.ForEach(i => items.Add(new SelectListItem {Text = i.Name, Value = i.Id.ToString()}));
+            states.ForEach(i => items.Add(new SelectListItem { Text = i.Name, Value = i.Id.ToString() }));
 
             return Json(items);
-        
-        
+
+
         }
 
         [HttpPost]

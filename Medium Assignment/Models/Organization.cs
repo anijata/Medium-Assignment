@@ -5,7 +5,9 @@ using System.Web;
 using System.ComponentModel.DataAnnotations;
 using Medium_Assignment.Custom_Validation;
 using Microsoft.AspNet.Identity;
+using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Medium_Assignment.Models
 {
@@ -52,10 +54,11 @@ namespace Medium_Assignment.Models
         [MaxLength(100)]
         public string Description { get; set; }
 
+        [ForeignKey("ApplicationUserId")]
         public ApplicationUser ApplicationUser { get; set; }
 
-        [Required]
-        public int ApplicationUserId { get; set; }
+        
+        public string ApplicationUserId { get; set; }
 
 
     }
