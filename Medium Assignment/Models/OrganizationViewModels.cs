@@ -11,6 +11,7 @@ namespace Medium_Assignment.Models
 {
     public class OrganizationDetailsViewModel
     {
+
         public Organization Organization { get; set; }
     }
 
@@ -20,7 +21,7 @@ namespace Medium_Assignment.Models
     }
 
 
-    public class OrganizationNewFormViewModel
+    public class OrganizationNewViewModel
     {
 
         public Organization Organization { get; set; }
@@ -50,7 +51,7 @@ namespace Medium_Assignment.Models
         public SelectList CitiesSelectList { get; set; }
     }
 
-    public class OrganizationEditFormViewModel
+    public class OrganizationEditViewModel
     {
 
         public Organization Organization { get; set; }

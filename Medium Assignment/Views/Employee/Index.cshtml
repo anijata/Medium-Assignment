@@ -1,15 +1,15 @@
 ﻿@using Medium_Assignment.Models
 
-@model OrganizationIndexViewModel
+@model EmployeeIndexViewModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "New";
 }
 
-<h2>Organizations</h2>
+<h2>Employees</h2>
 
 <p>
 
-    @Html.ActionLink("New Organization", "New", "Organization", new { @class = "btn btn-primary" })
+    @Html.ActionLink("New Employee", "New", "Employee", new { @class = "btn btn-primary" })
 
 </p>
 
@@ -17,56 +17,76 @@
 <table id="Organizations" class="table table-bordered table-hover">
     <thead>
         <tr>
-            <th scope="col">Name</th>
-            <th scope="col">PhoneNumber</th>
-            <th scope="col">Email</th>
-            <th scope="col">UserId</th>
+            <th scope="col">First Name </th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Date of Birth</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Designation</th>
+            <th scope="col">Date of Joining</th>
+            <th scope="col">Department</th>
             <th scope="col">Address</th>
             <th scope="col">Country</th>
             <th scope="col">State</th>
             <th scope="col">City</th>
+            <th scope="col">EmployeeType</th>
             <th scope="col">Status</th>
-            <th scope="col">Description</th>
+            <th scope="col">User Name</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Email</th>
             <th scope="col">Actions</th>
 
         </tr>
     </thead>
     <tbody>
 
-        @foreach (var organization in Model.Organizations)
+        @foreach (var employee in Model.Employees)
         {
-            <tr class="table-active">
+        <tr class="table-active">
 
-                <td>@organization.Name</td>
-                <td>@organization.ApplicationUser.PhoneNumber</td>
-                <td>@organization.ApplicationUser.Email</td>
-                <td>@organization.ApplicationUser.UserName</td>
-                <td>@(organization.Address1 + ", " + organization.Address2)</td>
-                <td>@organization.Country.Name</td>
-                <td>@organization.State.Name</td>
-                <td>@organization.City.Name</td>
-                <td>@organization.Status</td>
-                <td>@organization.Description</td>
-                <td>
+            <td>@employee.FirstName</td>
+            <td>@employee.LastName</td>
+            <td>@employee.DOB</td>
+            <td>@employee.Gender</td>
+            <td>@employee.Designation</td>
+            <td>@employee.DOJ</td>
+            <td>@employee.Department.Name</td>
+            @if (!String.IsNullOrEmpty(employee.Address2))
+            {
+                <td> @(employee.Address1 + ", " + employee.Address2)</td>
+            }
+            else
+            {
+                <td> @(employee.Address1)</td>
 
-                    <p>
-                        @Html.ActionLink("Details", "Details", "Organization", new { Id = organization.Id }, new { @class = "btn btn-primary" })
-                    </p>
+            }
+            <td>@employee.Country.Name</td>
+            <td>@employee.State.Name</td>
+            <td>@employee.City.Name</td>
+            <td>@employee.EmployeeType</td>
+            <td>@employee.Status</td>
+            <td>@employee.ApplicationUser.UserName</td>
+            <td>@employee.ApplicationUser.PhoneNumber</td>
+            <td>@employee.ApplicationUser.Email</td>
+            <td>
 
-                    <p>
-                        @Html.ActionLink("Edit", "Edit", "Organization", new { Id = organization.Id }, new { @class = "btn btn-primary" })
+                <p>
+                    @Html.ActionLink("Details", "Details", "Employee", new { Id = employee.Id }, new { @class = "btn btn-primary" })
+                </p>
 
-                    </p>
+                <p>
+                    @Html.ActionLink("Edit", "Edit", "Employee", new { Id = employee.Id }, new { @class = "btn btn-primary" })
 
-                    <p>
-                        @Html.ActionLink("Delete", "Delete", "Organization", new { Id = organization.Id }, new { @class = "btn btn-primary delete" })
+                </p>
 
-                    </p>
+                <p>
+                    @Html.ActionLink("Delete", "Delete", "Employee", new { Id = employee.Id }, new { @class = "btn btn-primary delete" })
 
-                </td>
+                </p>
+
+            </td>
 
 
-            </tr>
+        </tr>
 
         }
 
@@ -85,10 +105,10 @@
 
 
     $(document).ready(function () {
-        $("#Organizations").DataTable()
+        $("#Employees").DataTable()
 
         $(".delete").click(function (event) {
-            if (!confirm("Are you sure you want to delete this organization?")) {
+            if (!confirm("Are you sure you want to delete this employee?")) {
                 event.preventDefault()
             }
 

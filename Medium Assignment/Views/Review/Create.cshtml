@@ -1,0 +1,58 @@
+﻿@model Medium_Assignment.Models.ReviewCreateViewModel
+
+@{
+    ViewBag.Title = "Create Review";
+}
+
+<h2>Create Review</h2>
+
+@using (@Html.BeginForm("Create", "Review", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Agenda)
+        @Html.TextBoxFor(m => m.Agenda, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.Agenda)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ReviewCycleStartDate)
+        @Html.TextBoxFor(m => m.ReviewCycleStartDate, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.ReviewCycleStartDate)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ReviewCycleEndDate)
+        @Html.TextBoxFor(m => m.ReviewCycleEndDate, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.ReviewCycleEndDate)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.MinRate)
+        @Html.TextBoxFor(m => m.MinRate, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.MinRate)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.MaxRate)
+        @Html.TextBoxFor(m => m.MaxRate, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.MaxRate)
+    </div>
+
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description)
+        @Html.TextAreaFor(m => m.Description, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.Description)
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Create
+    </button>
+
+
+}

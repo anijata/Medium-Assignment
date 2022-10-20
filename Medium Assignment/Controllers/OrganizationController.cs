@@ -12,7 +12,7 @@ using Microsoft.Owin.Security;
 
 namespace Medium_Assignment.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin")]
     public class OrganizationController : Controller
     {
         // GET: Organization
@@ -61,7 +61,7 @@ namespace Medium_Assignment.Controllers
         {
             var countries = Context.Countries.ToList();
 
-            var model = new OrganizationNewFormViewModel
+            var model = new OrganizationNewViewModel
             {
                 Organization = new Organization(),
                 CountriesSelectList = new SelectList(countries, "Id", "Name"),
@@ -70,12 +70,13 @@ namespace Medium_Assignment.Controllers
 
             };
 
-            return View("Form", model);
+            return View(model);
         }
 
 
         [HttpPost]
-        public async Task<ActionResult> New(OrganizationNewFormViewModel model)
+        [ValidateAntiForgeryToken] 
+        public async Task<ActionResult> New(OrganizationNewViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -111,7 +112,7 @@ namespace Medium_Assignment.Controllers
             model.CitiesSelectList = new SelectList(cities, "Id", "Name", model.Organization.CityId);
 
 
-            return View("Form", model);
+            return View(model);
 
 
         }
@@ -128,7 +129,7 @@ namespace Medium_Assignment.Controllers
                 return HttpNotFound();
             }
 
-            var model = new OrganizationEditFormViewModel
+            var model = new OrganizationEditViewModel
             {
                 Organization = organization,
                 UserName = organization.ApplicationUser.UserName,
@@ -140,13 +141,13 @@ namespace Medium_Assignment.Controllers
 
             };
 
-            return View("Form", model);
+            return View(model);
 
          }
 
         [HttpPost]
-
-        public async Task<ActionResult> Edit(OrganizationNewFormViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(OrganizationEditViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -161,29 +162,20 @@ namespace Medium_Assignment.Controllers
                 if (result.Succeeded)
                 {
 
-                    var token = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                    var _organization = Context.Organizations.SingleOrDefault(m => m.Id == model.Organization.Id);
+                    _organization.Name = model.Organization.Name;
+                    _organization.Address1 = model.Organization.Address1;
+                    _organization.Address2 = model.Organization.Address2;
+                    _organization.CountryId = model.Organization.CountryId;
+                    _organization.StateId = model.Organization.StateId;
+                    _organization.CityId = model.Organization.CityId;
+                    _organization.Status = model.Organization.Status;
+                    _organization.Description = model.Organization.Description;
 
-                    result = await UserManager.ResetPasswordAsync(user.Id, token, model.Password);
+                    Context.SaveChanges();
 
-                    if (result.Succeeded)
-                    {
-                        var _organization = Context.Organizations.SingleOrDefault(m => m.Id == model.Organization.Id);
+                    return RedirectToAction("Index");
 
-                        _organization.Name = model.Organization.Name;
-                        _organization.Address1 = model.Organization.Address1;
-                        _organization.Address2 = model.Organization.Address2;
-                        _organization.CountryId = model.Organization.CountryId;
-                        _organization.StateId = model.Organization.StateId;
-                        _organization.CityId = model.Organization.CityId;
-                        _organization.Status = model.Organization.Status;
-                        _organization.Description = model.Organization.Description;
-
-                        Context.SaveChanges();
-
-
-                        return RedirectToAction("Index");
-                    }
-                    AddErrors(result);
 
 
                 }
@@ -203,7 +195,7 @@ namespace Medium_Assignment.Controllers
             model.CitiesSelectList = new SelectList(cities, "Id", "Name", model.Organization.CityId);
 
 
-            return View("Form", model);
+            return View(model);
         }
 
         private void AddErrors(IdentityResult result)
@@ -217,16 +209,23 @@ namespace Medium_Assignment.Controllers
 
 
 
-        public ActionResult Delete(int Id)
+        public async Task<ActionResult> Delete(int Id)
         {
-            var organization = Context.Organizations.Include(c => c.ApplicationUser).SingleOrDefault(c => c.Id == Id);
-
-            // TODO:
-            // Remove user using user manager
-            // Remove role using role manager
+            var organization = Context.Organizations.SingleOrDefault(c => c.Id == Id);
 
             if (organization == null)
                 return HttpNotFound();
+
+            var user = await UserManager.FindByIdAsync(organization.ApplicationUserId);
+
+            var result = await UserManager.DeleteAsync(user);
+
+            if (!result.Succeeded)
+            {
+                return HttpNotFound();
+            }
+
+            Context.Organizations.Remove(organization);
 
             Context.SaveChanges();
 

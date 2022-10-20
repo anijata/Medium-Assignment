@@ -1,0 +1,94 @@
+﻿@model Medium_Assignment.Models.ReviewIndexViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<table class="table table-bordered table-hover">
+    <tr>
+        <th>
+            Review Id
+        </th>
+
+        <th>
+            Agenda
+        </th>
+
+        <th>
+            Review Cycle Start Date
+        </th>
+
+        <th>
+            Review Cycle End Date
+        </th>
+
+        <th>
+            Min Rate
+        </th>
+
+        <th>
+            Max Rate
+        </th>
+
+        <th>
+            Description
+        </th>
+
+        <th>
+            Status
+        </th>
+
+        <th>
+            Actions
+        </th>
+
+
+    </tr>
+
+@foreach (var review in Model.Reviews) {
+<tr>
+
+
+    <td>
+        @review.Id
+    </td>
+
+    <td>
+        @review.Agenda
+    </td>
+
+    <td>
+        @review.ReviewCycleStartDate
+    </td>
+
+    <td>
+        @review.ReviewCycleEndDate
+    </td>
+
+    <td>
+        @review.MinRate
+    </td>
+
+    <td>
+        @review.MaxRate
+    </td>
+
+    <td>
+        @review.Description
+    </td>
+
+    <td>
+        @review.ReviewStatus.Name
+    </td>
+
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = review.Id }) |
+        @Html.ActionLink("Details", "Details", new { id = review.Id }) |
+        @Html.ActionLink("Delete", "Delete", new { id = review.Id })
+    </td>
+</tr>
+}
+
+</table>

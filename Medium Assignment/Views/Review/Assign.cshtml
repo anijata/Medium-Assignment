@@ -1,0 +1,55 @@
+﻿@model Medium_Assignment.Models.ReviewAssignReviewViewModel
+
+@{
+    ViewBag.Title = "Assign Review";
+}
+
+<h2>Assign Review</h2>
+
+@using (@Html.BeginForm("Assign", "Review", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Id)
+        @Html.TextBoxFor(m => m.Id, new { @class = "form-control text-danger", @disabled = "disabled" })
+        @Html.ValidationMessageFor(m => m.Id)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.EmployeeIds)
+        @Html.ListBoxFor(m => m.EmployeeIds, Model.EmployeeSelectList, new { @class = "listbox form-control text-danger " })
+        @Html.ValidationMessageFor(m => m.EmployeeIds)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ReviewerId)
+        @Html.DropDownListFor(m => m.ReviewerId, Model.ReviewerSelectList, "Select Reviewer", new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.ReviewerId)
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Assign
+    </button>
+
+
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            $('.listbox').multiselect({
+                includeSelectAllOption: true
+            });
+
+
+        });
+
+
+    </script>
+
+}
+

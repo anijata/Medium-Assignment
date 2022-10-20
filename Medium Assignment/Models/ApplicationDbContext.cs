@@ -19,8 +19,14 @@ namespace Medium_Assignment.Models
         }
 
         public DbSet<Organization> Organizations { get; set; }
+
+        public DbSet<Employee> Employees { get; set; }
+
+        public DbSet<Review> Reviews { get; set; }
         public DbSet<State> States { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<City> Cities { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<ReviewStatus> ReviewStatuses { get; set; }
     }
 }

@@ -140,9 +140,8 @@ namespace Medium_Assignment.Controllers
         //
         // GET: /Account/Register
         [AllowAnonymous]
-        public ActionResult Register()
-        {
-             return View();
+        public ActionResult Register() {
+            return View();
         }
 
        
@@ -168,7 +167,10 @@ namespace Medium_Assignment.Controllers
                     //var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
                     //var roleManager = new RoleManager<IdentityRole>(roleStore);
                     //await roleManager.CreateAsync(new IdentityRole("SuperAdmin"));
+                    //await roleManager.CreateAsync(new IdentityRole("OrganizationAdmin"));
+                    //await roleManager.CreateAsync(new IdentityRole("Employee"));
                     //await UserManager.AddToRoleAsync(user.Id, "SuperAdmin");
+
 
 
                     //temp code - End

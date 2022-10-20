@@ -1,71 +1,71 @@
 ﻿@using Medium_Assignment.Models
 
-@model OrganizationDetailsViewModel
+@model EmployeeDetailsViewModel
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Organization </h2>
+<h2>Employee </h2>
 
 <div>
     <ul>
         <li>
-
-            @Html.DisplayNameFor(model => model.Organization.Name): @Model.Organization.Name
+            @Html.DisplayNameFor(model => model.Employee.FirstName): @Model.Employee.FirstName
         </li>
 
         <li>
-
-            @Html.DisplayNameFor(model => model.Organization.PhoneNumber): @Model.Organization.PhoneNumber
+            @Html.DisplayNameFor(model => model.Employee.LastName): @Model.Employee.LastName
         </li>
 
         <li>
+            @Html.DisplayNameFor(model => model.Employee.DOB): @Model.Employee.DOB
+        </li>
 
-            @Html.DisplayNameFor(model => model.Organization.Email): @Model.Organization.Email
+        <li>
+            @Html.DisplayNameFor(model => model.Employee.Gender): @Model.Employee.Gender
+        </li>
+
+        <li>
+            @Html.DisplayNameFor(model => model.Employee.Designation): @Model.Employee.Designation
+        </li>
+
+        <li>
+            @Html.DisplayNameFor(model => model.Employee.DOJ): @Model.Employee.DOJ
+        </li>
+
+        <li>
+            @Html.DisplayNameFor(model => model.Employee.Department): @Model.Employee.Department.Name
+        </li>
+
+        <li>
+            @Html.DisplayNameFor(model => model.Employee.Address1): @Model.Employee.Address1
+        </li>
+
+        <li>
+            @Html.DisplayNameFor(model => model.Employee.Address2): @Model.Employee.Address2
+        </li>
+
+        <li>
+            @Html.DisplayNameFor(model => model.Employee.Country): @Model.Employee.Country.Name
+        </li>
+
+        <li>
+            @Html.DisplayNameFor(model => model.Employee.State): @Model.Employee.State.Name
+        </li>
+
+        <li>
+            @Html.DisplayNameFor(model => model.Employee.City): @Model.Employee.City.Name
+        </li>
+
+        <li>
+            @Html.DisplayNameFor(model => model.Employee.EmployeeType): @Model.Employee.EmployeeType
         </li>
 
 
         <li>
-
-            @Html.DisplayNameFor(model => model.Organization.UserId): @Model.Organization.UserId
+            @Html.DisplayNameFor(model => model.Employee.Status): @Model.Employee.Status
         </li>
-
-        <li>
-            Address: @(Model.Organization.Address1 + ", " + Model.Organization.Address2)
-        </li>
-
-        <li>
-
-            @Html.DisplayNameFor(model => model.Organization.Country): @Model.Organization.Country.Name
-        </li>
-
-        <li>
-
-            @Html.DisplayNameFor(model => model.Organization.State): @Model.Organization.State.Name
-        </li>
-
-
-        <li>
-
-            @Html.DisplayNameFor(model => model.Organization.City): @Model.Organization.City.Name
-        </li>
-
-
-        <li>
-
-            @Html.DisplayNameFor(model => model.Organization.Status): @Model.Organization.Status
-        </li>
-
-
-
-        <li>
-
-            @Html.DisplayNameFor(model => model.Organization.Description): @Model.Organization.Description
-        </li>
-
-
-
 
     </ul>
 

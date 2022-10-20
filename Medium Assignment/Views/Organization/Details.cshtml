@@ -29,21 +29,18 @@
             @Html.DisplayNameFor(model => model.Organization.ApplicationUser.UserName): @Model.Organization.ApplicationUser.UserName
         </li>
 
-        @if (!String.IsNullOrEmpty((Model.Organization.Address2))
+        @if (!String.IsNullOrEmpty(Model.Organization.Address2))
         {
             <li>
                 Address: @(Model.Organization.Address1 + ", " + Model.Organization.Address2)
             </li>
         }
-        else
-        {
-            <li> Address: @Model.Organization.Address1 </li>
-
+        else 
+        { 
+            <li> Address: @Model.Organization.Address1 </li>      
         }
-
-
-
         
+
 
         <li>
 

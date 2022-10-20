@@ -1,0 +1,190 @@
+﻿@model Medium_Assignment.Models.OrganizationEditViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit Organization</h2>
+
+
+
+@using (@Html.BeginForm("Edit", "Organization", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+
+    @Html.HiddenFor(m => m.Organization.Id)
+
+    @Html.HiddenFor(m => m.Organization.ApplicationUserId)
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Organization.Name)
+        @Html.TextBoxFor(m => m.Organization.Name, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.Organization.Name)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.PhoneNumber)
+        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.PhoneNumber)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email)
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.Email)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.UserName)
+        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.UserName)
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Organization.Address1)
+        @Html.TextBoxFor(m => m.Organization.Address1, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.Organization.Address1)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Organization.Address2)
+        @Html.TextBoxFor(m => m.Organization.Address2, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.Organization.Address2)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Organization.Country)
+        @Html.DropDownListFor(m => m.Organization.CountryId, Model.CountriesSelectList, "Select Country", new { @class = "form-control text-danger", id = "Countries", })
+        @Html.ValidationMessageFor(m => m.Organization.Country)
+
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Organization.State)
+        @Html.DropDownListFor(m => m.Organization.StateId, Model.StatesSelectList, "Select State", new { @class = "form-control text-danger", id = "States" })
+        @Html.ValidationMessageFor(m => m.Organization.State)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Organization.City)
+        @Html.DropDownListFor(m => m.Organization.CityId, Model.CitiesSelectList, "Select City", new { @class = "form-control text-danger", id = "Cities" })
+        @Html.ValidationMessageFor(m => m.Organization.City)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Organization.Status)
+    </div>
+
+    <div class="form-group">
+        @Html.RadioButtonFor(m => m.Organization.Status, "Active") Active
+        @Html.RadioButtonFor(m => m.Organization.Status, "Inactive") Inactive
+    </div>
+
+    <div class="form-group">
+        @Html.ValidationMessageFor(m => m.Organization.Status)
+
+    </div>
+
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Organization.Description)
+        @Html.TextAreaFor(m => m.Organization.Description, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.Organization.Description)
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Save
+    </button>
+
+
+}
+
+@section Scripts {
+
+
+
+    <script>
+        $(document).ready(function () {
+            $("#Countries").change(function () {
+                $("#States").empty();
+                $("#States").append("<option value=0> Select State </option>");
+                $("#Cities").empty();
+                $("#Cities").append("<option value=0> Select City </option>");
+
+
+                if ($("#Countries").val() == 0) {
+
+                    return;
+                }
+
+                $.ajax({
+                    type: "post",
+                    url: "/Organization/GetStates",
+                    data: { countryId: $("#Countries").val() },
+                    datatype: "json",
+                    traditional: "true",
+                    success: function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            $("#States").append("<option value=" + data[i].Value + ">" + data[i].Text + "</option>");
+
+                        }
+                    }
+
+
+                });
+
+
+            });
+
+
+
+        });
+
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#States").change(function () {
+                $("#Cities").empty();
+                $("#Cities").append("<option value=0> Select City </option>");
+                if ($("#States").val() == "0") {
+
+                    return;
+                }
+
+                $.ajax({
+                    type: "post",
+                    url: "/Organization/GetCities",
+                    data: { stateId: $("#States").val() },
+                    datatype: "json",
+                    traditional: "true",
+                    success: function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            $("#Cities").append("<option value=" + data[i].Value + ">" + data[i].Text + "</option>");
+
+                        }
+                    }
+
+
+                });
+
+
+            });
+
+
+
+        });
+
+
+    </script>
+
+}
+
+
+
