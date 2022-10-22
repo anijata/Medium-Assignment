@@ -17,5 +17,10 @@ namespace Medium_Assignment.Models
         public int Id { get; set; }
 
         public string Name { get; set; }
+
+        [ForeignKey("OrganizationId")]
+        public Organization Organization { get; set; }
+
+        public int OrganizationId { get; set; }
     }
 }

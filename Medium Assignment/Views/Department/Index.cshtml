@@ -1,0 +1,53 @@
+﻿@model Medium_Assignment.Models.DepartmentIndexViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Organizations</h2>
+
+<p>
+    @Html.ActionLink("New Department", "New", "Department", null, new { @class = "btn btn-primary" })
+</p>
+
+
+<table id="Organizations" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Actions</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var department in Model.Departments)
+        {
+        <tr class="table-active">
+
+
+            <td>@department.Id</td>
+            <td>@department.Name</td>
+            <td>
+                <p>
+                    @Html.ActionLink("Edit", "Edit", "Department", new { Id = department.Id }, new { @class = "btn btn-primary" })
+
+                </p>
+
+                <p>
+                    @Html.ActionLink("Delete", "Delete", "Department", new { Id = department.Id }, new { @class = "btn btn-primary delete" })
+
+                </p>
+
+            </td>
+
+        </tr>
+
+        }
+
+
+
+
+    </tbody>
+</table>

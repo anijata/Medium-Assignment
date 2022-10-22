@@ -33,11 +33,6 @@ namespace Medium_Assignment.Models
 
         public string Description { get; set; }
 
-        [ForeignKey("EmployeeId")]
-        public Employee Employee { get; set; } 
-
-        public int? EmployeeId { get; set; }
-
         [ForeignKey("ReviewerId")]
         public Employee Reviewer { get; set; }
 

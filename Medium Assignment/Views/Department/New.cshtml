@@ -1,0 +1,27 @@
+﻿@using Medium_Assignment.Models
+
+@model DepartmentNewViewModel
+
+@{
+    ViewBag.Title = "New";
+}
+<h2>New Department</h2>
+
+
+
+@using (@Html.BeginForm("New", "Department", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.Name)
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Create
+    </button>
+
+
+}

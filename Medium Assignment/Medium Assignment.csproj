@@ -166,6 +166,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -176,33 +177,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202210170638430_InitialCreate.cs" />
-    <Compile Include="Migrations\202210170638430_InitialCreate.Designer.cs">
-      <DependentUpon>202210170638430_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\202210220713254_InitialCreate.cs" />
+    <Compile Include="Migrations\202210220713254_InitialCreate.Designer.cs">
+      <DependentUpon>202210220713254_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202210170645314_SeedUsersRoles.cs" />
-    <Compile Include="Migrations\202210170645314_SeedUsersRoles.Designer.cs">
-      <DependentUpon>202210170645314_SeedUsersRoles.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202210170646273_SeedCountriesStatesCities.cs" />
-    <Compile Include="Migrations\202210170646273_SeedCountriesStatesCities.Designer.cs">
-      <DependentUpon>202210170646273_SeedCountriesStatesCities.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202210170648197_SeedDepartments.cs" />
-    <Compile Include="Migrations\202210170648197_SeedDepartments.Designer.cs">
-      <DependentUpon>202210170648197_SeedDepartments.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202210170827366_ReviewTableChanges.cs" />
-    <Compile Include="Migrations\202210170827366_ReviewTableChanges.Designer.cs">
-      <DependentUpon>202210170827366_ReviewTableChanges.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202210180149561_AddedReviewTable.cs" />
-    <Compile Include="Migrations\202210180149561_AddedReviewTable.Designer.cs">
-      <DependentUpon>202210180149561_AddedReviewTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202210180440474_CorrectedReviewTable.cs" />
-    <Compile Include="Migrations\202210180440474_CorrectedReviewTable.Designer.cs">
-      <DependentUpon>202210180440474_CorrectedReviewTable.cs</DependentUpon>
+    <Compile Include="Migrations\202210220733245_SeedData.cs" />
+    <Compile Include="Migrations\202210220733245_SeedData.Designer.cs">
+      <DependentUpon>202210220733245_SeedData.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -211,12 +192,14 @@
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\DepartmentViewModels.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\EmployeeViewModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Organization.cs" />
     <Compile Include="Models\OrganizationViewModels.cs" />
     <Compile Include="Models\Review.cs" />
+    <Compile Include="Models\ReviewsEmployees.cs" />
     <Compile Include="Models\ReviewStatus.cs" />
     <Compile Include="Models\ReviewViewModels.cs" />
     <Compile Include="Models\State.cs" />
@@ -228,6 +211,8 @@
     <Content Include="App_Data\aspnet-Medium Assignment-20221003044934_log.ldf">
       <DependentUpon>aspnet-Medium Assignment-20221003044934.mdf</DependentUpon>
     </Content>
+    <Content Include="Content\bootstrap-select.css" />
+    <Content Include="Content\bootstrap-select.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
@@ -394,12 +379,94 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
+    <Content Include="Scripts\bootstrap-select.js" />
+    <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
     <Content Include="Scripts\esm\popper.min.js" />
+    <Content Include="Scripts\i18n\defaults-am_ET.js" />
+    <Content Include="Scripts\i18n\defaults-am_ET.min.js" />
+    <Content Include="Scripts\i18n\defaults-ar_AR.js" />
+    <Content Include="Scripts\i18n\defaults-ar_AR.min.js" />
+    <Content Include="Scripts\i18n\defaults-bg_BG.js" />
+    <Content Include="Scripts\i18n\defaults-bg_BG.min.js" />
+    <Content Include="Scripts\i18n\defaults-cs_CZ.js" />
+    <Content Include="Scripts\i18n\defaults-cs_CZ.min.js" />
+    <Content Include="Scripts\i18n\defaults-da_DK.js" />
+    <Content Include="Scripts\i18n\defaults-da_DK.min.js" />
+    <Content Include="Scripts\i18n\defaults-de_DE.js" />
+    <Content Include="Scripts\i18n\defaults-de_DE.min.js" />
+    <Content Include="Scripts\i18n\defaults-en_US.js" />
+    <Content Include="Scripts\i18n\defaults-en_US.min.js" />
+    <Content Include="Scripts\i18n\defaults-es_CL.js" />
+    <Content Include="Scripts\i18n\defaults-es_CL.min.js" />
+    <Content Include="Scripts\i18n\defaults-es_ES.js" />
+    <Content Include="Scripts\i18n\defaults-es_ES.min.js" />
+    <Content Include="Scripts\i18n\defaults-et_EE.js" />
+    <Content Include="Scripts\i18n\defaults-et_EE.min.js" />
+    <Content Include="Scripts\i18n\defaults-eu.js" />
+    <Content Include="Scripts\i18n\defaults-eu.min.js" />
+    <Content Include="Scripts\i18n\defaults-fa_IR.js" />
+    <Content Include="Scripts\i18n\defaults-fa_IR.min.js" />
+    <Content Include="Scripts\i18n\defaults-fi_FI.js" />
+    <Content Include="Scripts\i18n\defaults-fi_FI.min.js" />
+    <Content Include="Scripts\i18n\defaults-fr_FR.js" />
+    <Content Include="Scripts\i18n\defaults-fr_FR.min.js" />
+    <Content Include="Scripts\i18n\defaults-hr_HR.js" />
+    <Content Include="Scripts\i18n\defaults-hr_HR.min.js" />
+    <Content Include="Scripts\i18n\defaults-hu_HU.js" />
+    <Content Include="Scripts\i18n\defaults-hu_HU.min.js" />
+    <Content Include="Scripts\i18n\defaults-id_ID.js" />
+    <Content Include="Scripts\i18n\defaults-id_ID.min.js" />
+    <Content Include="Scripts\i18n\defaults-it_IT.js" />
+    <Content Include="Scripts\i18n\defaults-it_IT.min.js" />
+    <Content Include="Scripts\i18n\defaults-ja_JP.js" />
+    <Content Include="Scripts\i18n\defaults-ja_JP.min.js" />
+    <Content Include="Scripts\i18n\defaults-kh_KM.js" />
+    <Content Include="Scripts\i18n\defaults-kh_KM.min.js" />
+    <Content Include="Scripts\i18n\defaults-ko_KR.js" />
+    <Content Include="Scripts\i18n\defaults-ko_KR.min.js" />
+    <Content Include="Scripts\i18n\defaults-lt_LT.js" />
+    <Content Include="Scripts\i18n\defaults-lt_LT.min.js" />
+    <Content Include="Scripts\i18n\defaults-lv_LV.js" />
+    <Content Include="Scripts\i18n\defaults-lv_LV.min.js" />
+    <Content Include="Scripts\i18n\defaults-nb_NO.js" />
+    <Content Include="Scripts\i18n\defaults-nb_NO.min.js" />
+    <Content Include="Scripts\i18n\defaults-nl_NL.js" />
+    <Content Include="Scripts\i18n\defaults-nl_NL.min.js" />
+    <Content Include="Scripts\i18n\defaults-pl_PL.js" />
+    <Content Include="Scripts\i18n\defaults-pl_PL.min.js" />
+    <Content Include="Scripts\i18n\defaults-pt_BR.js" />
+    <Content Include="Scripts\i18n\defaults-pt_BR.min.js" />
+    <Content Include="Scripts\i18n\defaults-pt_PT.js" />
+    <Content Include="Scripts\i18n\defaults-pt_PT.min.js" />
+    <Content Include="Scripts\i18n\defaults-ro_RO.js" />
+    <Content Include="Scripts\i18n\defaults-ro_RO.min.js" />
+    <Content Include="Scripts\i18n\defaults-ru_RU.js" />
+    <Content Include="Scripts\i18n\defaults-ru_RU.min.js" />
+    <Content Include="Scripts\i18n\defaults-sk_SK.js" />
+    <Content Include="Scripts\i18n\defaults-sk_SK.min.js" />
+    <Content Include="Scripts\i18n\defaults-sl_SI.js" />
+    <Content Include="Scripts\i18n\defaults-sl_SI.min.js" />
+    <Content Include="Scripts\i18n\defaults-sr_SP.js" />
+    <Content Include="Scripts\i18n\defaults-sr_SP.min.js" />
+    <Content Include="Scripts\i18n\defaults-sv_SE.js" />
+    <Content Include="Scripts\i18n\defaults-sv_SE.min.js" />
+    <Content Include="Scripts\i18n\defaults-th_TH.js" />
+    <Content Include="Scripts\i18n\defaults-th_TH.min.js" />
+    <Content Include="Scripts\i18n\defaults-tr_TR.js" />
+    <Content Include="Scripts\i18n\defaults-tr_TR.min.js" />
+    <Content Include="Scripts\i18n\defaults-ua_UA.js" />
+    <Content Include="Scripts\i18n\defaults-ua_UA.min.js" />
+    <Content Include="Scripts\i18n\defaults-vi_VN.js" />
+    <Content Include="Scripts\i18n\defaults-vi_VN.min.js" />
+    <Content Include="Scripts\i18n\defaults-zh_CN.js" />
+    <Content Include="Scripts\i18n\defaults-zh_CN.min.js" />
+    <Content Include="Scripts\i18n\defaults-zh_TW.js" />
+    <Content Include="Scripts\i18n\defaults-zh_TW.min.js" />
     <Content Include="Scripts\index.js.flow" />
     <Content Include="Scripts\esm\popper.min.js.map" />
     <Content Include="Scripts\esm\popper.js.map" />
@@ -411,6 +478,49 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Scripts\i18n\defaults-zh_TW.js.map" />
+    <Content Include="Scripts\i18n\defaults-zh_CN.js.map" />
+    <Content Include="Scripts\i18n\defaults-vi_VN.js.map" />
+    <Content Include="Scripts\i18n\defaults-ua_UA.js.map" />
+    <Content Include="Scripts\i18n\defaults-tr_TR.js.map" />
+    <Content Include="Scripts\i18n\defaults-th_TH.js.map" />
+    <Content Include="Scripts\i18n\defaults-sv_SE.js.map" />
+    <Content Include="Scripts\i18n\defaults-sr_SP.js.map" />
+    <Content Include="Scripts\i18n\defaults-sl_SI.js.map" />
+    <Content Include="Scripts\i18n\defaults-sk_SK.js.map" />
+    <Content Include="Scripts\i18n\defaults-ru_RU.js.map" />
+    <Content Include="Scripts\i18n\defaults-ro_RO.js.map" />
+    <Content Include="Scripts\i18n\defaults-pt_PT.js.map" />
+    <Content Include="Scripts\i18n\defaults-pt_BR.js.map" />
+    <Content Include="Scripts\i18n\defaults-pl_PL.js.map" />
+    <Content Include="Scripts\i18n\defaults-nl_NL.js.map" />
+    <Content Include="Scripts\i18n\defaults-nb_NO.js.map" />
+    <Content Include="Scripts\i18n\defaults-lv_LV.js.map" />
+    <Content Include="Scripts\i18n\defaults-lt_LT.js.map" />
+    <Content Include="Scripts\i18n\defaults-ko_KR.js.map" />
+    <Content Include="Scripts\i18n\defaults-kh_KM.js.map" />
+    <Content Include="Scripts\i18n\defaults-ja_JP.js.map" />
+    <Content Include="Scripts\i18n\defaults-it_IT.js.map" />
+    <Content Include="Scripts\i18n\defaults-id_ID.js.map" />
+    <Content Include="Scripts\i18n\defaults-hu_HU.js.map" />
+    <Content Include="Scripts\i18n\defaults-hr_HR.js.map" />
+    <Content Include="Scripts\i18n\defaults-fr_FR.js.map" />
+    <Content Include="Scripts\i18n\defaults-fi_FI.js.map" />
+    <Content Include="Scripts\i18n\defaults-fa_IR.js.map" />
+    <Content Include="Scripts\i18n\defaults-eu.js.map" />
+    <Content Include="Scripts\i18n\defaults-et_EE.js.map" />
+    <Content Include="Scripts\i18n\defaults-es_ES.js.map" />
+    <Content Include="Scripts\i18n\defaults-es_CL.js.map" />
+    <Content Include="Scripts\i18n\defaults-en_US.js.map" />
+    <Content Include="Scripts\i18n\defaults-de_DE.js.map" />
+    <Content Include="Scripts\i18n\defaults-da_DK.js.map" />
+    <Content Include="Scripts\i18n\defaults-cs_CZ.js.map" />
+    <Content Include="Scripts\i18n\defaults-bg_BG.js.map" />
+    <Content Include="Scripts\i18n\defaults-ar_AR.js.map" />
+    <Content Include="Scripts\i18n\defaults-am_ET.js.map" />
+    <Content Include="Scripts\bootstrap-select.min.js.map" />
+    <Content Include="Scripts\bootstrap-select.js.map" />
+    <Content Include="Content\bootstrap-select.css.map" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
@@ -627,6 +737,9 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Department\Index.cshtml" />
+    <Content Include="Views\Department\New.cshtml" />
+    <Content Include="Views\Department\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -634,33 +747,18 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202210170638430_InitialCreate.resx">
-      <DependentUpon>202210170638430_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202210170645314_SeedUsersRoles.resx">
-      <DependentUpon>202210170645314_SeedUsersRoles.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202210170646273_SeedCountriesStatesCities.resx">
-      <DependentUpon>202210170646273_SeedCountriesStatesCities.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202210170648197_SeedDepartments.resx">
-      <DependentUpon>202210170648197_SeedDepartments.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202210170827366_ReviewTableChanges.resx">
-      <DependentUpon>202210170827366_ReviewTableChanges.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202210180149561_AddedReviewTable.resx">
-      <DependentUpon>202210180149561_AddedReviewTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202210180440474_CorrectedReviewTable.resx">
-      <DependentUpon>202210180440474_CorrectedReviewTable.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202210220713254_InitialCreate.resx">
+      <DependentUpon>202210220713254_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210220733245_SeedData.resx">
+      <DependentUpon>202210220733245_SeedData.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

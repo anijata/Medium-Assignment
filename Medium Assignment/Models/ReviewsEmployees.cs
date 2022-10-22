@@ -1,0 +1,26 @@
+﻿using System.Linq;
+using System.Web;
+using System.ComponentModel.DataAnnotations;
+using Medium_Assignment.Custom_Validation;
+using Microsoft.AspNet.Identity;
+using System.Data.Entity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Medium_Assignment.Models
+{
+    public class ReviewsEmployees
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [ForeignKey("ReviewId")]
+        public Review Review { get; set; }
+        public int ReviewId { get; set; }
+
+        [ForeignKey("EmployeeId")]
+        public Employee Employee  { get; set; }
+        public int EmployeeId { get; set; }
+
+    }
+}

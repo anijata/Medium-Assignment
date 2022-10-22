@@ -4,6 +4,7 @@
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using Medium_Assignment.Models;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Medium_Assignment.Models.ApplicationDbContext>
     {
@@ -22,5 +23,6 @@
 
 
         }
+
     }
 }

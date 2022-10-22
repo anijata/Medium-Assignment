@@ -103,7 +103,7 @@ namespace Medium_Assignment.Controllers
         public ActionResult Assign(int Id) {
 
             var review = Context.Reviews.Include(c => c.ReviewStatus).Where(c => c.Id == Id && c.ReviewStatusId != 3 ).SingleOrDefault();
-            var employees = Context.Employees.ToList();
+            var employees = Context.Employees.Include(c => c.ApplicationUser).ToList();
 
             if (review == null) {
                 return HttpNotFound();
@@ -114,8 +114,8 @@ namespace Medium_Assignment.Controllers
                 EmployeeIds = new List<int?>(),
                 ReviewerId = review.ReviewerId,
 
-                EmployeeSelectList = new SelectList(employees, "Id", "FirstName"),
-                ReviewerSelectList = new SelectList(employees, "Id", "FirstName")
+                EmployeeSelectList = new SelectList(employees, "Id", "DisplayName"),
+                ReviewerSelectList = new SelectList(employees, "Id", "DisplayName")
 
             };
 

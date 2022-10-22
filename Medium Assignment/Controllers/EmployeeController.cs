@@ -66,9 +66,13 @@ namespace Medium_Assignment.Controllers
 
         public ActionResult New()
         {
+            var CurrentUserId = User.Identity.GetUserId();
+
+            var Organization = Context.Organizations.Where(c => c.ApplicationUserId.Equals(CurrentUserId)).SingleOrDefault();
+
             var countries = Context.Countries.ToList();
 
-            var departments = Context.Departments.ToList();
+            var departments = Context.Departments.Where(c => c.OrganizationId == Organization.Id).ToList();
 
             var model = new EmployeeNewViewModel
             {
@@ -88,15 +92,14 @@ namespace Medium_Assignment.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> New(EmployeeNewViewModel model)
         {
+            var CurrentUserId = User.Identity.GetUserId();
+            var Organization = Context.Organizations.Where(c => c.ApplicationUserId.Equals(CurrentUserId)).SingleOrDefault();
+
+            if (Organization == null)
+                return HttpNotFound();
+
             if (ModelState.IsValid)
             {
-
-                var CurrentUserId = User.Identity.GetUserId();
-                var Organization = Context.Organizations.Where(c => c.ApplicationUserId.Equals(CurrentUserId)).SingleOrDefault();
-
-                if (Organization == null)
-                    return HttpNotFound();
-
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, PhoneNumber = model.PhoneNumber };
                 var result = await UserManager.CreateAsync(user, model.Password);
 
@@ -123,7 +126,7 @@ namespace Medium_Assignment.Controllers
             }
 
 
-            var departments = Context.Departments.ToList();
+            var departments = Context.Departments.Where(c => c.OrganizationId == Organization.Id).ToList();
             var countries = Context.Countries.ToList();
             var states = Context.States.Where(c => c.CountryId == model.Employee.CountryId).ToList();
             var cities = Context.Cities.Where(c => c.StateId == model.Employee.StateId).ToList();
@@ -140,11 +143,18 @@ namespace Medium_Assignment.Controllers
 
         public ActionResult Edit(int Id)
         {
+
+            var CurrentUserId = User.Identity.GetUserId();
+            var Organization = Context.Organizations.Where(c => c.ApplicationUserId.Equals(CurrentUserId)).SingleOrDefault();
+
+            if (Organization == null)
+                return HttpNotFound();
+
             var employee = Context.Employees.Include(c => c.ApplicationUser).SingleOrDefault(c => c.Id == Id);
             var countries = Context.Countries.ToList();
             var states = Context.States.Where(c => c.CountryId == employee.CountryId).ToList();
             var cities = Context.Cities.Where(c => c.StateId == employee.StateId).ToList();
-            var departments = Context.Departments.ToList();
+            var departments = Context.Departments.Where(c => c.OrganizationId == Organization.Id).ToList();
 
             if (employee == null)
             {
@@ -172,6 +182,13 @@ namespace Medium_Assignment.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(EmployeeEditViewModel model)
         {
+
+            var CurrentUserId = User.Identity.GetUserId();
+            var Organization = Context.Organizations.Where(c => c.ApplicationUserId.Equals(CurrentUserId)).SingleOrDefault();
+
+            if (Organization == null)
+                return HttpNotFound();
+
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByIdAsync(model.Employee.ApplicationUserId);
@@ -208,7 +225,7 @@ namespace Medium_Assignment.Controllers
             }
 
 
-            var departments = Context.Departments.ToList();
+            var departments = Context.Departments.Where(c => c.OrganizationId == Organization.Id).ToList();
             var countries = Context.Countries.ToList();
             var states = Context.States.Where(c => c.CountryId == model.Employee.CountryId).ToList();
             var cities = Context.Cities.Where(c => c.StateId == model.Employee.StateId).ToList();

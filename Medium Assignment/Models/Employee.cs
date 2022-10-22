@@ -24,6 +24,16 @@ namespace Medium_Assignment.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        [NotMapped]
+        public string DisplayName
+        {
+            get
+            {
+                return $"{FirstName} {LastName} ({ApplicationUser.UserName})";
+            }
+        }
+
+
         [Required]
         [Display(Name = "Date of Birth")]
         public DateTime DOB { get; set; }
