@@ -47,6 +47,11 @@ namespace Medium_Assignment.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
                         OrganizationId = c.Int(nullable: false),
+                        IsDeleted = c.Boolean(nullable: false),
+                        CreatedOn = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                        ModifiedOn = c.DateTime(nullable: false),
+                        ModifiedBy = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Organizations", t => t.OrganizationId, cascadeDelete: false)
@@ -66,6 +71,11 @@ namespace Medium_Assignment.Migrations
                         Status = c.String(nullable: false),
                         Description = c.String(nullable: false, maxLength: 100),
                         ApplicationUserId = c.String(maxLength: 128),
+                        IsDeleted = c.Boolean(nullable: false),
+                        CreatedOn = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                        ModifiedOn = c.DateTime(nullable: false),
+                        ModifiedBy = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUserId, cascadeDelete: false)
@@ -156,6 +166,11 @@ namespace Medium_Assignment.Migrations
                         Status = c.String(nullable: false),
                         ApplicationUserId = c.String(maxLength: 128),
                         OrganizationId = c.Int(nullable: false),
+                        IsDeleted = c.Boolean(nullable: false),
+                        CreatedOn = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                        ModifiedOn = c.DateTime(nullable: false),
+                        ModifiedBy = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUserId, cascadeDelete: false)
@@ -187,10 +202,15 @@ namespace Medium_Assignment.Migrations
                         Feedback = c.String(),
                         OrganizationId = c.Int(nullable: false),
                         ReviewStatusId = c.Int(nullable: false),
+                        IsDeleted = c.Boolean(nullable: false),
+                        CreatedOn = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                        ModifiedOn = c.DateTime(nullable: false),
+                        ModifiedBy = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Organizations", t => t.OrganizationId, cascadeDelete: false)
-                .ForeignKey("dbo.Employees", t => t.ReviewerId)
+                .ForeignKey("dbo.Employees", t => t.ReviewerId, cascadeDelete: false)
                 .ForeignKey("dbo.ReviewStatus", t => t.ReviewStatusId, cascadeDelete: false)
                 .Index(t => t.ReviewerId)
                 .Index(t => t.OrganizationId)

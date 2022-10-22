@@ -38,7 +38,10 @@ namespace Medium_Assignment.Controllers
 
         }
 
+        // Helper functions 
         
+        
+        // Http actions
 
         public ActionResult Index()
         {
@@ -54,8 +57,6 @@ namespace Medium_Assignment.Controllers
 
             return View(model);
         }
-
-
 
         public ActionResult New()
         {
@@ -90,6 +91,12 @@ namespace Medium_Assignment.Controllers
                     if (result.Succeeded)
                     {
                         model.Organization.ApplicationUserId = user.Id;
+                        model.Organization.CreatedBy = User.Identity.GetUserId();
+                        model.Organization.CreatedOn = DateTime.Now;
+                        model.Organization.ModifiedBy = User.Identity.GetUserId();
+                        model.Organization.ModifiedOn = DateTime.Now;
+
+
                         Context.Organizations.Add(model.Organization);
                         Context.SaveChanges();
                         return RedirectToAction("Index");
@@ -171,6 +178,8 @@ namespace Medium_Assignment.Controllers
                     _organization.CityId = model.Organization.CityId;
                     _organization.Status = model.Organization.Status;
                     _organization.Description = model.Organization.Description;
+                    _organization.ModifiedBy = User.Identity.GetUserId();
+                    _organization.ModifiedOn = DateTime.Now;
 
                     Context.SaveChanges();
 

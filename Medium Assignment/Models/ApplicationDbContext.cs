@@ -34,7 +34,6 @@ namespace Medium_Assignment.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-
             base.OnModelCreating(modelBuilder);
         }
     }

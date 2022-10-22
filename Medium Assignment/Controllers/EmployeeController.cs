@@ -111,6 +111,11 @@ namespace Medium_Assignment.Controllers
                     {
                         model.Employee.ApplicationUserId = user.Id;
                         model.Employee.OrganizationId = Organization.Id;
+                        model.Employee.CreatedBy = User.Identity.GetUserId();
+                        model.Employee.CreatedOn = DateTime.Now;
+                        model.Employee.ModifiedBy = User.Identity.GetUserId();
+                        model.Employee.ModifiedOn = DateTime.Now;
+
 
                         Context.Employees.Add(model.Employee);
 
@@ -216,6 +221,8 @@ namespace Medium_Assignment.Controllers
                     employee.CityId = model.Employee.CityId;
                     employee.EmployeeType = model.Employee.EmployeeType;
                     employee.Status = model.Employee.Status;
+                    employee.ModifiedBy = User.Identity.GetUserId();
+                    employee.ModifiedOn = DateTime.Now;
 
                     Context.SaveChanges();
                     return RedirectToAction("Index");

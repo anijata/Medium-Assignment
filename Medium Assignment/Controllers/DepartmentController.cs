@@ -68,7 +68,11 @@ namespace Medium_Assignment.Controllers
             var department = new Department
             {
                 Name = model.Name,
-                OrganizationId = OrganizationId
+                OrganizationId = OrganizationId,
+                CreatedOn = DateTime.Now,
+                CreatedBy = User.Identity.GetUserId(),
+                ModifiedOn = DateTime.Now,
+                ModifiedBy = User.Identity.GetUserId()
             };
 
             Context.Departments.Add(department);
@@ -117,6 +121,8 @@ namespace Medium_Assignment.Controllers
             }
 
             department.Name = model.Name;
+            department.ModifiedOn = DateTime.Now;
+            department.ModifiedBy = User.Identity.GetUserId();
 
             Context.SaveChanges();
 

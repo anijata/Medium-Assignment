@@ -7,13 +7,13 @@ namespace Medium_Assignment.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class InitialCreate : IMigrationMetadata
+    public sealed partial class SeedData : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(SeedData));
         
         string IMigrationMetadata.Id
         {
-            get { return "202210220713254_InitialCreate"; }
+            get { return "202210221848299_SeedData"; }
         }
         
         string IMigrationMetadata.Source
