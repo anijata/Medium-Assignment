@@ -36,7 +36,36 @@ namespace Medium_Assignment.Controllers
 
         }
 
+        public IEnumerable<SelectListItem> getEmployeeSelectListItems(IEnumerable<Employee> employees, IEnumerable<int> SelectedEmployees) {
 
+            var selectListItems = employees
+                .Select(c => new SelectListItem
+                { 
+                  Value = c.Id.ToString(),
+                  Text = c.DisplayName,
+                  Selected = SelectedEmployees.Contains(c.Id)
+                })
+                .ToList();
+
+
+            return selectListItems;
+        }
+
+        public ActionResult Index()
+        {
+            var reviews = Context.Reviews
+                .Where(c => !c.IsDeleted)
+                .Include(c => c.ReviewStatus)
+                .ToList();
+
+            var model = new ReviewIndexViewModel
+            {
+                Reviews = reviews
+            };
+
+            return View(model);
+
+        }
 
         public ActionResult Create()
         {
@@ -59,12 +88,13 @@ namespace Medium_Assignment.Controllers
             }
 
             var CurrentUserId = User.Identity.GetUserId();
-            var OrganizationId = Context.Organizations.Where(c => c.ApplicationUserId.Equals(CurrentUserId)).Select(c => c.Id).SingleOrDefault();
+            var OrganizationId = Context.Organizations.Where(c => !c.IsDeleted && c.ApplicationUserId.Equals(CurrentUserId)).Select(c => c.Id).SingleOrDefault();
 
 
-            var review = new Review {
+            var review = new Review
+            {
                 Agenda = model.Agenda,
-
+                  
                 ReviewCycleStartDate = model.ReviewCycleStartDate,
 
                 ReviewCycleEndDate = model.ReviewCycleEndDate,
@@ -77,7 +107,15 @@ namespace Medium_Assignment.Controllers
 
                 OrganizationId = OrganizationId,
 
-                ReviewStatusId = 1
+                ReviewStatusId = 1,
+                
+                CreatedBy = CurrentUserId,
+
+                CreatedOn = DateTime.Now,
+
+                ModifiedBy = CurrentUserId,
+
+                ModifiedOn = DateTime.Now
             };
 
             Context.Reviews.Add(review);
@@ -89,67 +127,77 @@ namespace Medium_Assignment.Controllers
 
         }
 
-        public ActionResult Index()
-        {
-            var model = new ReviewIndexViewModel
-            {
-                Reviews = Context.Reviews.Include(c => c.ReviewStatus).ToList()
-            };
-
-            return View(model);
-
-        }
-
         public ActionResult Assign(int Id) {
 
-            var review = Context.Reviews.Include(c => c.ReviewStatus).Where(c => c.Id == Id && c.ReviewStatusId != 3 ).SingleOrDefault();
-            var employees = Context.Employees.Include(c => c.ApplicationUser).ToList();
+            var review = Context.Reviews.Where(c => !c.IsDeleted).Include(c => c.ReviewStatus).Where(c => c.Id == Id && c.ReviewStatusId != 3).SingleOrDefault();
+            var employees = Context.Employees.Where(c => !c.IsDeleted).Include(c => c.ApplicationUser).ToList();
+            var reviewEmployees = Context.ReviewsEmployees.Where(c => c.ReviewId == review.Id).Select(c => c.EmployeeId).ToList();
+            var employeesSelectListItems = getEmployeeSelectListItems(employees, reviewEmployees);
 
-            if (review == null) {
+            if (review == null)
+            {
                 return HttpNotFound();
             }
 
-            var model = new ReviewAssignReviewViewModel() {
+            var model = new ReviewAssignReviewViewModel()
+            {
                 Id = review.Id,
-                EmployeeIds = new List<int?>(),
+                EmployeeIds = new List<int>(),
                 ReviewerId = review.ReviewerId,
-
-                EmployeeSelectList = new SelectList(employees, "Id", "DisplayName"),
+                EmployeeSelectList = employeesSelectListItems,
                 ReviewerSelectList = new SelectList(employees, "Id", "DisplayName")
 
             };
 
-            
+
 
             return View(model);
-            
+
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Assign(ReviewAssignReviewViewModel model)
         {
-            //var employees = Context.Employees.ToList();
+            var review = Context.Reviews.Where(c => !c.IsDeleted).Include(c => c.ReviewStatus).Where(c => c.Id == model.Id && c.ReviewStatusId != 3).SingleOrDefault();
 
-            //var review = Context.Reviews.Include(c => c.ReviewStatus).Where(c => c.ReviewStatusId != 3 && c.Id == model.Id).SingleOrDefault();
+            if (review == null)
+            {
+                return HttpNotFound();
+            }
 
-            
 
-            //if (!ModelState.IsValid) {
+            if (!ModelState.IsValid)
+            {
+                var employees = Context.Employees.Where(c => !c.IsDeleted).Include(c => c.ApplicationUser).ToList();
+                var employeesSelectListItems = getEmployeeSelectListItems(employees, model.EmployeeIds);
 
-            //    model.EmployeeSelectList = new SelectList(employees, "Id", "FirstName", model.EmployeeId);
 
-            //    model.ReviewerSelectList = new SelectList(employees, "Id", "FirstName", model.ReviewerId);
+                model.EmployeeSelectList = employeesSelectListItems;
 
-            //    return View(model);
-            //}
+                model.ReviewerSelectList = new SelectList(employees, "Id", "DisplayName", model.ReviewerId);
 
-            //review.EmployeeId = model.EmployeeId;
-            //review.ReviewerId = model.ReviewerId;
+                return View(model);
+            }
 
-            //review.ReviewStatusId = 3;
+            foreach (var employeeid in model.EmployeeIds.ToList())
+            {
+                var reviewEmployee = new ReviewsEmployees
+                {
+                    ReviewId = review.Id,
+                    EmployeeId = employeeid
+                };
 
-            //Context.SaveChanges();
+                Context.ReviewsEmployees.Add(reviewEmployee);
+
+
+            }
+
+            review.ReviewerId = model.ReviewerId;
+
+            review.ReviewStatusId = 2;
+
+            Context.SaveChanges();
 
             return RedirectToAction("Index");
 

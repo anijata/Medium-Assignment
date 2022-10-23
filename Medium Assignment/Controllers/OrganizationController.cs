@@ -48,6 +48,7 @@ namespace Medium_Assignment.Controllers
             var model = new OrganizationIndexViewModel
             {
                 Organizations = Context.Organizations
+                .Where(c => !c.IsDeleted)
                 .Include(c => c.Country)
                 .Include(c => c.State)
                 .Include(c => c.City)
@@ -126,7 +127,11 @@ namespace Medium_Assignment.Controllers
 
         public ActionResult Edit(int Id)
         {
-            var organization = Context.Organizations.Include(c => c.ApplicationUser).SingleOrDefault(c => c.Id == Id);
+            var organization = Context.Organizations
+                .Where(c => !c.IsDeleted)
+                .Include(c => c.ApplicationUser)
+                .SingleOrDefault(c => c.Id == Id);
+
             var countries = Context.Countries.ToList();
             var states = Context.States.Where(c => c.CountryId == organization.CountryId).ToList();
             var cities = Context.Cities.Where(c => c.StateId == organization.StateId).ToList();
@@ -169,7 +174,7 @@ namespace Medium_Assignment.Controllers
                 if (result.Succeeded)
                 {
 
-                    var _organization = Context.Organizations.SingleOrDefault(m => m.Id == model.Organization.Id);
+                    var _organization = Context.Organizations.Where(c => !c.IsDeleted).SingleOrDefault(m => m.Id == model.Organization.Id);
                     _organization.Name = model.Organization.Name;
                     _organization.Address1 = model.Organization.Address1;
                     _organization.Address2 = model.Organization.Address2;

@@ -43,10 +43,10 @@ namespace Medium_Assignment.Controllers
 
             var CurrentUserId = User.Identity.GetUserId();
 
-            var Organization = Context.Organizations.Where(c => c.ApplicationUserId.Equals(CurrentUserId)).SingleOrDefault();
+            var Organization = Context.Organizations.Where(c => !c.IsDeleted && c.ApplicationUserId.Equals(CurrentUserId)).SingleOrDefault();
 
             var employees = Context.Employees
-                .Where(c => c.OrganizationId == Organization.Id)
+                .Where(c => !c.IsDeleted && c.OrganizationId == Organization.Id)
                 .Include(c => c.Country)
                 .Include(c => c.State)
                 .Include(c => c.City)
@@ -68,11 +68,11 @@ namespace Medium_Assignment.Controllers
         {
             var CurrentUserId = User.Identity.GetUserId();
 
-            var Organization = Context.Organizations.Where(c => c.ApplicationUserId.Equals(CurrentUserId)).SingleOrDefault();
+            var Organization = Context.Organizations.Where(c => !c.IsDeleted && c.ApplicationUserId.Equals(CurrentUserId)).SingleOrDefault();
 
             var countries = Context.Countries.ToList();
 
-            var departments = Context.Departments.Where(c => c.OrganizationId == Organization.Id).ToList();
+            var departments = Context.Departments.Where(c => !c.IsDeleted && c.OrganizationId == Organization.Id).ToList();
 
             var model = new EmployeeNewViewModel
             {
@@ -93,7 +93,7 @@ namespace Medium_Assignment.Controllers
         public async Task<ActionResult> New(EmployeeNewViewModel model)
         {
             var CurrentUserId = User.Identity.GetUserId();
-            var Organization = Context.Organizations.Where(c => c.ApplicationUserId.Equals(CurrentUserId)).SingleOrDefault();
+            var Organization = Context.Organizations.Where(c => !c.IsDeleted && c.ApplicationUserId.Equals(CurrentUserId)).SingleOrDefault();
 
             if (Organization == null)
                 return HttpNotFound();
@@ -131,7 +131,7 @@ namespace Medium_Assignment.Controllers
             }
 
 
-            var departments = Context.Departments.Where(c => c.OrganizationId == Organization.Id).ToList();
+            var departments = Context.Departments.Where(c => !c.IsDeleted && c.OrganizationId == Organization.Id).ToList();
             var countries = Context.Countries.ToList();
             var states = Context.States.Where(c => c.CountryId == model.Employee.CountryId).ToList();
             var cities = Context.Cities.Where(c => c.StateId == model.Employee.StateId).ToList();
@@ -150,16 +150,16 @@ namespace Medium_Assignment.Controllers
         {
 
             var CurrentUserId = User.Identity.GetUserId();
-            var Organization = Context.Organizations.Where(c => c.ApplicationUserId.Equals(CurrentUserId)).SingleOrDefault();
+            var Organization = Context.Organizations.Where(c => !c.IsDeleted && c.ApplicationUserId.Equals(CurrentUserId)).SingleOrDefault();
 
             if (Organization == null)
                 return HttpNotFound();
 
-            var employee = Context.Employees.Include(c => c.ApplicationUser).SingleOrDefault(c => c.Id == Id);
+            var employee = Context.Employees.Where(c => !c.IsDeleted).Include(c => c.ApplicationUser).SingleOrDefault(c => c.Id == Id);
             var countries = Context.Countries.ToList();
             var states = Context.States.Where(c => c.CountryId == employee.CountryId).ToList();
             var cities = Context.Cities.Where(c => c.StateId == employee.StateId).ToList();
-            var departments = Context.Departments.Where(c => c.OrganizationId == Organization.Id).ToList();
+            var departments = Context.Departments.Where(c => !c.IsDeleted && c.OrganizationId == Organization.Id).ToList();
 
             if (employee == null)
             {
@@ -189,7 +189,7 @@ namespace Medium_Assignment.Controllers
         {
 
             var CurrentUserId = User.Identity.GetUserId();
-            var Organization = Context.Organizations.Where(c => c.ApplicationUserId.Equals(CurrentUserId)).SingleOrDefault();
+            var Organization = Context.Organizations.Where(c => !c.IsDeleted && c.ApplicationUserId.Equals(CurrentUserId)).SingleOrDefault();
 
             if (Organization == null)
                 return HttpNotFound();
@@ -205,7 +205,7 @@ namespace Medium_Assignment.Controllers
 
                 if (result.Succeeded)
                 {
-                    var employee = Context.Employees.SingleOrDefault(m => m.Id == model.Employee.Id);
+                    var employee = Context.Employees.Where(c => !c.IsDeleted).SingleOrDefault(m => m.Id == model.Employee.Id);
 
                     employee.FirstName = model.Employee.FirstName;
                     employee.LastName = model.Employee.LastName;
@@ -232,7 +232,7 @@ namespace Medium_Assignment.Controllers
             }
 
 
-            var departments = Context.Departments.Where(c => c.OrganizationId == Organization.Id).ToList();
+            var departments = Context.Departments.Where(c => !c.IsDeleted & c.OrganizationId == Organization.Id).ToList();
             var countries = Context.Countries.ToList();
             var states = Context.States.Where(c => c.CountryId == model.Employee.CountryId).ToList();
             var cities = Context.Cities.Where(c => c.StateId == model.Employee.StateId).ToList();
@@ -254,37 +254,10 @@ namespace Medium_Assignment.Controllers
             }
         }
 
-
-
-
-        public async Task<ActionResult> Delete(int Id)
-        {
-            var employee = Context.Employees.SingleOrDefault(c => c.Id == Id);
-
-            if (employee == null)
-                return HttpNotFound();
-
-            var user = await UserManager.FindByIdAsync(employee.ApplicationUserId);
-
-            var result = await UserManager.DeleteAsync(user);
-
-            if (!result.Succeeded)
-            {
-                return HttpNotFound();
-            }
-
-            Context.Employees.Remove(employee);
-
-            Context.SaveChanges();
-
-            return RedirectToAction("Index");
-
-
-        }
-
         public ActionResult Details(int Id)
         {
             var employee = Context.Employees
+                .Where(c => !c.IsDeleted)
                 .Include(c => c.Country)
                 .Include(c => c.State)
                 .Include(c => c.City)
@@ -300,6 +273,28 @@ namespace Medium_Assignment.Controllers
 
 
             return View(viewModel);
+
+        }
+
+        public async Task<ActionResult> Delete(int Id)
+        {
+            var employee = Context.Employees
+                .Where(c => !c.IsDeleted)
+                .Include(c => c.ApplicationUser)
+                .SingleOrDefault(c => c.Id == Id);
+
+            if (employee == null)
+                return HttpNotFound();
+
+            employee.IsDeleted = true;
+            employee.ApplicationUser.LockoutEnabled = true;
+            employee.ApplicationUser.LockoutEndDateUtc = DateTime.MaxValue;
+
+
+            Context.SaveChanges();
+
+            return RedirectToAction("Index");
+
 
         }
 

@@ -14,10 +14,12 @@ namespace Medium_Assignment.Models
         public string Agenda { get; set; }
 
         [Required]
+        [DataType(DataType.DateTime)]
         [Display(Name = "Review Cycle Start Date")]
         public DateTime ReviewCycleStartDate { get; set; }
 
         [Required]
+        [DataType(DataType.DateTime)]
         [Display(Name = "Review Cycle End Date")]
         public DateTime ReviewCycleEndDate { get; set; }
 
@@ -47,15 +49,15 @@ namespace Medium_Assignment.Models
 
         [Required]
         [Display(Name="Employees")]
-        public IEnumerable<int?> EmployeeIds { get; set; }
+        public IEnumerable<int> EmployeeIds { get; set; }
         
         [Required]
         [Display(Name = "Reviewer")]
         public int? ReviewerId { get; set; }
 
-        public SelectList EmployeeSelectList { get; set; }
+        public IEnumerable<SelectListItem> EmployeeSelectList { get; set; }
 
-        public SelectList ReviewerSelectList { get; set; }
+        public IEnumerable<SelectListItem> ReviewerSelectList { get; set; }
 
 
     }

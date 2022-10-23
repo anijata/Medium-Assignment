@@ -30,7 +30,7 @@ namespace Medium_Assignment.Controllers
             var CurrentUserId = User.Identity.GetUserId();
 
             var OrganizationId = Context.Organizations
-                .Where(c => c.ApplicationUserId.Equals(CurrentUserId))
+                .Where(c => !c.IsDeleted && c.ApplicationUserId.Equals(CurrentUserId))
                 .Select(c => c.Id)
                 .FirstOrDefault();
 
@@ -61,7 +61,7 @@ namespace Medium_Assignment.Controllers
             var CurrentUserId = User.Identity.GetUserId();
 
             var OrganizationId = Context.Organizations
-                .Where(c => c.ApplicationUserId.Equals(CurrentUserId))
+                .Where(c => !c.IsDeleted && c.ApplicationUserId.Equals(CurrentUserId))
                 .Select(c => c.Id)
                 .FirstOrDefault();
 
@@ -113,7 +113,7 @@ namespace Medium_Assignment.Controllers
                 return View(model);
             }
 
-            var department = Context.Departments.Where(c => c.Id == model.Id).SingleOrDefault();
+            var department = Context.Departments.Where(c => !c.IsDeleted && c.Id == model.Id).SingleOrDefault();
 
             if (department == null)
             {
@@ -133,12 +133,12 @@ namespace Medium_Assignment.Controllers
 
         public async Task<ActionResult> Delete(int Id)
         {
-            var department = Context.Departments.SingleOrDefault(c => c.Id == Id);
+            var department = Context.Departments.Where(c => !c.IsDeleted).SingleOrDefault(c => c.Id == Id);
 
             if (department == null)
                 return HttpNotFound();
 
-            Context.Departments.Remove(department);
+            department.IsDeleted = true;
 
             Context.SaveChanges();
 
