@@ -1,0 +1,63 @@
+﻿@model Medium_Assignment.Models.ReviewSubmitReviewViewModel
+
+@{
+    ViewBag.Title = "Submit";
+}
+
+<h2>Submit</h2>
+
+@using (@Html.BeginForm("Submit", "Review", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Id)
+        @Html.TextBoxFor(m => m.Id, new { @class = "form-control text-danger", @disabled = "disabled" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ReviewerDisplayName)
+        @Html.TextBoxFor(m => m.ReviewerDisplayName, new { @class = "form-control text-danger", @disabled = "disabled" })
+    </div>
+
+    foreach (var employeeFeedback in Model.EmployeeFeedbacks) {
+        <div class="form-group">
+
+            @Html.HiddenFor(m => employeeFeedback.EmployeeId)
+
+            @Html.LabelFor(m => employeeFeedback.DisplayName)
+            @Html.TextBoxFor(m => employeeFeedback.DisplayName, new { @class = "form-control text-danger", @disabled = "disabled" })
+
+            <p>
+
+            </p>
+
+            @Html.LabelFor(m => employeeFeedback.Rating)
+            @Html.TextBoxFor(m => employeeFeedback.Rating, new { @class = "form-control text-danger" })
+            @Html.ValidationMessageFor(m => employeeFeedback.Rating)
+
+            <p>
+
+            </p>
+
+            @Html.LabelFor(m => employeeFeedback.Feedback)
+            @Html.TextBoxFor(m => employeeFeedback.Feedback, new { @class = "form-control text-danger" })
+            @Html.ValidationMessageFor(m => employeeFeedback.Feedback)
+
+
+        </div>
+    }
+
+    <button type="submit" class="btn btn-primary">
+        Submit
+    </button>
+
+
+}
+
+@section Scripts {
+
+}
+

@@ -20,7 +20,11 @@ namespace Medium_Assignment.Models
 
         [ForeignKey("EmployeeId")]
         public Employee Employee  { get; set; }
-        public int EmployeeId { get; set; }
+        public int EmployeeId { get; set; }    
+        public int Rating { get; set; }
+        public string Feedback { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
 
     }
 }

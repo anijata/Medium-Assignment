@@ -38,10 +38,6 @@ namespace Medium_Assignment.Models
 
         public int? ReviewerId { get; set; }
 
-        public int Rating { get; set; }
-
-        public string Feedback { get; set; }
-
         [ForeignKey("OrganizationId")]
         public Organization Organization { get; set; }
 

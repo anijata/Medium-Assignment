@@ -36,25 +36,24 @@ namespace Medium_Assignment.Controllers
 
         }
 
-        public IEnumerable<SelectListItem> getEmployeeSelectListItems(IEnumerable<Employee> employees, IEnumerable<int> SelectedEmployees) {
+        public int GetOrganizationId() { 
+        
+            var CurrentUserId = User.Identity.GetUserId();
+            var OrganizationId = Context.Organizations
+                .Where(c => !c.IsDeleted && c.ApplicationUserId.Equals(CurrentUserId))
+                .Select(c => c.Id)
+                .SingleOrDefault();
 
-            var selectListItems = employees
-                .Select(c => new SelectListItem
-                { 
-                  Value = c.Id.ToString(),
-                  Text = c.DisplayName,
-                  Selected = SelectedEmployees.Contains(c.Id)
-                })
-                .ToList();
-
-
-            return selectListItems;
+            return OrganizationId;
         }
+
 
         public ActionResult Index()
         {
+            var OrganizationId = GetOrganizationId();
+
             var reviews = Context.Reviews
-                .Where(c => !c.IsDeleted)
+                .Where(c => c.OrganizationId == OrganizationId && !c.IsDeleted)
                 .Include(c => c.ReviewStatus)
                 .ToList();
 
@@ -82,15 +81,14 @@ namespace Medium_Assignment.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ReviewCreateViewModel model)
         {
+            var CurrentUserId = User.Identity.GetUserId();
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            var CurrentUserId = User.Identity.GetUserId();
-            var OrganizationId = Context.Organizations.Where(c => !c.IsDeleted && c.ApplicationUserId.Equals(CurrentUserId)).Select(c => c.Id).SingleOrDefault();
-
-
+            
             var review = new Review
             {
                 Agenda = model.Agenda,
@@ -105,7 +103,7 @@ namespace Medium_Assignment.Controllers
 
                 Description = model.Description,
 
-                OrganizationId = OrganizationId,
+                OrganizationId = GetOrganizationId(),
 
                 ReviewStatusId = 1,
                 
@@ -129,23 +127,28 @@ namespace Medium_Assignment.Controllers
 
         public ActionResult Assign(int Id) {
 
-            var review = Context.Reviews.Where(c => !c.IsDeleted).Include(c => c.ReviewStatus).Where(c => c.Id == Id && c.ReviewStatusId != 3).SingleOrDefault();
-            var employees = Context.Employees.Where(c => !c.IsDeleted).Include(c => c.ApplicationUser).ToList();
-            var reviewEmployees = Context.ReviewsEmployees.Where(c => c.ReviewId == review.Id).Select(c => c.EmployeeId).ToList();
-            var employeesSelectListItems = getEmployeeSelectListItems(employees, reviewEmployees);
+            var OrganizationId = GetOrganizationId();
+
+            var review = Context.Reviews
+                .Where(c => c.OrganizationId == OrganizationId && !c.IsDeleted && c.Id == Id && c.ReviewStatusId == 1)
+                .SingleOrDefault();
 
             if (review == null)
             {
                 return HttpNotFound();
             }
 
+            var employees = Context.Employees
+                .Where(c => c.OrganizationId == OrganizationId && !c.IsDeleted)
+                .Include(c => c.ApplicationUser)
+                .ToList();
+          
             var model = new ReviewAssignReviewViewModel()
             {
                 Id = review.Id,
                 EmployeeIds = new List<int>(),
-                ReviewerId = review.ReviewerId,
-                EmployeeSelectList = employeesSelectListItems,
-                ReviewerSelectList = new SelectList(employees, "Id", "DisplayName")
+                EmployeeSelectList = new MultiSelectList(employees, "Id", "DisplayName"),
+                ReviewerSelectList = new SelectList(employees, "Id", "DisplayName")               
 
             };
 
@@ -159,39 +162,48 @@ namespace Medium_Assignment.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Assign(ReviewAssignReviewViewModel model)
         {
-            var review = Context.Reviews.Where(c => !c.IsDeleted).Include(c => c.ReviewStatus).Where(c => c.Id == model.Id && c.ReviewStatusId != 3).SingleOrDefault();
+
+            var CurrentUserId = User.Identity.GetUserId();
+
+            var OrganizationId = GetOrganizationId();
+
+
+            var review = Context.Reviews
+                .Where(c => c.OrganizationId == OrganizationId 
+                            && !c.IsDeleted && c.Id == model.Id 
+                            && c.ReviewStatusId == 1)
+                .SingleOrDefault();
 
             if (review == null)
             {
                 return HttpNotFound();
             }
 
+            var employees = Context.Employees
+                .Where(c => c.OrganizationId == OrganizationId && !c.IsDeleted)
+                .Include(c => c.ApplicationUser)
+                .ToList();
 
             if (!ModelState.IsValid)
             {
-                var employees = Context.Employees.Where(c => !c.IsDeleted).Include(c => c.ApplicationUser).ToList();
-                var employeesSelectListItems = getEmployeeSelectListItems(employees, model.EmployeeIds);
 
 
-                model.EmployeeSelectList = employeesSelectListItems;
+                model.EmployeeSelectList = new MultiSelectList(employees, "Id", "DisplayName", model.EmployeeIds);
 
                 model.ReviewerSelectList = new SelectList(employees, "Id", "DisplayName", model.ReviewerId);
 
                 return View(model);
             }
 
-            foreach (var employeeid in model.EmployeeIds.ToList())
-            {
-                var reviewEmployee = new ReviewsEmployees
-                {
+            var reviewEmployees = model.EmployeeIds.Select(c =>             
+                new ReviewsEmployees { 
                     ReviewId = review.Id,
-                    EmployeeId = employeeid
-                };
+                    EmployeeId = c,
 
-                Context.ReviewsEmployees.Add(reviewEmployee);
+                }
+            ).ToList();
 
-
-            }
+            Context.ReviewsEmployees.AddRange(reviewEmployees);
 
             review.ReviewerId = model.ReviewerId;
 
@@ -203,88 +215,62 @@ namespace Medium_Assignment.Controllers
 
         }
 
-        public ActionResult Edit(int Id)
-        {
-            //var organization = Context.Organizations.Include(c => c.ApplicationUser).SingleOrDefault(c => c.Id == Id);
-            //var countries = Context.Countries.ToList();
-            //var states = Context.States.Where(c => c.CountryId == organization.CountryId).ToList();
-            //var cities = Context.Cities.Where(c => c.StateId == organization.StateId).ToList();
 
-            //if (organization == null)
+        public ActionResult Submit(int Id) {
+
+            //var OrganizationId = GetOrganizationId();
+
+            //var review = Context.Reviews
+            //    .Where(c => c.OrganizationId == OrganizationId && !c.IsDeleted && c.Id == Id && c.ReviewStatusId == 2)
+            //    .Include(c => c.Reviewer)
+            //    .SingleOrDefault();                             
+
+            //if (review == null)
             //{
             //    return HttpNotFound();
             //}
 
-            //var model = new OrganizationEditViewModel
+            //var reviewEmployees = Context.ReviewsEmployees
+            //            .Where(c => c.ReviewId == review.Id)
+            //            .Select(c => c.Employee).Where(c => !c.IsDeleted).ToList();
+
+            
+
+            //var employeeFeedbacks = reviewEmployees
+            //    .Select(c =>
+            //    {
+            //        var employee = Context.Employees.Where(d => c.Id == d.Id).Include(d => d.ApplicationUser).SingleOrDefault();
+
+            //        return new EmployeeFeedback
+            //            {
+            //                EmployeeId = c.Id,
+            //                DisplayName = employee.DisplayName,
+            //                Rating = 0,
+            //                Feedback = ""
+
+            //            };
+
+
+            //    }).ToList();
+
+            //var model = new ReviewSubmitReviewViewModel
             //{
-            //    Organization = organization,
-            //    UserName = organization.ApplicationUser.UserName,
-            //    PhoneNumber = organization.ApplicationUser.PhoneNumber,
-            //    Email = organization.ApplicationUser.Email,
-            //    CountriesSelectList = new SelectList(countries, "Id", "Name", organization.CountryId),
-            //    StatesSelectList = new SelectList(states, "Id", "Name", organization.StateId),
-            //    CitiesSelectList = new SelectList(cities, "Id", "Name", organization.CityId)
+            //    Id = review.Id,
+
+            //    ReviewerDisplayName = review.Reviewer.DisplayName,
+
+            //    EmployeeFeedbacks = employeeFeedbacks
 
             //};
 
-            //return View(model);
 
             return View();
-
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(OrganizationEditViewModel model)
+        public ActionResult Submit(ReviewSubmitReviewViewModel model)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    var user = await UserManager.FindByIdAsync(model.Organization.ApplicationUserId);
-
-            //    user.Email = model.Email;
-            //    user.UserName = model.UserName;
-            //    user.PhoneNumber = model.PhoneNumber;
-
-            //    var result = await UserManager.UpdateAsync(user);
-
-            //    if (result.Succeeded)
-            //    {
-
-            //        var _organization = Context.Organizations.SingleOrDefault(m => m.Id == model.Organization.Id);
-            //        _organization.Name = model.Organization.Name;
-            //        _organization.Address1 = model.Organization.Address1;
-            //        _organization.Address2 = model.Organization.Address2;
-            //        _organization.CountryId = model.Organization.CountryId;
-            //        _organization.StateId = model.Organization.StateId;
-            //        _organization.CityId = model.Organization.CityId;
-            //        _organization.Status = model.Organization.Status;
-            //        _organization.Description = model.Organization.Description;
-
-            //        Context.SaveChanges();
-
-            //        return RedirectToAction("Index");
-
-
-
-            //    }
-            //    AddErrors(result);
-
-            //}
-
-
-
-            //var countries = Context.Countries.ToList();
-            //var states = Context.States.Where(c => c.CountryId == model.Organization.CountryId).ToList();
-            //var cities = Context.Cities.Where(c => c.StateId == model.Organization.StateId).ToList();
-
-
-            //model.CountriesSelectList = new SelectList(countries, "Id", "Name", model.Organization.CountryId);
-            //model.StatesSelectList = new SelectList(states, "Id", "Name", model.Organization.StateId);
-            //model.CitiesSelectList = new SelectList(cities, "Id", "Name", model.Organization.CityId);
-
-
-            //return View(model);
-
             return View();
         }
 

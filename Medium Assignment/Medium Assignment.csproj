@@ -185,6 +185,14 @@
     <Compile Include="Migrations\202210221848299_SeedData.Designer.cs">
       <DependentUpon>202210221848299_SeedData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202210250052551_AddedColumnsReviewsEmployees.cs" />
+    <Compile Include="Migrations\202210250052551_AddedColumnsReviewsEmployees.Designer.cs">
+      <DependentUpon>202210250052551_AddedColumnsReviewsEmployees.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210260710084_CorrectedReviewTable.cs" />
+    <Compile Include="Migrations\202210260710084_CorrectedReviewTable.Designer.cs">
+      <DependentUpon>202210260710084_CorrectedReviewTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -724,8 +732,6 @@
     <Content Include="Views\Employee\Edit.cshtml" />
     <Content Include="Views\Review\Create.cshtml" />
     <Content Include="Views\Review\Index.cshtml" />
-    <Content Include="Views\Review\Edit.cshtml" />
-    <Content Include="Views\Review\Details.cshtml" />
     <Content Include="Views\Review\Assign.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
@@ -740,6 +746,7 @@
     <Content Include="Views\Department\Index.cshtml" />
     <Content Include="Views\Department\New.cshtml" />
     <Content Include="Views\Department\Edit.cshtml" />
+    <Content Include="Views\Review\Submit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -758,6 +765,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202210221848299_SeedData.resx">
       <DependentUpon>202210221848299_SeedData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210250052551_AddedColumnsReviewsEmployees.resx">
+      <DependentUpon>202210250052551_AddedColumnsReviewsEmployees.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210260710084_CorrectedReviewTable.resx">
+      <DependentUpon>202210260710084_CorrectedReviewTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -20,7 +20,7 @@
 
     <div class="form-group">
         @Html.LabelFor(m => m.EmployeeIds)
-        @Html.ListBoxFor(m => m.EmployeeIds, Model.EmployeeSelectList, new { @class = "listbox form-control text-danger " })
+        @Html.ListBoxFor(m => m.EmployeeIds, Model.EmployeeSelectList, new { @class = "listbox form-control text-danger "})
         @Html.ValidationMessageFor(m => m.EmployeeIds)
     </div>
 
@@ -40,12 +40,21 @@
 @section Scripts {
 
     <script>
+
         $(document).ready(function () {
+                $('.listbox').selectpicker();
 
-            $('.listbox').selectpicker();
+
+            });
+
+        @*$(document).ready(function () {
+            var jsonData = '@Html.Raw(Json.Encode(Model.SelectedEmployeeValues))';
+            var selectedValues = JSON.parse(jsonData);
+            
+            $('.listbox').selectpicker('val', selectedValues);
 
 
-        });
+        });*@
 
 
     </script>
