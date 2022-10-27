@@ -193,6 +193,10 @@
     <Compile Include="Migrations\202210260710084_CorrectedReviewTable.Designer.cs">
       <DependentUpon>202210260710084_CorrectedReviewTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202210260750561_RemovedReviewsEmployees.cs" />
+    <Compile Include="Migrations\202210260750561_RemovedReviewsEmployees.Designer.cs">
+      <DependentUpon>202210260750561_RemovedReviewsEmployees.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -730,7 +734,7 @@
     <Content Include="Views\Organization\Details.cshtml" />
     <Content Include="Views\Organization\Edit.cshtml" />
     <Content Include="Views\Employee\Edit.cshtml" />
-    <Content Include="Views\Review\Create.cshtml" />
+    <Content Include="Views\Review\New.cshtml" />
     <Content Include="Views\Review\Index.cshtml" />
     <Content Include="Views\Review\Assign.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
@@ -771,6 +775,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202210260710084_CorrectedReviewTable.resx">
       <DependentUpon>202210260710084_CorrectedReviewTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210260750561_RemovedReviewsEmployees.resx">
+      <DependentUpon>202210260750561_RemovedReviewsEmployees.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

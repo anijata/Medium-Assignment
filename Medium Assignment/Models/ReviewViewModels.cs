@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Medium_Assignment.Models
 {
-    public class ReviewCreateViewModel
+    public class ReviewNewViewModel
     {
         [Required]
         public string Agenda { get; set; }
@@ -49,7 +49,7 @@ namespace Medium_Assignment.Models
 
         [Required]
         [Display(Name = "Employees")]
-        public IEnumerable<int> EmployeeIds { get; set; }
+        public List<int> EmployeeIds { get; set; }
 
         [Required]
         [Display(Name = "Reviewer")]
@@ -64,18 +64,6 @@ namespace Medium_Assignment.Models
 
     }
 
-    public class EmployeeFeedback {
-        [Required]
-        public int EmployeeId {get; set;}
-        [Required]
-        [Display(Name = "Employee")]
-        public string DisplayName { get; set; }
-        [Required]
-        [Range(1,5)]
-        public int Rating { get; set; }
-        [Required]
-        public string Feedback { get; set; }
-    }
     public class ReviewSubmitReviewViewModel
     {
 
@@ -83,12 +71,19 @@ namespace Medium_Assignment.Models
         [Display(Name = "Review Id")]
         public int Id { get; set; }
 
-        [Required]
+
         [Display(Name = "Reviewer")]
         public string ReviewerDisplayName { get; set; }
 
+        [Display(Name = "Employee")]
+        public string EmployeeDisplayName { get; set; }
+
         [Required]
-        public IEnumerable<EmployeeFeedback> EmployeeFeedbacks { get; set; }
+        public int Rating { get; set; }
+
+
+        [Required]
+        public string Feedback { get; set; }
 
     }
 

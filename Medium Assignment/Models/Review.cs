@@ -17,11 +17,29 @@ namespace Medium_Assignment.Models
         [Key]
         public int Id { get; set; }
 
+        [ForeignKey("ReviewerId")]
+        public Employee Reviewer { get; set; }
+
+        public int? ReviewerId { get; set; }
+
+        [ForeignKey("EmployeeId")]
+        public Employee Employee { get; set; }
+
+        public int? EmployeeId { get; set; }
+
+
+        [ForeignKey("OrganizationId")]
+        public Organization Organization { get; set; }
+
+        public int OrganizationId { get; set; }
+
         public string Agenda { get; set; }
 
+        [DataType(DataType.DateTime)]
         [Display(Name = "Review Cycle Start Date")]
         public DateTime ReviewCycleStartDate { get; set; }
 
+        [DataType(DataType.DateTime)]
         [Display(Name = "Review Cycle End Date")]
         public DateTime ReviewCycleEndDate { get; set; }
 
@@ -32,16 +50,8 @@ namespace Medium_Assignment.Models
         public decimal MaxRate { get; set; }
 
         public string Description { get; set; }
-
-        [ForeignKey("ReviewerId")]
-        public Employee Reviewer { get; set; }
-
-        public int? ReviewerId { get; set; }
-
-        [ForeignKey("OrganizationId")]
-        public Organization Organization { get; set; }
-
-        public int OrganizationId { get; set; }
+        public int Rating { get; set; }
+        public string Feedback { get; set; }
 
         
         [ForeignKey("ReviewStatusId")] 
@@ -51,10 +61,12 @@ namespace Medium_Assignment.Models
 
         public bool IsDeleted { get; set; } = false;
 
+        [DataType(DataType.DateTime)]
         public DateTime CreatedOn { get; set; }
 
         public string CreatedBy { get; set; }
 
+        [DataType(DataType.DateTime)]
         public DateTime ModifiedOn { get; set; }
         public string ModifiedBy { get; set; }
     }

@@ -1,4 +1,4 @@
-﻿@model Medium_Assignment.Models.ReviewCreateViewModel
+﻿@model Medium_Assignment.Models.ReviewNewViewModel
 
 @{
     ViewBag.Title = "Create Review";
@@ -6,7 +6,7 @@
 
 <h2>Create Review</h2>
 
-@using (@Html.BeginForm("Create", "Review", FormMethod.Post))
+@using (@Html.BeginForm("New", "Review", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 

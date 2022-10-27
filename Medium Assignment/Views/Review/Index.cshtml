@@ -7,7 +7,7 @@
 <h2>Reviews</h2>
 
 <p>
-    @Html.ActionLink("New Review", "Create", "Review", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("New Review", "New", "Review", null, new { @class = "btn btn-primary" })
 </p>
 
 <table class="table table-bordered table-hover">
@@ -21,32 +21,17 @@
         </th>
 
         <th>
-            Review Cycle Start Date
+            Reviewer
         </th>
 
         <th>
-            Review Cycle End Date
-        </th>
-
-        <th>
-            Min Rate
-        </th>
-
-        <th>
-            Max Rate
-        </th>
-
-        <th>
-            Description
+            Employee
         </th>
 
         <th>
             Status
         </th>
 
-        <th>
-            Actions
-        </th>
 
 
     </tr>
@@ -64,33 +49,43 @@
     </td>
 
     <td>
-        @review.ReviewCycleStartDate
+        @if (review.Reviewer == null)
+        {
+            <p>Unassigned</p>
+        }
+        else
+        {
+            @review.Reviewer.DisplayName
+        }
+
     </td>
 
     <td>
-        @review.ReviewCycleEndDate
+        @if (review.Employee == null)
+        {
+            <p>Unassigned</p>
+        }
+        else
+        {
+            @review.Employee.DisplayName
+        }
     </td>
 
     <td>
-        @review.MinRate
-    </td>
+        @if (review.ReviewStatus.Id == 1)
+        {
+            @Html.ActionLink("New", "Assign", new { Id = review.Id })
+        }
 
-    <td>
-        @review.MaxRate
-    </td>
+        @if (review.ReviewStatus.Id == 2)
+        {
+            @Html.ActionLink("Assigned", "Submit", new { Id = review.Id })
+        }
 
-    <td>
-        @review.Description
-    </td>
-
-    <td>
-        @review.ReviewStatus.Name
-    </td>
-
-    <td>
-        @Html.ActionLink("Edit", "Edit", new { id = review.Id }) |
-        @Html.ActionLink("Details", "Details", new { id = review.Id }) |
-        @Html.ActionLink("Delete", "Delete", new { id = review.Id })
+        @if (review.ReviewStatus.Id == 3)
+        {
+            <p>Submitted</p>
+        }
     </td>
 </tr>
 }

@@ -30,8 +30,6 @@ namespace Medium_Assignment.Models
         public DbSet<Department> Departments { get; set; }
         public DbSet<ReviewStatus> ReviewStatuses { get; set; }
 
-        public DbSet<ReviewsEmployees> ReviewsEmployees { get; set; }
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
