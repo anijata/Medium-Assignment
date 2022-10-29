@@ -10,5 +10,6 @@ namespace Medium_Assignment
         {
             ConfigureAuth(app);
         }
+
     }
 }
