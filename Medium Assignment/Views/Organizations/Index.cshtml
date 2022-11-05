@@ -1,4 +1,4 @@
-﻿@model Medium_Assignment.Models.OrganizationIndexViewModel
+﻿@model Medium_Assignment.Models.OrganizationListViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -36,9 +36,10 @@
 
 
                 <td>@organization.Name</td>
-                <td>@organization.ApplicationUser.PhoneNumber</td>
-                <td>@organization.ApplicationUser.Email</td>
-                <td>@organization.ApplicationUser.UserName</td>
+                <td>@organization.PhoneNumber</td>
+                <td>@organization.Email</td>
+                <td>@organization.UserName</td>
+
                 @if (!String.IsNullOrEmpty(organization.Address2))
                 {
                     <td> @(organization.Address1 + ", " + organization.Address2)</td>
@@ -49,9 +50,9 @@
 
                 }
 
-                <td>@organization.Country.Name</td>
-                <td>@organization.State.Name</td>
-                <td>@organization.City.Name</td>
+                <td>@organization.Country</td>
+                <td>@organization.State</td>
+                <td>@organization.City</td>
                 <td>@organization.Status</td>
                 <td>@organization.Description</td>
                 <td>
