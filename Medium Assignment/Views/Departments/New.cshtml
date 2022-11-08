@@ -1,18 +1,15 @@
-﻿@model Medium_Assignment.Models.DepartmentEditViewModel
+﻿@model Medium_Assignment.Models.DepartmentNewViewModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "New";
 }
+<h2>New Department</h2>
 
-<h2>Edit</h2>
 
 
-@using (@Html.BeginForm("Edit", "Department", FormMethod.Post))
+@using (@Html.BeginForm("New", "Departments", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-
-
-    @Html.HiddenFor(m => m.Id)
 
     <div class="form-group">
         @Html.LabelFor(m => m.Name)
@@ -21,7 +18,7 @@
     </div>
 
     <button type="submit" class="btn btn-primary">
-        Save
+        Create
     </button>
 
 

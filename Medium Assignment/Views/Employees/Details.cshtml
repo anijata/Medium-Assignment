@@ -1,6 +1,4 @@
-﻿@using Medium_Assignment.Models
-
-@model EmployeeDetailsViewModel
+﻿@model Medium_Assignment.Models.EmployeeDetailsViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -35,7 +33,7 @@
         </li>
 
         <li>
-            @Html.DisplayNameFor(model => model.Employee.Department): @Model.Employee.Department.Name
+            @Html.DisplayNameFor(model => model.Employee.Department): @Model.Employee.Department
         </li>
 
         <li>
@@ -47,15 +45,15 @@
         </li>
 
         <li>
-            @Html.DisplayNameFor(model => model.Employee.Country): @Model.Employee.Country.Name
+            @Html.DisplayNameFor(model => model.Employee.Country): @Model.Employee.Country
         </li>
 
         <li>
-            @Html.DisplayNameFor(model => model.Employee.State): @Model.Employee.State.Name
+            @Html.DisplayNameFor(model => model.Employee.State): @Model.Employee.State
         </li>
 
         <li>
-            @Html.DisplayNameFor(model => model.Employee.City): @Model.Employee.City.Name
+            @Html.DisplayNameFor(model => model.Employee.City): @Model.Employee.City
         </li>
 
         <li>

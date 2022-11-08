@@ -7,16 +7,16 @@
 <h2>Create Organization</h2>
 
 
-@using (@Html.BeginForm("New", "Organization", FormMethod.Post))
+@using (@Html.BeginForm("New", "Organizations", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Organization.Name)
-        @Html.TextBoxFor(m => m.Organization.Name, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.Organization.Name)
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.Name)
     </div>
 
     <div class="form-group">
@@ -46,56 +46,56 @@
 
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Organization.Address1)
-        @Html.TextBoxFor(m => m.Organization.Address1, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.Organization.Address1)
+        @Html.LabelFor(m => m.Address1)
+        @Html.TextBoxFor(m => m.Address1, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.Address1)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Organization.Address2)
-        @Html.TextBoxFor(m => m.Organization.Address2, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.Organization.Address2)
+        @Html.LabelFor(m => m.Address2)
+        @Html.TextBoxFor(m => m.Address2, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.Address2)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Organization.Country)
-        @Html.DropDownListFor(m => m.Organization.CountryId, Model.CountriesSelectList, "Select Country", new { @class = "form-control text-danger", id = "Countries", })
-        @Html.ValidationMessageFor(m => m.Organization.Country)
+        @Html.LabelFor(m => m.CountryId)
+        @Html.DropDownListFor(m => m.CountryId, new List<SelectListItem>(), "Select Country", new { @class = "form-control text-danger", id = "Countries", })
+        @Html.ValidationMessageFor(m => m.CountryId)
 
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Organization.State)
-        @Html.DropDownListFor(m => m.Organization.StateId, Model.StatesSelectList, "Select State", new { @class = "form-control text-danger", id = "States" })
-        @Html.ValidationMessageFor(m => m.Organization.State)
+        @Html.LabelFor(m => m.StateId)
+        @Html.DropDownListFor(m => m.StateId, new List<SelectListItem>(), "Select State", new { @class = "form-control text-danger", id = "States" })
+        @Html.ValidationMessageFor(m => m.StateId)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Organization.City)
-        @Html.DropDownListFor(m => m.Organization.CityId, Model.CitiesSelectList, "Select City", new { @class = "form-control text-danger", id = "Cities" })
-        @Html.ValidationMessageFor(m => m.Organization.City)
+        @Html.LabelFor(m => m.CityId)
+        @Html.DropDownListFor(m => m.CityId, new List<SelectListItem>(), "Select City", new { @class = "form-control text-danger", id = "Cities" })
+        @Html.ValidationMessageFor(m => m.CityId)
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Organization.Status)
+        @Html.LabelFor(m => m.Status)
     </div>
 
     <div class="form-group">
-        @Html.RadioButtonFor(m => m.Organization.Status, "Active") Active
-        @Html.RadioButtonFor(m => m.Organization.Status, "Inactive") Inactive
+        @Html.RadioButtonFor(m => m.Status, "Active") Active
+        @Html.RadioButtonFor(m => m.Status, "Inactive") Inactive
     </div>
 
     <div class="form-group">
-        @Html.ValidationMessageFor(m => m.Organization.Status)
+        @Html.ValidationMessageFor(m => m.Status)
 
     </div>
 
 
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Organization.Description)
-        @Html.TextAreaFor(m => m.Organization.Description, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.Organization.Description)
+        @Html.LabelFor(m => m.Description)
+        @Html.TextAreaFor(m => m.Description, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.Description)
     </div>
 
     <button type="submit" class="btn btn-primary">
@@ -107,7 +107,40 @@
 
 @section Scripts {
 
+    <script>
+        $(document).ready(function () {
 
+            $("#Countries").empty();
+            $("#Countries").append("<option value=0> Select Country </option>");
+
+            $.ajax({
+                type: "get",
+                url: "https://localhost:44357/api/resources/countries",
+                datatype: "json",
+                traditional: "true",
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $("#Countries").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
+
+                    }
+                },
+
+                error: function (jqXHR, status, err) {
+                    debugger;
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err);
+                }
+
+                
+
+
+             });
+
+        });
+
+
+    </script>
 
     <script>
         $(document).ready(function () {
@@ -124,14 +157,13 @@
                 }
 
                 $.ajax({
-                    type: "post",
-                    url: "/Organization/GetStates",
-                    data: { countryId: $("#Countries").val() },
+                    type: "get",
+                    url: "https://localhost:44357/api/resources/states/" + $("#Countries").val(),
                     datatype: "json",
                     traditional: "true",
                     success: function (data) {
                         for (var i = 0; i < data.length; i++) {
-                            $("#States").append("<option value=" + data[i].Value + ">" + data[i].Text + "</option>");
+                            $("#States").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
 
                         }
                     }
@@ -160,14 +192,13 @@
                 }
 
                 $.ajax({
-                    type: "post",
-                    url: "/Organization/GetCities",
-                    data: { stateId: $("#States").val() },
+                    type: "get",
+                    url: "https://localhost:44357/api/resources/cities/" + $("#States").val(),
                     datatype: "json",
                     traditional: "true",
                     success: function (data) {
                         for (var i = 0; i < data.length; i++) {
-                            $("#Cities").append("<option value=" + data[i].Value + ">" + data[i].Text + "</option>");
+                            $("#Cities").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
 
                         }
                     }

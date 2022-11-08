@@ -1,4 +1,4 @@
-﻿@model Medium_Assignment.Models.ReviewSubmitReviewViewModel
+﻿@model Medium_Assignment.Models.ReviewSubmitViewModel
 
 @{
     ViewBag.Title = "Submit";
@@ -6,7 +6,7 @@
 
 <h2>Submit</h2>
 
-@using (@Html.BeginForm("Submit", "Review", FormMethod.Post))
+@using (@Html.BeginForm("Submit", "Reviews", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
@@ -19,14 +19,14 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.EmployeeDisplayName)
-        @Html.TextBoxFor(m => m.EmployeeDisplayName, new { @class = "form-control text-danger ", @disabled = "disabled" })
+        @Html.LabelFor(m => m.Employee)
+        @Html.TextBoxFor(m => m.Employee, new { @class = "form-control text-danger ", @disabled = "disabled" })
     </div>
 
 
     <div class="form-group">
-        @Html.LabelFor(m => m.ReviewerDisplayName)
-        @Html.TextBoxFor(m => m.ReviewerDisplayName, new { @class = "form-control text-danger ", @disabled = "disabled" })
+        @Html.LabelFor(m => m.Reviewer)
+        @Html.TextBoxFor(m => m.Reviewer, new { @class = "form-control text-danger ", @disabled = "disabled" })
     </div>
 
 

@@ -7,7 +7,7 @@
 <h2>Reviews</h2>
 
 <p>
-    @Html.ActionLink("New Review", "New", "Review", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("New Review", "New", "Reviews", null, new { @class = "btn btn-primary" })
 </p>
 
 <table class="table table-bordered table-hover">
@@ -49,40 +49,40 @@
     </td>
 
     <td>
-        @if (review.Reviewer == null)
+        @if (!String.IsNullOrEmpty(review.Reviewer))
         {
-            <p>Unassigned</p>
+            @review.Reviewer
         }
         else
         {
-            @review.Reviewer.DisplayName
+            <p>Unassigned</p>
         }
 
     </td>
 
     <td>
-        @if (review.Employee == null)
+        @if (!String.IsNullOrEmpty(review.Employee))
         {
-            <p>Unassigned</p>
+            @review.Employee
         }
         else
         {
-            @review.Employee.DisplayName
+            <p>Unassigned</p>
         }
     </td>
 
     <td>
-        @if (review.ReviewStatus.Id == 1)
+        @if (review.ReviewStatusId == 1)
         {
             @Html.ActionLink("New", "Assign", new { Id = review.Id })
         }
 
-        @if (review.ReviewStatus.Id == 2)
+        @if (review.ReviewStatusId == 2)
         {
             @Html.ActionLink("Assigned", "Submit", new { Id = review.Id })
         }
 
-        @if (review.ReviewStatus.Id == 3)
+        @if (review.ReviewStatusId == 3)
         {
             <p>Submitted</p>
         }

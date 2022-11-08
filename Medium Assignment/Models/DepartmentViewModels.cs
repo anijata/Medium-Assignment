@@ -8,9 +8,37 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Medium_Assignment.Models
 {
+    public class DepartmentListViewModel
+    {
+        public List<DepartmentGetViewModel> Departments { get; set; }
+    }
+
+    public class DepartmentGetViewModel
+    {
+        [Required]
+        public int Id { get; set; }
+
+        [Required]
+        public string Name { get; set; }
+
+    }
+
+    public class DepartmentPostViewModel
+    {
+        [Required]
+        public string Name { get; set; }
+    }
+
+    public class DepartmentPutViewModel
+    {
+
+        [Required]
+        public string Name { get; set; }
+    }
+
     public class DepartmentIndexViewModel
     {
-        public IEnumerable<Department> Departments;
+        public IEnumerable<DepartmentGetViewModel> Departments;
     }
 
     public class DepartmentNewViewModel

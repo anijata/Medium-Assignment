@@ -1,27 +1,34 @@
-﻿@model Medium_Assignment.Models.OrganizationEditViewModel
+﻿@model Medium_Assignment.Models.EmployeeNewViewModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "New";
 }
-
-<h2>Edit Organization</h2>
-
+<h2>New Employee</h2>
 
 
-@using (@Html.BeginForm("Edit", "Organizations", FormMethod.Post))
+
+@using (@Html.BeginForm("New", "Employees", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
-
-    @Html.HiddenFor(m => m.Id)
-
+    <div class="form-group">
+        @Html.LabelFor(m => m.FirstName)
+        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.FirstName)
+    </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.Name)
+        @Html.LabelFor(m => m.LastName)
+        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.LastName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.UserName)
+        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.UserName)
     </div>
 
     <div class="form-group">
@@ -37,9 +44,41 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.UserName)
-        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.UserName)
+        @Html.LabelFor(m => m.Password)
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.Password)
+    </div>
+
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.DOB)
+        @Html.TextBoxFor(m => m.DOB, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.DOB)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Gender)
+        @Html.TextBoxFor(m => m.Gender, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.Gender)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Designation)
+        @Html.TextBoxFor(m => m.Designation, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.Designation)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.DOJ)
+        @Html.TextBoxFor(m => m.DOJ, new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.DOJ)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.DepartmentId)
+        @Html.DropDownListFor(m => m.DepartmentId, Model.DepartmentsSelectList, "Select Department", new { @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.DepartmentId)
     </div>
 
     <div class="form-group">
@@ -74,6 +113,21 @@
     </div>
 
     <div class="form-group">
+        @Html.LabelFor(m => m.EmployeeType)
+    </div>
+
+    <div class="form-group">
+        @Html.RadioButtonFor(m => m.EmployeeType, "Full Time") Full Time
+        @Html.RadioButtonFor(m => m.EmployeeType, "Contract") Contract
+    </div>
+
+    <div class="form-group">
+        @Html.ValidationMessageFor(m => m.EmployeeType)
+
+    </div>
+
+
+    <div class="form-group">
         @Html.LabelFor(m => m.Status)
     </div>
 
@@ -87,14 +141,6 @@
 
     </div>
 
-
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Description)
-        @Html.TextAreaFor(m => m.Description, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.Description)
-    </div>
-
     <button type="submit" class="btn btn-primary">
         Save
     </button>
@@ -103,8 +149,13 @@
 }
 
 @section Scripts {
+
     <script>
         $(document).ready(function () {
+
+            $("#Countries").empty();
+            $("#Countries").append("<option value=0> Select Country </option>");
+
             $.ajax({
                 type: "get",
                 url: "https://localhost:44357/api/resources/countries",
@@ -113,38 +164,25 @@
                 success: function (data) {
                     for (var i = 0; i < data.length; i++) {
                         $("#Countries").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
-                    }
-                    $("#Countries").val(@Model.CountryId);
-                }
-            });
 
-            $.ajax({
-                type: "get",
-                url: "https://localhost:44357/api/resources/states/" + @Model.CountryId,
-                datatype: "json",
-                traditional: "true",
-                success: function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        $("#States").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
                     }
-                    $("#States").val(@Model.StateId);
-                }
-            });
+                },
 
-            $.ajax({
-                type: "get",
-                url: "https://localhost:44357/api/resources/cities/" + @Model.StateId,
-                datatype: "json",
-                traditional: "true",
-                success: function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        $("#Cities").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
-                    }
-                    $("#Cities").val(@Model.CityId);
+                error: function (jqXHR, status, err) {
+                    debugger;
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err);
                 }
+
+
+
+
             });
 
         });
+
+
     </script>
 
     <script>
@@ -222,3 +260,10 @@
     </script>
 
 }
+
+
+
+
+
+
+

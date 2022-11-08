@@ -1,4 +1,4 @@
-﻿@model Medium_Assignment.Models.OrganizationListViewModel
+﻿@model Medium_Assignment.Models.OrganizationIndexViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -7,7 +7,7 @@
 <h2>Organizations</h2>
 
 <p>
-    @Html.ActionLink("New Organization", "New", "Organization", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("New Organization", "New", "Organizations", null, new { @class = "btn btn-primary" })
 </p>
 
 
@@ -59,16 +59,16 @@
 
 
                     <p>
-                        @Html.ActionLink("Details", "Details", "Organization", new { Id = organization.Id }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Details", "Details", "Organizations", new { id = organization.Id }, new { @class = "btn btn-primary" })
                     </p>
 
                     <p>
-                        @Html.ActionLink("Edit", "Edit", "Organization", new { Id = organization.Id }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Edit", "Edit", "Organizations", new { id = organization.Id }, new { @class = "btn btn-primary" })
 
                     </p>
 
                     <p>
-                        @Html.ActionLink("Delete", "Delete", "Organization", new { Id = organization.Id }, new { @class = "btn btn-primary delete" })
+                        @Html.ActionLink("Delete", "Delete", "Organizations", new { id = organization.Id }, new { @class = "btn btn-primary delete" })
 
                     </p>
 

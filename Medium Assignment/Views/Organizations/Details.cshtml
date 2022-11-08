@@ -15,18 +15,18 @@
 
         <li>
 
-            @Html.DisplayNameFor(model => model.Organization.ApplicationUser.PhoneNumber): @Model.Organization.ApplicationUser.PhoneNumber
+            @Html.DisplayNameFor(model => model.Organization.PhoneNumber): @Model.Organization.PhoneNumber
         </li>
 
         <li>
 
-            @Html.DisplayNameFor(model => model.Organization.ApplicationUser.Email): @Model.Organization.ApplicationUser.Email
+            @Html.DisplayNameFor(model => model.Organization.Email): @Model.Organization.Email
         </li>
 
 
         <li>
 
-            @Html.DisplayNameFor(model => model.Organization.ApplicationUser.UserName): @Model.Organization.ApplicationUser.UserName
+            @Html.DisplayNameFor(model => model.Organization.UserName): @Model.Organization.UserName
         </li>
 
         @if (!String.IsNullOrEmpty(Model.Organization.Address2))
@@ -35,27 +35,28 @@
                 Address: @(Model.Organization.Address1 + ", " + Model.Organization.Address2)
             </li>
         }
-        else 
-        { 
-            <li> Address: @Model.Organization.Address1 </li>      
+        else
+        {
+            <li> Address: @Model.Organization.Address1 </li>
+
         }
-        
+
 
 
         <li>
 
-            @Html.DisplayNameFor(model => model.Organization.Country): @Model.Organization.Country.Name
+            @Html.DisplayNameFor(model => model.Organization.Country): @Model.Organization.Country
         </li>
 
         <li>
 
-            @Html.DisplayNameFor(model => model.Organization.State): @Model.Organization.State.Name
+            @Html.DisplayNameFor(model => model.Organization.State): @Model.Organization.State
         </li>
 
 
         <li>
 
-            @Html.DisplayNameFor(model => model.Organization.City): @Model.Organization.City.Name
+            @Html.DisplayNameFor(model => model.Organization.City): @Model.Organization.City
         </li>
 
 

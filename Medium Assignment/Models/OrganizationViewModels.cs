@@ -130,18 +130,49 @@ namespace Medium_Assignment.Models
     public class OrganizationDetailsViewModel
     {
 
-        public Organization Organization { get; set; }
+        public OrganizationGetViewModel Organization { get; set; }
+
     }
 
     public class OrganizationIndexViewModel
     {
-        public IEnumerable<Organization> Organizations { get; set; }
+        public IEnumerable<OrganizationGetViewModel> Organizations { get; set; }
     }
 
     public class OrganizationNewViewModel
     {
 
-        public Organization Organization { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string Name { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        [Display(Name = "Address field 1")]
+        public string Address1 { get; set; }
+
+        [MaxLength(100)]
+        [Display(Name = "Address field 2")]
+        public string Address2 { get; set; }
+
+        [Required]
+        [Display(Name = "Country")]
+        public int CountryId { get; set; }
+
+        [Required]
+        [Display(Name = "State")]
+        public int StateId { get; set; }
+
+        [Required]
+        [Display(Name = "City")]
+        public int CityId { get; set; }
+
+        [Required]
+        public string Status { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string Description { get; set; }
 
         [Required]
         [Display(Name = "User Name")]
@@ -163,15 +194,44 @@ namespace Medium_Assignment.Models
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
-        public SelectList StatesSelectList { get; set; }
-        public SelectList CountriesSelectList { get; set; }
-        public SelectList CitiesSelectList { get; set; }
     }
 
     public class OrganizationEditViewModel
     {
+        [Required]
+        public int Id { get; set; }
 
-        public Organization Organization { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string Name { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        [Display(Name = "Address field 1")]
+        public string Address1 { get; set; }
+
+        [MaxLength(100)]
+        [Display(Name = "Address field 2")]
+        public string Address2 { get; set; }
+
+        [Required]
+        [Display(Name = "Country")]
+        public int CountryId { get; set; }
+
+        [Required]
+        [Display(Name = "State")]
+        public int StateId { get; set; }
+
+        [Required]
+        [Display(Name = "City")]
+        public int CityId { get; set; }
+
+        [Required]
+        public string Status { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string Description { get; set; }
 
         [Required]
         [Display(Name = "User Name")]
@@ -187,10 +247,53 @@ namespace Medium_Assignment.Models
         [Phone]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
+    }
 
-        public SelectList StatesSelectList { get; set; }
-        public SelectList CountriesSelectList { get; set; }
-        public SelectList CitiesSelectList { get; set; }
+    public class OrganizationPutViewModel
+    {
+
+        [Required]
+        [MaxLength(50)]
+        public string Name { get; set; }
+
+        [Display(Name = "User Name")]
+        public string UserName { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [DataType(DataType.PhoneNumber)]
+        [Phone]
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
+
+        [Required]
+        public int CountryId { get; set; }
+
+        [Required]
+        public int StateId { get; set; }
+
+        [Required]
+        public int CityId { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        [Display(Name = "Address field 1")]
+        public string Address1 { get; set; }
+
+        [MaxLength(100)]
+        [Display(Name = "Address field 2")]
+        public string Address2 { get; set; }
+
+        [Required]
+        public string Status { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string Description { get; set; }
     }
 
 }

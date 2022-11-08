@@ -8,6 +8,48 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Medium_Assignment.Models
 {
+
+    public class ReviewListViewModel
+    {
+
+        public List<ReviewGetViewModel> Reviews;
+    }
+    public class ReviewGetViewModel
+    {
+        public int Id { get; set; }
+        public string Reviewer { get; set; }
+        public int? ReviewerId { get; set; }
+
+        public string Employee { get; set; }
+
+        public int? EmployeeId { get; set; }
+
+        public int OrganizationId { get; set; }
+
+        public string Agenda { get; set; }
+
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Review Cycle Start Date")]
+        public DateTime ReviewCycleStartDate { get; set; }
+
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Review Cycle End Date")]
+        public DateTime ReviewCycleEndDate { get; set; }
+
+        [Display(Name = "Min Rate")]
+        public decimal MinRate { get; set; }
+
+        [Display(Name = "Max Rate")]
+        public decimal MaxRate { get; set; }
+
+        public string Description { get; set; }
+        public int? Rating { get; set; }
+        public string Feedback { get; set; }
+
+        public string ReviewStatus { get; set; }
+        public int? ReviewStatusId { get; set; }
+    }
+
     public class ReviewNewViewModel
     {
         [Required]
@@ -36,11 +78,31 @@ namespace Medium_Assignment.Models
     }
 
     public class ReviewIndexViewModel {
-        public IEnumerable<Review> Reviews;
+        public List<ReviewGetViewModel> Reviews;
+
+    }
+    public class ReviewAssignBindingModel
+    {
+        [Required]
+        public int? ReviewerId { get; set; }
+
+        [Required]
+
+        public List<int?> EmployeeIds { get; set; }
 
     }
 
-    public class ReviewAssignReviewViewModel
+    public class ReviewSubmitBindingModel
+    {
+        [Required]
+        public int Rating { get; set; }
+
+        [Required]
+        public string Feedback { get; set; }
+
+    }
+
+    public class ReviewAssignViewModel
     {
 
         [Required]
@@ -49,7 +111,7 @@ namespace Medium_Assignment.Models
 
         [Required]
         [Display(Name = "Employees")]
-        public List<int> EmployeeIds { get; set; }
+        public List<int?> EmployeeIds { get; set; }
 
         [Required]
         [Display(Name = "Reviewer")]
@@ -64,7 +126,7 @@ namespace Medium_Assignment.Models
 
     }
 
-    public class ReviewSubmitReviewViewModel
+    public class ReviewSubmitViewModel
     {
 
         [Required]
@@ -73,10 +135,10 @@ namespace Medium_Assignment.Models
 
 
         [Display(Name = "Reviewer")]
-        public string ReviewerDisplayName { get; set; }
+        public string Reviewer { get; set; }
 
         [Display(Name = "Employee")]
-        public string EmployeeDisplayName { get; set; }
+        public string Employee { get; set; }
 
         [Required]
         public int Rating { get; set; }
