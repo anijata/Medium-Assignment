@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Medium_Assignment.Models
 {
-    public class OrganizationGetViewModel
+    public class OrganizationGetViewModel : WebAPIClientBindingModel
     {
         [Required]
         public int Id { get; set; }
@@ -70,7 +70,7 @@ namespace Medium_Assignment.Models
         public string Description { get; set; }
     }
 
-    public class OrganizationPostViewModel
+    public class OrganizationPostViewModel : WebAPIClientBindingModel
     {
         [Required]
         [MaxLength(50)]
@@ -122,15 +122,53 @@ namespace Medium_Assignment.Models
 
     }
 
-    public class OrganizationListViewModel
+    public class OrganizationListViewModel : WebAPIClientBindingModel
     {
         public List<OrganizationGetViewModel> Organizations { get; set; }
     }
 
     public class OrganizationDetailsViewModel
     {
+        [Required]
+        public int Id { get; set; }
 
-        public OrganizationGetViewModel Organization { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string Name { get; set; }
+
+        [Display(Name = "User Name")]
+        public string UserName { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [DataType(DataType.PhoneNumber)]
+        [Phone]
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
+
+        [Required]
+        public string Country { get; set; }
+
+        [Required]
+        public string State { get; set; }
+
+        [Required]
+        public string City { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string Address { get; set; }
+
+        [Required]
+        public string Status { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string Description { get; set; }
 
     }
 
@@ -296,4 +334,7 @@ namespace Medium_Assignment.Models
         public string Description { get; set; }
     }
 
+    public class OrganizationDeleteViewModel : WebAPIClientBindingModel
+    {
+    }
 }

@@ -2,24 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Net;
 
 namespace Medium_Assignment.Models
 {
-    public class AuthTokenBindingModel 
+    public class AuthDetails
     {
-
-        public string grant_type { get; set; }
-        public string username { get; set; }
-
-        public string password { get; set; }
-
-
-    }
-
-    public class AuthTokenViewModel: WebAPIClientBindingModel
-    { 
-
+        public bool IsAuthenticted { get; set; } = false;
         public string AccessToken { get; set; }
         public string TokenType { get; set; }
 
@@ -28,11 +16,12 @@ namespace Medium_Assignment.Models
 
         public DateTime Issued { get; set; }
         public DateTime Expires { get; set; }
-
-    }
-
-    public class AuthRolesViewModel: WebAPIClientBindingModel
-    {        
         public List<string> Roles { get; set; }
+
+
+        public bool IsInRole(string Role)
+        {
+            return Roles.Contains(Role);
+        }
     }
 }

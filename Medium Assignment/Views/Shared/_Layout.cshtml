@@ -1,9 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@using Medium_Assignment.Models
+
+@{AuthDetails authDetails = (AuthDetails)Context.Session["AuthDetails"];}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>
+        @ViewBag.Title - My ASP.NET Application
+    </title>
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -22,28 +29,48 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
 
-                    @User.IsInRole("SuperAdmin")
-
-                    @User.IsInRole("OrganizationAdmin")
-
-                    @User.IsInRole("Employee")
-
-                    @if (User.IsInRole("SuperAdmin"))
+                    @if (authDetails != null)
                     {
-                        <li>@Html.ActionLink("Organizations", "Index", "Organization")</li>
+
+                        if (authDetails.IsInRole("SuperAdmin"))
+                        {
+                            <li>@Html.ActionLink("Organizations", "Index", "Organizations")</li>
+                        }
+
+                        if (authDetails.IsInRole("OrganizationAdmin"))
+                        {
+                            <li>@Html.ActionLink("Departments", "Index", "Departments")</li>
+                            <li>@Html.ActionLink("Employees", "Index", "Employees")</li>
+                        }
+
+                        if (authDetails.IsInRole("OrganizationAdmin")
+                            || authDetails.IsInRole("Employee"))
+                        {
+                            <li>@Html.ActionLink("Reviews", "Index", "Reviews")</li>
+                        }
 
                     }
 
-                    @if (User.IsInRole("OrganizationAdmin"))
-                    {
-                        <li>@Html.ActionLink("Departments", "Index", "Department")</li>
-                        <li>@Html.ActionLink("Employees", "Index", "Employee")</li>
-                    }
+                    @*
 
-                    @if (User.IsInRole("OrganizationAdmin") || User.IsInRole("Employee"))
-                    {
-                        <li>@Html.ActionLink("Reviews", "Index", "Review")</li>
-                    }
+        @if (User.IsInRole("SuperAdmin"))
+        {
+            <li>@Html.ActionLink("Organizations", "Index", "Organization")</li>
+
+        }
+
+        @if (User.IsInRole("OrganizationAdmin"))
+        {
+            <li>@Html.ActionLink("Departments", "Index", "Department")</li>
+            <li>@Html.ActionLink("Employees", "Index", "Employee")</li>
+        }
+
+        @if (User.IsInRole("OrganizationAdmin") || User.IsInRole("Employee"))
+        {
+            <li>@Html.ActionLink("Reviews", "Index", "Review")</li>
+        }
+
+                    *@
 
 
                 </ul>
@@ -53,10 +80,16 @@
     </div>
     <div class="container body-content">
         @RenderBody()
+
+
+        @*
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+                <footer>
+                    <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+                </footer>
+
+        *@
+
     </div>
 
 

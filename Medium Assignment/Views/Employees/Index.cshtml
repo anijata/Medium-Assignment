@@ -1,4 +1,6 @@
-﻿@model Medium_Assignment.Models.EmployeeIndexViewModel
+﻿@using Medium_Assignment.Models
+
+@{AuthDetails authDetails = (AuthDetails)Context.Session["AuthDetails"];}
 
 @{
     ViewBag.Title = "Index";
@@ -13,11 +15,13 @@
 </p>
 
 
-<table id="Organizations" class="table table-bordered table-hover">
+<table id="table" class="table table-bordered table-hover">
     <thead>
         <tr>
-            <th scope="col">First Name </th>
-            <th scope="col">Last Name</th>
+            <th scope="col">Name</th>
+            <th scope="col">User Name</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Email</th>
             <th scope="col">Date of Birth</th>
             <th scope="col">Gender</th>
             <th scope="col">Designation</th>
@@ -29,82 +33,84 @@
             <th scope="col">City</th>
             <th scope="col">EmployeeType</th>
             <th scope="col">Status</th>
-            <th scope="col">User Name</th>
-            <th scope="col">Phone Number</th>
-            <th scope="col">Email</th>
-            <th scope="col">Actions</th>
 
         </tr>
     </thead>
     <tbody>
-
-        @foreach (var employee in Model.Employees)
-        {
-            <tr class="table-active">
-
-                <td>@employee.FirstName</td>
-                <td>@employee.LastName</td>
-                <td>@employee.DOB</td>
-                <td>@employee.Gender</td>
-                <td>@employee.Designation</td>
-                <td>@employee.DOJ</td>
-                <td>@employee.Department</td>
-                @if (!String.IsNullOrEmpty(employee.Address2))
-                {
-                    <td> @(employee.Address1 + ", " + employee.Address2)</td>
-                }
-                else
-                {
-                    <td> @(employee.Address1)</td>
-
-                }
-                <td>@employee.Country</td>
-                <td>@employee.State</td>
-                <td>@employee.City</td>
-                <td>@employee.EmployeeType</td>
-                <td>@employee.Status</td>
-                <td>@employee.UserName</td>
-                <td>@employee.PhoneNumber</td>
-                <td>@employee.Email</td>
-                <td>
-
-                    <p>
-                        @Html.ActionLink("Details", "Details", "Employees", new { id = employee.Id }, new { @class = "btn btn-primary" })
-                    </p>
-
-                    <p>
-                        @Html.ActionLink("Edit", "Edit", "Employees", new { id = employee.Id }, new { @class = "btn btn-primary" })
-
-                    </p>
-
-                    <p>
-                        @Html.ActionLink("Delete", "Delete", "Employees", new { id = employee.Id }, new { @class = "btn btn-primary delete" })
-
-                    </p>
-
-                </td>
-
-
-            </tr>
-
-        }
-
-
-
-
     </tbody>
 </table>
 
 
-@Scripts.Render("~/bundles/lib")
-@Scripts.Render("~/bundles/jqueryval")
+
+@section Scripts {
+
+    <script>
+
+        function getEmployees() {
+        return $.ajax({
+                type: "get",
+                url: "https://localhost:44357/api/employees/",
+                datatype: "json",
+                traditional: "true",
+                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+
+                error: function (jqXHR, status, err) {
+                    alert(jqXHR.responseJSON.ModelState[""]);
+                    debugger;
+                    console.log(jqXHR.responseJSON);
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err);
+                    alert("Error getting data.");
+                }
 
 
-<script>
+
+
+            });
+
+    }
+
+    function populateTable(employees) {
+        for (let i = 0; i < employees.length; i++) {
+            var element = "<tr>";
+            var emp = employees[i];
+
+            element += "<td>" + emp.FirstName + " " + emp.LastName + "</td>";
+            element += "<td>" + emp.UserName + "</td>";
+            element += "<td>" + emp.PhoneNumber + "</td>";
+            element += "<td>" + emp.Email + "</td>";
+            element += "<td>" + emp.DOB + "</td>";
+            element += "<td>" + emp.Gender + "</td>";
+            element += "<td>" + emp.Designation + "</td>";
+            element += "<td>" + emp.DOJ + "</td>";
+            element += "<td>" + emp.Department + "</td>";
+
+            if (emp.Address2) {
+                element += "<td>" + emp.Address1 + ", " + emp.Address2 + "</td>";
+            } else {
+                element += "<td>" + emp.Address1 + "</td>";
+            }
+
+            element += "<td>" + emp.Country + "</td>";
+            element += "<td>" + emp.State + "</td>";
+            element += "<td>" + emp.City + "</td>";
+            element += "<td>" + emp.EmployeeType + "</td>";
+            element += "<td>" + emp.Status + "</td>";
+
+            element += "</tr>";
+
+            $('#table > tbody').append(element);
+         }
+
+    }
 
 
     $(document).ready(function () {
-        $("#Employees").DataTable()
+
+        getEmployees()
+            .done((data) => { populateTable(data.Employees); })
+            .done(() => { $("#table").DataTable(); });
 
         $(".delete").click(function (event) {
             if (!confirm("Are you sure you want to delete this employee?")) {
@@ -115,5 +121,8 @@
     });
 
 
-</script>
+    </script>
+
+}
+
 

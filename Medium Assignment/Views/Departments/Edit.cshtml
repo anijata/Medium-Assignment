@@ -1,18 +1,21 @@
 ﻿@model Medium_Assignment.Models.DepartmentEditViewModel
 
+@using Medium_Assignment.Models
+
+@{AuthDetails authDetails = (AuthDetails)Context.Session["AuthDetails"];}
+
+
+
 @{
     ViewBag.Title = "Edit";
 }
 
 <h2>Edit</h2>
 
+@Html.AntiForgeryToken()
+@Html.HiddenFor(m => m.Id, new { id = "Id"})
 
-@using (@Html.BeginForm("Edit", "Departments", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-
-
-    @Html.HiddenFor(m => m.Id)
+<form id="form">
 
     <div class="form-group">
         @Html.LabelFor(m => m.Name)
@@ -20,9 +23,57 @@
         @Html.ValidationMessageFor(m => m.Name)
     </div>
 
-    <button type="submit" class="btn btn-primary">
-        Save
-    </button>
+</form>
 
+<button type="submit" id="submit" class="btn btn-primary">
+    Save
+</button>
+
+@section Scripts {
+    <script>
+
+        function submitForm() {
+
+            $("#form").validate();
+
+            if (!$("#form").valid()) {
+                return;
+            }
+
+            return $.ajax({
+                type: "put",
+                url: "https://localhost:44357/api/departments/" + $("#Id").val(),
+                data: {Name : $("#Name").val()},
+                datatype: "json",
+                traditional: "true",
+                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+                success: function (data) {
+                    alert("Posted.");
+                    window.location.href = "https://localhost:44335/departments/";
+                },
+
+                error: function (jqXHR, status, err) {
+                    debugger;
+                    alert(jqXHR.responseJSON.ModelState[""]);
+
+                    console.log(jqXHR.responseJSON);
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err);
+                    alert("Error creating new record.");
+                }
+
+
+
+
+            });
+
+        }
+
+
+
+        $("#submit").click(submitForm);
+
+    </script>
 
 }

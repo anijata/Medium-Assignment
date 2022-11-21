@@ -1,4 +1,11 @@
-﻿@model Medium_Assignment.Models.ReviewNewViewModel
+﻿
+@using Medium_Assignment.Models
+
+@model Medium_Assignment.Models.ReviewNewViewModel
+
+
+@{AuthDetails authDetails = (AuthDetails)Context.Session["AuthDetails"];}
+
 
 @{
     ViewBag.Title = "Create Review";
@@ -6,39 +13,38 @@
 
 <h2>Create Review</h2>
 
-@using (@Html.BeginForm("New", "Reviews", FormMethod.Post))
-{
+<form id="form">
     @Html.AntiForgeryToken()
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
     <div class="form-group">
         @Html.LabelFor(m => m.Agenda)
-        @Html.TextBoxFor(m => m.Agenda, new { @class = "form-control text-danger" })
+        @Html.TextBoxFor(m => m.Agenda, new { @class = "form-control text-danger", id = "Agenda" })
         @Html.ValidationMessageFor(m => m.Agenda)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.ReviewCycleStartDate)
-        @Html.TextBoxFor(m => m.ReviewCycleStartDate, new { @class = "form-control text-danger" })
+        @Html.TextBoxFor(m => m.ReviewCycleStartDate, new { @class = "form-control text-danger", id = "ReviewCycleStartDate" })
         @Html.ValidationMessageFor(m => m.ReviewCycleStartDate)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.ReviewCycleEndDate)
-        @Html.TextBoxFor(m => m.ReviewCycleEndDate, new { @class = "form-control text-danger" })
+        @Html.TextBoxFor(m => m.ReviewCycleEndDate, new { @class = "form-control text-danger", id = "ReviewCycleEndDate" })
         @Html.ValidationMessageFor(m => m.ReviewCycleEndDate)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.MinRate)
-        @Html.TextBoxFor(m => m.MinRate, new { @class = "form-control text-danger" })
+        @Html.TextBoxFor(m => m.MinRate, new { @class = "form-control text-danger", id = "MinRate" })
         @Html.ValidationMessageFor(m => m.MinRate)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.MaxRate)
-        @Html.TextBoxFor(m => m.MaxRate, new { @class = "form-control text-danger" })
+        @Html.TextBoxFor(m => m.MaxRate, new { @class = "form-control text-danger", id = "MaxRate" })
         @Html.ValidationMessageFor(m => m.MaxRate)
     </div>
 
@@ -46,13 +52,84 @@
 
     <div class="form-group">
         @Html.LabelFor(m => m.Description)
-        @Html.TextAreaFor(m => m.Description, new { @class = "form-control text-danger" })
+        @Html.TextAreaFor(m => m.Description, new { @class = "form-control text-danger", id = "Description" })
         @Html.ValidationMessageFor(m => m.Description)
     </div>
 
-    <button type="submit" class="btn btn-primary">
-        Create
-    </button>
+</form>
 
+<button type="submit" id="submit" class="btn btn-primary">
+    Create
+</button>
+
+
+
+@section Scripts {
+
+    <script>
+        function ReviewNewModel() {
+            this.Agenda = "";
+            this.ReviewCycleStartDate = "";
+            this.ReviewCycleEndDate = "";
+            this.MinRate = "";
+            this.MaxRate = "";
+            this.Description = "";
+        }
+
+        function submitForm() {
+            $("#form").validate({
+                debug: true
+            });
+
+            if (!$("#form").valid()) {
+                return;
+            }
+
+            var model = new ReviewNewModel();
+
+            model.Agenda = $("#Agenda").val();
+            model.ReviewCycleStartDate = $("#ReviewCycleStartDate").val();
+            model.ReviewCycleEndDate = $("#ReviewCycleEndDate").val();
+            model.MinRate = $("#MinRate").val();
+            model.MaxRate = $("#MaxRate").val();
+            model.Description = $("#Description").val();
+
+
+            $.ajax({
+                type: "post",
+                url: "https://localhost:44357/api/reviews/new",
+                data: model,
+                datatype: "json",
+                traditional: "true",
+                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+                success: function (data) {
+                    alert("Posted.");
+                    window.location.href = "https://localhost:44335/api/reviews/";
+
+                },
+
+                error: function (jqXHR, status, err) {
+                    alert(jqXHR.responseJSON.ModelState[""]);
+                    debugger;
+                    console.log(jqXHR.responseJSON);
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err);
+                    alert("Error creating new record.");
+                }
+
+
+
+
+            });
+
+        }
+
+        $(document).ready(function () {
+            $("#submit").click(submitForm);
+        });
+
+
+    </script>
 
 }

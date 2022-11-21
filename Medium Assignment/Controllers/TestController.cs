@@ -6,6 +6,8 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Medium_Assignment.Models;
+using Medium_Assignment.Custom_Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace Medium_Assignment.Controllers
 {
@@ -36,6 +38,8 @@ namespace Medium_Assignment.Controllers
 
     }
 
+
+    [AuthorizeUser(Roles = "SuperAdmin")]
     public class TestController : Controller
     {
         public string AuthToken {
@@ -45,16 +49,24 @@ namespace Medium_Assignment.Controllers
                 return "";
             }
             set {; }
-        } 
-    
+        }
 
-        public async Task<ActionResult> Index()
+        public ActionResult New() {
+
+            var model = new TestNewViewModel { value1 = 0, value2 = 0}; 
+
+            return View(model);
+        }
+
+        public ActionResult Index()
         {
-            var client = new WebApiClient(AuthToken);
+            // var client = new WebApiClient(AuthToken);
 
-            var result = await client.Get<TestGetViewModel>("test", 23);
+            //var result = await client.Get<TestGetViewModel>("test", 23);
             
             return View();
         }
+
+        
     }
 }

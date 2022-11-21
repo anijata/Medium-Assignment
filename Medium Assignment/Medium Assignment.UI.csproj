@@ -175,6 +175,7 @@
     <Compile Include="Controllers\OrganizationsController.cs" />
     <Compile Include="Controllers\ReviewsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Custom Validation\AuthorizeUser.cs" />
     <Compile Include="Custom Validation\UniqueName.cs" />
     <Compile Include="Custom Validation\UniqueUserId.cs" />
     <Compile Include="Global.asax.cs">
@@ -204,6 +205,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\AuthDetails.cs" />
     <Compile Include="Models\AuthViewModels.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Country.cs" />
@@ -211,6 +213,8 @@
     <Compile Include="Models\DepartmentViewModels.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\EmployeeViewModels.cs" />
+    <Compile Include="Models\TestViewModels.cs" />
+    <Compile Include="Models\WebAPIClientBindingModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Organization.cs" />
     <Compile Include="Models\OrganizationViewModels.cs" />
@@ -756,6 +760,9 @@
     <Content Include="Views\Departments\New.cshtml" />
     <Content Include="Views\Departments\Edit.cshtml" />
     <Content Include="Views\Reviews\Submit.cshtml" />
+    <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Views\Test\New.cshtml" />
+    <Content Include="Views\Home\NotAuthorized.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -785,6 +792,7 @@
       <DependentUpon>202210260750561_RemovedReviewsEmployees.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

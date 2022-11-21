@@ -1,126 +1,205 @@
 ﻿@model Medium_Assignment.Models.OrganizationNewViewModel
 
+@using Medium_Assignment.Models
+
+@{AuthDetails authDetails = (AuthDetails)Context.Session["AuthDetails"];}
+
+
 @{
     ViewBag.Title = "New";
 }
 
 <h2>Create Organization</h2>
 
+<style>
 
-@using (@Html.BeginForm("New", "Organizations", FormMethod.Post))
-{
+    .left {
+        float: left;
+        width: 50%;
+    }
+
+    .right {
+        float: right;
+        width: 50%;
+    }
+
+</style>
+
+<form id="form">
+
     @Html.AntiForgeryToken()
 
-    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    @Html.ValidationSummary(false, "", new { @class = "text-danger", id = "ValidationSummary" })
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.Name)
-    </div>
+    <div class="left">
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.PhoneNumber)
-        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.PhoneNumber)
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Name)
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control text-danger", id = "Name" })
+            @Html.ValidationMessageFor(m => m.Name)
+        </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email)
-        @Html.TextBoxFor(m => m.Email, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.Email)
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.PhoneNumber)
+            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control text-danger", id = "PhoneNumber" })
+            @Html.ValidationMessageFor(m => m.PhoneNumber)
+        </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.UserName)
-        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.UserName)
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control text-danger", id = "Email" })
+            @Html.ValidationMessageFor(m => m.Email)
+        </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password)
-        @Html.PasswordFor(m => m.Password, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.Password)
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserName)
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control text-danger", id = "UserName" })
+            @Html.ValidationMessageFor(m => m.UserName)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password)
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control text-danger", id = "Password" })
+            @Html.ValidationMessageFor(m => m.Password)
+        </div>
 
 
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.Address1)
-        @Html.TextBoxFor(m => m.Address1, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.Address1)
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Address1)
+            @Html.TextBoxFor(m => m.Address1, new { @class = "form-control text-danger", id = "Address1" })
+            @Html.ValidationMessageFor(m => m.Address1)
+        </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.Address2)
-        @Html.TextBoxFor(m => m.Address2, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.Address2)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.CountryId)
-        @Html.DropDownListFor(m => m.CountryId, new List<SelectListItem>(), "Select Country", new { @class = "form-control text-danger", id = "Countries", })
-        @Html.ValidationMessageFor(m => m.CountryId)
+        <div class="form-group">
+            @Html.LabelFor(m => m.Address2)
+            @Html.TextBoxFor(m => m.Address2, new { @class = "form-control text-danger", id = "Address2" })
+            @Html.ValidationMessageFor(m => m.Address2)
+        </div>
 
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.StateId)
-        @Html.DropDownListFor(m => m.StateId, new List<SelectListItem>(), "Select State", new { @class = "form-control text-danger", id = "States" })
-        @Html.ValidationMessageFor(m => m.StateId)
+    <div class="right">
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.CountryId)
+            @Html.DropDownListFor(m => m.CountryId, new List<SelectListItem>(), "Select Country", new { @class = "form-control text-danger", id = "Countries", })
+            @Html.ValidationMessageFor(m => m.CountryId)
+
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.StateId)
+            @Html.DropDownListFor(m => m.StateId, new List<SelectListItem>(), "Select State", new { @class = "form-control text-danger", id = "States" })
+            @Html.ValidationMessageFor(m => m.StateId)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.CityId)
+            @Html.DropDownListFor(m => m.CityId, new List<SelectListItem>(), "Select City", new { @class = "form-control text-danger", id = "Cities" })
+            @Html.ValidationMessageFor(m => m.CityId)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Status)
+        </div>
+
+        <div class="form-group">
+            @Html.RadioButtonFor(m => m.Status, "Active", new { id = "Status1" }) Active
+            @Html.RadioButtonFor(m => m.Status, "Inactive", new { id = "Status2" }) Inactive
+        </div>
+
+        <div class="form-group">
+            @Html.ValidationMessageFor(m => m.Status)
+
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Description)
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control text-danger", id = "Description" })
+            @Html.ValidationMessageFor(m => m.Description)
+        </div>
+
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.CityId)
-        @Html.DropDownListFor(m => m.CityId, new List<SelectListItem>(), "Select City", new { @class = "form-control text-danger", id = "Cities" })
-        @Html.ValidationMessageFor(m => m.CityId)
-    </div>
+    
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.Status)
-    </div>
+</form>
 
-    <div class="form-group">
-        @Html.RadioButtonFor(m => m.Status, "Active") Active
-        @Html.RadioButtonFor(m => m.Status, "Inactive") Inactive
-    </div>
+<button type="submit", id="submit" class="btn btn-primary">
+    Save
+</button>
 
-    <div class="form-group">
-        @Html.ValidationMessageFor(m => m.Status)
-
-    </div>
-
-
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Description)
-        @Html.TextAreaFor(m => m.Description, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.Description)
-    </div>
-
-    <button type="submit" class="btn btn-primary">
-        Save
-    </button>
-
-
-}
 
 @section Scripts {
 
     <script>
-        $(document).ready(function () {
+        function OrganizationNewModel() {
+            this.Name = "";
+            this.PhoneNumber = "";
+            this.Email = "";
+            this.UserName = "";
+            this.Password = "";
+            this.Address1 = "";
+            this.Address2 = "";
+            this.CountryId = 0;
+            this.StateId = 0;
+            this.CityId = 0;
+            this.Status = "";
+            this.Description = "";
 
-            $("#Countries").empty();
-            $("#Countries").append("<option value=0> Select Country </option>");
+        }
 
-            $.ajax({
+        function populateCountries() {
+            return $.ajax({
                 type: "get",
-                url: "https://localhost:44357/api/resources/countries",
+                url: "https://localhost:44357/api/resources/countries/",
+                datatype: "json",
+                traditional: "true",
+
+                success: function (data) {
+
+                    $("#Countries").empty();
+                    $("#Countries").append("<option value=0> Select Country </option>");
+
+                    $("#States").empty();
+                    $("#States").append("<option value=0> Select State </option>");
+
+                    $("#Cities").empty();
+                    $("#Cities").append("<option value=0> Select City </option>");
+
+
+                    for (var i = 0; i < data.length; i++) {
+                        $("#Countries").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
+
+                    }
+                },
+
+
+
+
+            });
+
+        }
+
+        function populateStates(countryId) {
+            return $.ajax({
+                type: "get",
+                url: "https://localhost:44357/api/resources/states/" + countryId,
                 datatype: "json",
                 traditional: "true",
                 success: function (data) {
+                    $("#States").empty();
+                    $("#States").append("<option value=0> Select State </option>");
+
+                    $("#Cities").empty();
+                    $("#Cities").append("<option value=0> Select City </option>");
+
+
                     for (var i = 0; i < data.length; i++) {
-                        $("#Countries").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
+                        $("#States").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
 
                     }
                 },
@@ -132,85 +211,104 @@
                     console.log(err);
                 }
 
-                
 
 
-             });
 
-        });
+            });
+        }
 
+        function populateCities(stateId) {
+            return $.ajax({
+                type: "get",
+                url: "https://localhost:44357/api/resources/cities/" + stateId,
+                datatype: "json",
+                traditional: "true",
+                success: function (data) {
+                    $("#Cities").empty();
+                    $("#Cities").append("<option value=0> Select City </option>");
 
-    </script>
+                    for (var i = 0; i < data.length; i++) {
+                        $("#Cities").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
 
-    <script>
-        $(document).ready(function () {
-            $("#Countries").change(function () {
-                $("#States").empty();
-                $("#States").append("<option value=0> Select State </option>");
-                $("#Cities").empty();
-                $("#Cities").append("<option value=0> Select City </option>");
-
-
-                if ($("#Countries").val() == 0) {
-
-                    return;
-                }
-
-                $.ajax({
-                    type: "get",
-                    url: "https://localhost:44357/api/resources/states/" + $("#Countries").val(),
-                    datatype: "json",
-                    traditional: "true",
-                    success: function (data) {
-                        for (var i = 0; i < data.length; i++) {
-                            $("#States").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
-
-                        }
                     }
 
+                },
 
-                });
+                error: function (jqXHR, status, err) {
+                    debugger;
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err);
+                }
+
+
+
+
+            });
+        }
+
+        function submitForm() {
+            $("#form").validate({
+                debug: true
+            });
+
+            debugger;
+
+            if (!$("#form").valid()) {
+                return;
+            }
+
+            var model = new OrganizationNewModel();
+
+            model.Name = $("#Name").val();
+            model.PhoneNumber = $("#PhoneNumber").val();
+            model.Email = $("#Email").val();
+            model.UserName = $("#UserName").val();
+            model.Password = $("#Password").val();
+            model.Address1 = $("#Address1").val();
+            model.Address2 = $("#Address2").val();
+            model.CountryId = $("#Countries").val();
+            model.StateId = $("#States").val();
+            model.CityId = $("#Cities").val();
+            model.Status = $("[name='Status']:checked").val();
+            model.Description = $("#Description").val();
+
+            $.ajax({
+                type: "post",
+                url: "https://localhost:44357/api/organizations/",
+                data: model,
+                datatype: "json",
+                traditional: "true",
+                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+                success: function (data) {
+                    alert("Posted.");
+                    window.location.href = "https://localhost:44335/api/organizations/";
+
+                },
+
+                error: function (jqXHR, status, err) {
+                    alert(jqXHR.responseJSON.ModelState[""]);
+                    debugger; 
+                    console.log(jqXHR.responseJSON);
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err);
+                    alert("Error creating new record.");
+                }
+
+
 
 
             });
 
+        }
 
-
-        });
-
-
-    </script>
-
-    <script>
         $(document).ready(function () {
-            $("#States").change(function () {
-                $("#Cities").empty();
-                $("#Cities").append("<option value=0> Select City </option>");
-                if ($("#States").val() == "0") {
+            populateCountries().catch(() => { alert("Error retreiving data.");} );
 
-                    return;
-                }
-
-                $.ajax({
-                    type: "get",
-                    url: "https://localhost:44357/api/resources/cities/" + $("#States").val(),
-                    datatype: "json",
-                    traditional: "true",
-                    success: function (data) {
-                        for (var i = 0; i < data.length; i++) {
-                            $("#Cities").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
-
-                        }
-                    }
-
-
-                });
-
-
-            });
-
-
-
+            $("#Countries").change(() => populateStates($("#Countries").val()));
+            $("#States").change(() => populateCities($("#States").val()));
+            $("#submit").click(submitForm);
         });
 
 

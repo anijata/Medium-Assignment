@@ -1,4 +1,10 @@
-﻿@model Medium_Assignment.Models.EmployeeDetailsViewModel
+﻿@using Medium_Assignment.Models
+
+@model Medium_Assignment.Models.EmployeeDetailsViewModel
+
+
+@{AuthDetails authDetails = (AuthDetails)Context.Session["AuthDetails"];}
+
 
 @{
     ViewBag.Title = "Details";
@@ -6,65 +12,197 @@
 
 <h2>Employee </h2>
 
-<div>
-    <ul>
-        <li>
-            @Html.DisplayNameFor(model => model.Employee.FirstName): @Model.Employee.FirstName
-        </li>
+<form>
 
-        <li>
-            @Html.DisplayNameFor(model => model.Employee.LastName): @Model.Employee.LastName
-        </li>
-
-        <li>
-            @Html.DisplayNameFor(model => model.Employee.DOB): @Model.Employee.DOB
-        </li>
-
-        <li>
-            @Html.DisplayNameFor(model => model.Employee.Gender): @Model.Employee.Gender
-        </li>
-
-        <li>
-            @Html.DisplayNameFor(model => model.Employee.Designation): @Model.Employee.Designation
-        </li>
-
-        <li>
-            @Html.DisplayNameFor(model => model.Employee.DOJ): @Model.Employee.DOJ
-        </li>
-
-        <li>
-            @Html.DisplayNameFor(model => model.Employee.Department): @Model.Employee.Department
-        </li>
-
-        <li>
-            @Html.DisplayNameFor(model => model.Employee.Address1): @Model.Employee.Address1
-        </li>
-
-        <li>
-            @Html.DisplayNameFor(model => model.Employee.Address2): @Model.Employee.Address2
-        </li>
-
-        <li>
-            @Html.DisplayNameFor(model => model.Employee.Country): @Model.Employee.Country
-        </li>
-
-        <li>
-            @Html.DisplayNameFor(model => model.Employee.State): @Model.Employee.State
-        </li>
-
-        <li>
-            @Html.DisplayNameFor(model => model.Employee.City): @Model.Employee.City
-        </li>
-
-        <li>
-            @Html.DisplayNameFor(model => model.Employee.EmployeeType): @Model.Employee.EmployeeType
-        </li>
+    @Html.HiddenFor(m => m.Id, new { id = "Id" })
 
 
-        <li>
-            @Html.DisplayNameFor(model => model.Employee.Status): @Model.Employee.Status
-        </li>
+    <div class="form-group">
+        @Html.DisplayNameFor(model => model.Name)
+        @Html.TextBoxFor(m => Model.Name, new { @class = "form-control", id = "Name", @disabled = "disabled" })
+    </div>
 
-    </ul>
 
-</div>
+
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.UserName)
+        @Html.TextBoxFor(m => Model.UserName, new { @class = "form-control", id = "UserName", @disabled = "disabled" })
+    </div>
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.Email)
+        @Html.TextBoxFor(m => Model.Email, new { @class = "form-control", id = "Email", @disabled = "disabled" })
+    </div>
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.PhoneNumber)
+        @Html.TextBoxFor(m => Model.PhoneNumber, new { @class = "form-control", id = "PhoneNumber", @disabled = "disabled" })
+    </div>
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.DOB)
+        @Html.TextBoxFor(m => Model.DOB, new { @class = "form-control", id = "DOB", @disabled = "disabled" })
+    </div>
+
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.Gender)
+        @Html.TextBoxFor(m => Model.Gender, new { @class = "form-control", id = "Gender", @disabled = "disabled" })
+
+    </div>
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.Designation)
+        @Html.TextBoxFor(m => Model.Designation, new { @class = "form-control", id = "Designation", @disabled = "disabled" })
+
+    </div>
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.DOJ)
+        @Html.TextBoxFor(m => Model.DOJ, new { @class = "form-control", id = "DOJ", @disabled = "disabled" })
+
+    </div>
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.Department)
+        @Html.TextBoxFor(m => Model.Department, new { @class = "form-control", id = "Department", @disabled = "disabled" })
+
+    </div>
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.Address)
+        @Html.TextBoxFor(m => Model.Address, new { @class = "form-control", id = "Address", @disabled = "disabled" })
+
+    </div>
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.Country)
+        @Html.TextBoxFor(m => Model.Country, new { @class = "form-control", id = "Country", @disabled = "disabled" })
+
+    </div>
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.State)
+        @Html.TextBoxFor(m => Model.State, new { @class = "form-control", id = "State", @disabled = "disabled" })
+
+    </div>
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.City)
+        @Html.TextBoxFor(m => Model.City, new { @class = "form-control", id = "City", @disabled = "disabled" })
+
+    </div>
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.EmployeeType)
+        @Html.TextBoxFor(m => Model.EmployeeType, new { @class = "form-control", id = "EmployeeType", @disabled = "disabled" })
+
+    </div>
+
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.Status)
+        @Html.TextBoxFor(m => Model.Status, new { @class = "form-control", id = "Status", @disabled = "disabled" })
+
+    </div>
+
+
+</form>
+
+@section Scripts {
+
+    <script>
+        function EmployeeDetailsModel(data) {
+            this.Name = data.FirstName + " " + data.LastName;
+            this.PhoneNumber = data.PhoneNumber;
+            this.Email = data.Email;
+            this.UserName = data.UserName;
+            if (data.Address2) {
+                this.Address = data.Address1 + ", " + data.Address2;
+            } else {
+                this.Address = data.Address1;
+            }
+
+            this.DOB = data.DOB;
+            this.DOJ = data.DOJ;
+            this.Gender = data.Gender;
+            this.Designation = data.Designation;
+            this.Department = data.Department;
+            this.EmployeeType = data.EmployeeType;
+            this.Country = data.Country;
+            this.State = data.State;
+            this.City = data.City;
+            this.Status = data.Status;
+
+        }
+
+        function populateFields(model) {
+            $("#Name").val(model.Name);
+            $("#UserName").val(model.UserName);
+            $("#Email").val(model.Email);
+            $("#PhoneNumber").val(model.PhoneNumber);
+            $("#DOB").val(model.DOB);
+            $("#Gender").val(model.Gender);
+            $("#Designation").val(model.Designation);
+            $("#DOJ").val(model.DOJ);
+            $("#Department").val(model.Department);
+            $("#Address").val(model.Address);
+            $("#Country").val(model.Country);
+            $("#State").val(model.State);
+            $("#City").val(model.City);
+            $("#EmployeeType").val(model.EmployeeType);
+            $("#Status").val(model.Status);
+        }
+
+        function getAndPopulate() {
+            $.ajax({
+                type: "get",
+                url: "https://localhost:44357/api/employees/" + $("#Id").val(),
+                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+                datatype: "json",
+                traditional: "true",
+                success: function (data) {
+                    var model = new EmployeeDetailsModel(data)
+                    populateFields(model);
+                    console.log(data);
+
+                },
+
+                error: function (jqXHR, status, err) {
+                    alert("Not authorized")
+                    debugger;
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err);
+                }
+
+
+
+
+            });
+
+        }
+
+        $(document).ready(function () {
+            getAndPopulate()
+        });
+
+
+    </script>
+
+}

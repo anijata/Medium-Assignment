@@ -1,4 +1,8 @@
-﻿@model Medium_Assignment.Models.ReviewSubmitViewModel
+﻿@using Medium_Assignment.Models
+
+@model Medium_Assignment.Models.ReviewSubmitViewModel
+
+@{AuthDetails authDetails = (AuthDetails)Context.Session["AuthDetails"];}
 
 @{
     ViewBag.Title = "Submit";
@@ -6,50 +10,166 @@
 
 <h2>Submit</h2>
 
-@using (@Html.BeginForm("Submit", "Reviews", FormMethod.Post))
-{
+<form id="form">
+
     @Html.AntiForgeryToken()
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
     <div class="form-group">
         @Html.LabelFor(m => m.Id)
-        @Html.TextBoxFor(m => m.Id, new { @class = "form-control text-danger", @disabled = "disabled" })
+        @Html.TextBoxFor(m => m.Id, new { @class = "form-control text-danger", @disabled = "disabled", id = "Id" })
         @Html.ValidationMessageFor(m => m.Id)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Employee)
-        @Html.TextBoxFor(m => m.Employee, new { @class = "form-control text-danger ", @disabled = "disabled" })
+        @Html.TextBoxFor(m => m.Employee, new { @class = "form-control text-danger ", @disabled = "disabled", id = "Employee" })
     </div>
 
 
     <div class="form-group">
         @Html.LabelFor(m => m.Reviewer)
-        @Html.TextBoxFor(m => m.Reviewer, new { @class = "form-control text-danger ", @disabled = "disabled" })
+        @Html.TextBoxFor(m => m.Reviewer, new { @class = "form-control text-danger ", @disabled = "disabled", id = "Reviewer" })
     </div>
 
 
     <div class="form-group">
         @Html.LabelFor(m => m.Rating)
-        @Html.TextBoxFor(m => m.Rating, new { @class = "form-control text-danger "})
+        @Html.DropDownListFor(m => m.Rating, new List<SelectListItem>(), "Select Rating", new { @class = "form-control text-danger", id = "Rating" })
         @Html.ValidationMessageFor(m => m.Rating)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Feedback)
-        @Html.TextBoxFor(m => m.Feedback, new { @class = "form-control text-danger "})
+        @Html.TextBoxFor(m => m.Feedback, new { @class = "form-control text-danger", id = "Feedback" })
         @Html.ValidationMessageFor(m => m.Feedback)
     </div>
 
-    <button type="submit" class="btn btn-primary">
-        Submit
-    </button>
+</form>
+
+<button type="submit" id="submit" class="btn btn-primary">
+    Submit
+</button>
 
 
-}
 
 @section Scripts {
 
+    <script>
+
+    function ReviewSubmitModel() {
+        this.Id = $("#Id").val();
+        this.Employee = "";
+        this.Reviewer = "";
+        this.Rating = 0;
+        this.Feedback = "";
+
+    }
+
+    function getFormData() {
+        return $.ajax({
+            type: "get",
+            url: "https://localhost:44357/api/reviews/" + $("#Id").val(),
+            datatype: "json",
+            traditional: "true",
+            headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+
+            error: function (jqXHR, status, err) {
+                alert(jqXHR.responseJSON.ModelState[""]);
+                debugger;
+                console.log(jqXHR.responseJSON);
+                console.log(jqXHR);
+                console.log(status);
+                console.log(err);
+                alert("Error creating new record.");
+            }
+
+
+
+
+        });
+    }
+
+    function populateForm(data) {
+        var model = new ReviewSubmitModel();
+        model.Employee = data.Employee;
+        model.Reviewer = data.Reviewer;
+
+        $("#Employee").val(model.Employee);
+        $("#Reviewer").val(model.Reviewer);
+    }
+
+    function submitForm() {
+        $("#form").validate({
+            debug: true
+        });
+
+
+        if (!$("#form").valid()) {
+            return;
+        }
+
+        var model = new ReviewSubmitModel();
+
+        model.Rating = $("#Rating").val();
+        model.Feedback = $("#Feedback").val();
+
+
+        $.ajax({
+            type: "put",
+            url: "https://localhost:44357/api/reviews/submit/" + $("#Id").val(),
+            data: model,
+            datatype: "json",
+            traditional: "true",
+            headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+            success: function (data) {
+                alert("Posted.");
+                window.location.href = "https://localhost:44335/reviews/";
+
+            },
+
+            error: function (jqXHR, status, err) {
+                alert(jqXHR.responseJSON.ModelState[""]);
+                debugger;
+                console.log(jqXHR.responseJSON);
+                console.log(jqXHR);
+                console.log(status);
+                console.log(err);
+                alert("Error creating new record.");
+            }
+
+
+
+
+        });
+
+    }
+
+
+
+    $(document).ready(function () {
+        $("#Rating").empty();
+
+        for (var i = 0; i <= 5; i++) {
+            $("#Rating").append("<option value=" + i + ">" + i + "</option>");
+        }
+
+        $("#Rating").val(0);
+
+        getFormData()
+            .done((data) => populateForm(data));
+
+        $("#submit").click(submitForm);
+
+
+
+
+    });
+
+
+    </script>
+
 }
+
 

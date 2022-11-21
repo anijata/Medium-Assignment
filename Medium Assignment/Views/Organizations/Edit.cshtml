@@ -1,5 +1,9 @@
 ﻿@model Medium_Assignment.Models.OrganizationEditViewModel
 
+@using Medium_Assignment.Models
+
+@{AuthDetails authDetails = (AuthDetails)Context.Session["AuthDetails"];}
+
 @{
     ViewBag.Title = "Edit";
 }
@@ -7,50 +11,47 @@
 <h2>Edit Organization</h2>
 
 
+<form id="form">
 
-@using (@Html.BeginForm("Edit", "Organizations", FormMethod.Post))
-{
     @Html.AntiForgeryToken()
 
-    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    @Html.ValidationSummary(false, "", new { @class = "text-danger", id = "ValidationSummary" })
 
-
-    @Html.HiddenFor(m => m.Id)
-
+    @Html.HiddenFor(m => m.Id, new { id = "Id" })
 
     <div class="form-group">
         @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name, new { @class = "form-control text-danger" })
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control text-danger", id = "Name" })
         @Html.ValidationMessageFor(m => m.Name)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.PhoneNumber)
-        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control text-danger" })
+        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control text-danger", id = "PhoneNumber" })
         @Html.ValidationMessageFor(m => m.PhoneNumber)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Email)
-        @Html.TextBoxFor(m => m.Email, new { @class = "form-control text-danger" })
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control text-danger", id = "Email" })
         @Html.ValidationMessageFor(m => m.Email)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.UserName)
-        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control text-danger" })
+        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control text-danger", id = "UserName" })
         @Html.ValidationMessageFor(m => m.UserName)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Address1)
-        @Html.TextBoxFor(m => m.Address1, new { @class = "form-control text-danger" })
+        @Html.TextBoxFor(m => m.Address1, new { @class = "form-control text-danger", id = "Address1" })
         @Html.ValidationMessageFor(m => m.Address1)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Address2)
-        @Html.TextBoxFor(m => m.Address2, new { @class = "form-control text-danger" })
+        @Html.TextBoxFor(m => m.Address2, new { @class = "form-control text-danger", id = "Address2" })
         @Html.ValidationMessageFor(m => m.Address2)
     </div>
 
@@ -78,8 +79,8 @@
     </div>
 
     <div class="form-group">
-        @Html.RadioButtonFor(m => m.Status, "Active") Active
-        @Html.RadioButtonFor(m => m.Status, "Inactive") Inactive
+        @Html.RadioButtonFor(m => m.Status, "Active", new { id = "Status" }) Active
+        @Html.RadioButtonFor(m => m.Status, "Inactive", new { id = "Status" }) Inactive
     </div>
 
     <div class="form-group">
@@ -91,131 +92,265 @@
 
     <div class="form-group">
         @Html.LabelFor(m => m.Description)
-        @Html.TextAreaFor(m => m.Description, new { @class = "form-control text-danger" })
+        @Html.TextAreaFor(m => m.Description, new { @class = "form-control text-danger", id = "Description" })
         @Html.ValidationMessageFor(m => m.Description)
     </div>
 
-    <button type="submit" class="btn btn-primary">
-        Save
-    </button>
+</form>
+
+<button type="submit" , id="submit" class="btn btn-primary">
+    Save
+</button>
 
 
-}
 
 @section Scripts {
+
     <script>
-        $(document).ready(function () {
-            $.ajax({
+        function OrganizationEditModel() {
+            this.Name = "";
+            this.PhoneNumber = "";
+            this.Email = "";
+            this.UserName = "";
+            this.Address1 = "";
+            this.Address2 = "";
+            this.CountryId = "";
+            this.StateId = "";
+            this.CityId = "";
+            this.Status = "";
+            this.Description = "";
+
+        }
+
+        function populateCountries() {
+            return $.ajax({
                 type: "get",
-                url: "https://localhost:44357/api/resources/countries",
+                url: "https://localhost:44357/api/resources/countries/",
                 datatype: "json",
                 traditional: "true",
+
                 success: function (data) {
+
+                    $("#Countries").empty();
+                    $("#Countries").append("<option value=0> Select Country </option>");
+
+                    $("#States").empty();
+                    $("#States").append("<option value=0> Select State </option>");
+
+                    $("#Cities").empty();
+                    $("#Cities").append("<option value=0> Select City </option>");
+
+
                     for (var i = 0; i < data.length; i++) {
                         $("#Countries").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
+
                     }
-                    $("#Countries").val(@Model.CountryId);
-                }
+                },
+
+
+
+
             });
 
-            $.ajax({
+        }
+
+        function populateStates(countryId) {
+            return $.ajax({
                 type: "get",
-                url: "https://localhost:44357/api/resources/states/" + @Model.CountryId,
+                url: "https://localhost:44357/api/resources/states/" + countryId,
                 datatype: "json",
                 traditional: "true",
                 success: function (data) {
+                    $("#States").empty();
+                    $("#States").append("<option value=0> Select State </option>");
+
+                    $("#Cities").empty();
+                    $("#Cities").append("<option value=0> Select City </option>");
+
+
                     for (var i = 0; i < data.length; i++) {
                         $("#States").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
-                    }
-                    $("#States").val(@Model.StateId);
-                }
-            });
 
-            $.ajax({
+                    }
+                },
+
+                error: function (jqXHR, status, err) {
+                    debugger;
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err);
+                }
+
+
+
+
+            });
+        }
+
+        function populateCities(stateId) {
+            return $.ajax({
                 type: "get",
-                url: "https://localhost:44357/api/resources/cities/" + @Model.StateId,
+                url: "https://localhost:44357/api/resources/cities/" + stateId,
                 datatype: "json",
                 traditional: "true",
                 success: function (data) {
+                    $("#Cities").empty();
+                    $("#Cities").append("<option value=0> Select City </option>");
+
                     for (var i = 0; i < data.length; i++) {
                         $("#Cities").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
+
                     }
-                    $("#Cities").val(@Model.CityId);
+
+                },
+
+                error: function (jqXHR, status, err) {
+                    debugger;
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err);
                 }
+
+
+
+
+            });
+        }
+
+        function getFormData() {
+
+            return $.ajax({
+                type: "get",
+                url: "https://localhost:44357/api/organizations/" + $("#Id").val(),
+                datatype: "json",
+                traditional: "true",
+                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+
+                error: function (jqXHR, status, err) {
+                    alert(jqXHR.responseJSON.ModelState[""]);
+                    debugger;
+                    console.log(jqXHR.responseJSON);
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err);
+                    alert("Error creating new record.");
+                }
+
+
+
+
+            });
+        }
+
+        function createFormModel(data) {
+            var model = new OrganizationEditModel();
+            model.Name = data.Name;
+            model.PhoneNumber = data.PhoneNumber;
+            model.Email = data.Email;
+            model.UserName = data.UserName;
+            model.Address1 = data.Address1;
+            model.Address2 = data.Address2;
+            model.CountryId = data.CountryId;
+            model.StateId = data.StateId;
+            model.CityId = data.CityId;
+            model.Status = data.Status;
+            model.Description = data.Description;
+
+            return model;
+
+        }
+
+        async function populateForm() {
+
+            var countriesRequest = populateCountries();
+
+            var formRequest = await getFormData();
+
+            var model = createFormModel(formRequest);
+
+            await countriesRequest;
+
+            var statesRequest = populateStates(model.CountryId);
+
+            await statesRequest;
+
+            var citiesRequest = populateCities(model.StateId);
+            
+            await citiesRequest;
+
+            $("#Name").val(model.Name);
+            $("#PhoneNumber").val(model.PhoneNumber);
+            $("#Email").val(model.Email);
+            $("#UserName").val(model.UserName);
+            $("#Address1").val(model.Address1);
+            $("#Address2").val(model.Address2);
+            $("#Countries").val(model.CountryId);
+            $("#States").val(model.StateId);
+            $("#Cities").val(model.CityId);
+            $("[name='Status']" + "[value=" + model.Status + "]").prop('checked', true);
+            $("#Description").val(model.Description);
+        }
+
+        function submitForm() {
+            $("#form").validate({
+                debug: true
             });
 
-        });
-    </script>
 
-    <script>
+            if (!$("#form").valid()) {
+                return;
+            }
+
+            var model = new OrganizationEditModel();
+
+            model.Name = $("#Name").val();
+            model.PhoneNumber = $("#PhoneNumber").val();
+            model.Email = $("#Email").val();
+            model.UserName = $("#UserName").val();
+            model.Address1 = $("#Address1").val();
+            model.Address2 = $("#Address2").val();
+            model.CountryId = $("#Countries").val();
+            model.StateId = $("#States").val();
+            model.CityId = $("#Cities").val();
+            model.Status = $("[name='Status']:checked").val();
+            model.Description = $("#Description").val();
+
+
+            $.ajax({
+                type: "put",
+                url: "https://localhost:44357/api/organizations/" + $("#Id").val(),
+                data: model,
+                datatype: "json",
+                traditional: "true",
+                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+                success: function (data) {
+                    alert("Posted.");
+                    window.location.href = "https://localhost:44335/organizations/";
+                },
+
+                error: function (jqXHR, status, err) {
+                    debugger;
+                    alert(jqXHR.responseJSON.ModelState[""]);
+
+                    console.log(jqXHR.responseJSON);
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err);
+                    alert("Error creating new record.");
+                }
+
+
+
+
+            });
+
+        }
+
         $(document).ready(function () {
-            $("#Countries").change(function () {
-                $("#States").empty();
-                $("#States").append("<option value=0> Select State </option>");
-                $("#Cities").empty();
-                $("#Cities").append("<option value=0> Select City </option>");
-
-
-                if ($("#Countries").val() == 0) {
-
-                    return;
-                }
-
-                $.ajax({
-                    type: "get",
-                    url: "https://localhost:44357/api/resources/states/" + $("#Countries").val(),
-                    datatype: "json",
-                    traditional: "true",
-                    success: function (data) {
-                        for (var i = 0; i < data.length; i++) {
-                            $("#States").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
-
-                        }
-                    }
-
-
-                });
-
-
-            });
-
-
-
-        });
-
-
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            $("#States").change(function () {
-                $("#Cities").empty();
-                $("#Cities").append("<option value=0> Select City </option>");
-                if ($("#States").val() == "0") {
-
-                    return;
-                }
-
-                $.ajax({
-                    type: "get",
-                    url: "https://localhost:44357/api/resources/cities/" + $("#States").val(),
-                    datatype: "json",
-                    traditional: "true",
-                    success: function (data) {
-                        for (var i = 0; i < data.length; i++) {
-                            $("#Cities").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
-
-                        }
-                    }
-
-
-                });
-
-
-            });
-
-
-
+            populateForm();
+            $("#Countries").change(() => populateStates($("#Countries").val()));
+            $("#States").change(() => populateCities($("#States").val()));
+            $("#submit").click(submitForm);
         });
 
 

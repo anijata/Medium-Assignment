@@ -26,5 +26,11 @@ namespace Medium_Assignment.Controllers
 
             return View();
         }
+
+        public ActionResult NotAuthorized()
+        {
+            return View();
+        }
+
     }
 }

@@ -8,11 +8,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Medium_Assignment.Models
 {
-    public class EmployeeListViewModel
+    public class EmployeeListViewModel : WebAPIClientBindingModel
     {
         public List<EmployeeGetViewModel> Employees { get; set; }
     }
-    public class EmployeeGetViewModel
+    public class EmployeeGetViewModel : WebAPIClientBindingModel
     {
 
         [Required]
@@ -100,7 +100,7 @@ namespace Medium_Assignment.Models
 
     }
 
-    public class EmployeePostViewModel
+    public class EmployeePostViewModel : WebAPIClientBindingModel
     {
 
         [Required]
@@ -175,7 +175,7 @@ namespace Medium_Assignment.Models
 
     }
 
-    public class EmployeePutViewModel
+    public class EmployeePutViewModel : WebAPIClientBindingModel
     {
 
         [Required]
@@ -248,12 +248,66 @@ namespace Medium_Assignment.Models
 
     public class EmployeeDetailsViewModel
     {
-        public EmployeeGetViewModel Employee { get; set; }
+        [Required]
+        public int Id { get; set; }
+
+        [Required]
+        [Display(Name = "First Name")]
+        public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string UserName { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [DataType(DataType.PhoneNumber)]
+        [Phone]
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
+
+        [Required]
+        [Display(Name = "Date of Birth")]
+        public DateTime DOB { get; set; }
+
+        [Required]
+        public string Gender { get; set; }
+
+        [Required]
+        public string Designation { get; set; }
+
+        [Required]
+        [Display(Name = "Date of Joining")]
+        public DateTime DOJ { get; set; }
+
+        public string Department { get; set; }
+
+
+        [Required]
+        [Display(Name = "Address")]
+        public string Address { get; set; }
+
+        public string Country { get; set; }
+
+        public string State { get; set; }
+
+        public string City { get; set; }
+
+        [Display(Name = "Employee Type")]
+        public string EmployeeType { get; set; }
+
+        [Required]
+        public string Status { get; set; }
+
     }
 
-    public class EmployeeIndexViewModel
+    public class EmployeeIndexViewModel 
     {
-        public IEnumerable<EmployeeGetViewModel> Employees { get; set; }
+        public IEnumerable<EmployeeDetailsViewModel> Employees { get; set; }
     }
 
     public class EmployeeNewViewModel

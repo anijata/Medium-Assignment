@@ -1,5 +1,9 @@
 ﻿@model Medium_Assignment.Models.DepartmentIndexViewModel
 
+@using Medium_Assignment.Models
+
+@{AuthDetails authDetails = (AuthDetails)Context.Session["AuthDetails"];}
+
 @{
     ViewBag.Title = "Index";
 }
@@ -11,43 +15,72 @@
 </p>
 
 
-<table id="Organizations" class="table table-bordered table-hover">
+<table id="table" class="table table-bordered table-hover">
     <thead>
         <tr>
             <th scope="col">Id</th>
             <th scope="col">Name</th>
-            <th scope="col">Actions</th>
 
         </tr>
     </thead>
     <tbody>
-
-        @foreach (var department in Model.Departments)
-        {
-        <tr class="table-active">
-
-
-            <td>@department.Id</td>
-            <td>@department.Name</td>
-            <td>
-                <p>
-                    @Html.ActionLink("Edit", "Edit", "Departments", new { Id = department.Id }, new { @class = "btn btn-primary" })
-
-                </p>
-
-                <p>
-                    @Html.ActionLink("Delete", "Delete", "Departments", new { Id = department.Id }, new { @class = "btn btn-primary delete" })
-
-                </p>
-
-            </td>
-
-        </tr>
-
-        }
-
-
-
-
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+
+    function getDepartments() {
+        return $.ajax({
+                type: "get",
+                url: "https://localhost:44357/api/departments/",
+                datatype: "json",
+                traditional: "true",
+                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+
+                error: function (jqXHR, status, err) {
+                    alert(jqXHR.responseJSON.ModelState[""]);
+                    debugger;
+                    console.log(jqXHR.responseJSON);
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err);
+                    alert("Error getting data.");
+                }
+
+
+
+
+            });
+
+    }
+
+    function populateTable(departments) {
+        for (let i = 0; i < departments.length; i++) {
+            var department = departments[i];
+
+            var element = "<tr>";
+            element += "<td>" + department.Id + "</td>";
+            element += "<td>" + department.Name + "</td>";
+
+            element += "</tr>";
+
+            $('#table > tbody').append(element);
+        }
+
+    }
+
+    $(document).ready(function () {
+
+        getDepartments()
+            .done((data) => { populateTable(data.Departments);})
+            .done(() => { $("#table").DataTable();});
+
+        $(".delete").click(function (event) {
+            if (!confirm("Are you sure you want to delete this organization?")) {
+                event.preventDefault()
+            }
+        });
+    });
+    </script>
+}

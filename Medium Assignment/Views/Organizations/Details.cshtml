@@ -1,4 +1,11 @@
-﻿@model Medium_Assignment.Models.OrganizationDetailsViewModel
+﻿@using Medium_Assignment.Models
+
+@model Medium_Assignment.Models.OrganizationDetailsViewModel
+
+
+
+@{AuthDetails authDetails = (AuthDetails)Context.Session["AuthDetails"];}
+
 
 @{
     ViewBag.Title = "Details";
@@ -6,75 +13,150 @@
 
 <h2>Details</h2>
 
-<div>
-    <ul>
-        <li>
 
-            @Html.DisplayNameFor(model => model.Organization.Name): @Model.Organization.Name
-        </li>
+<form>
 
-        <li>
-
-            @Html.DisplayNameFor(model => model.Organization.PhoneNumber): @Model.Organization.PhoneNumber
-        </li>
-
-        <li>
-
-            @Html.DisplayNameFor(model => model.Organization.Email): @Model.Organization.Email
-        </li>
+    @Html.HiddenFor(m => m.Id, new { id = "Id" })
 
 
-        <li>
+    <div class="form-group">
+        @Html.DisplayNameFor(model => model.Name)
+        @Html.TextBoxFor(m => Model.Name, new { @class = "form-control", id = "Name", @disabled = "disabled" })
+    </div>
 
-            @Html.DisplayNameFor(model => model.Organization.UserName): @Model.Organization.UserName
-        </li>
 
-        @if (!String.IsNullOrEmpty(Model.Organization.Address2))
-        {
-            <li>
-                Address: @(Model.Organization.Address1 + ", " + Model.Organization.Address2)
-            </li>
+
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.UserName)
+        @Html.TextBoxFor(m => Model.UserName, new { @class = "form-control", id = "UserName", @disabled = "disabled" })
+    </div>
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.Email)
+        @Html.TextBoxFor(m => Model.Email, new { @class = "form-control", id = "Email", @disabled = "disabled" })
+    </div>
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.PhoneNumber)
+        @Html.TextBoxFor(m => Model.PhoneNumber, new { @class = "form-control", id = "PhoneNumber", @disabled = "disabled" })
+    </div>
+
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.Country)
+        @Html.TextBoxFor(m => Model.Country, new { @class = "form-control", id = "Country", @disabled = "disabled" })
+    </div>
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.State)
+        @Html.TextBoxFor(m => Model.State, new { @class = "form-control", id = "State", @disabled = "disabled" })
+    </div>
+
+
+    <div class="form-group">
+
+        @Html.DisplayNameFor(model => model.City)
+        @Html.TextBoxFor(m => Model.City, new { @class = "form-control", id = "City", @disabled = "disabled" })
+    </div>
+
+    <div class="form-group">
+        @Html.DisplayNameFor(model => model.Address)
+        @Html.TextBoxFor(m => Model.Address, new { @class = "form-control", id = "Address", @disabled = "disabled" })
+    </div>
+
+
+    <div class="form-group">
+        @Html.DisplayNameFor(model => model.Status)
+        @Html.TextBoxFor(m => Model.Status, new { @class = "form-control", id = "Status", @disabled = "disabled" })
+    </div>
+
+
+    <div class="form-group">
+        @Html.DisplayNameFor(model => model.Description)
+        @Html.TextBoxFor(m => Model.Description, new { @class = "form-control", id = "Description", @disabled = "disabled" })
+    </div>
+
+
+</form>
+
+@section Scripts {
+
+    <script>
+        function OrganizationDetailsModel(data) {
+            this.Name = data.Name;
+            this.PhoneNumber = data.PhoneNumber;
+            this.Email = data.Email;
+            this.UserName = data.UserName;
+            if (data.Address2) {
+                this.Address = data.Address1 + ", " + data.Address2;
+            } else {
+                this.Address = data.Address1;
+            }
+
+            this.Country = data.Country;
+            this.State = data.State;
+            this.City = data.City;
+            this.Status = data.Status;
+            this.Description = data.Description;
+
         }
-        else
-        {
-            <li> Address: @Model.Organization.Address1 </li>
+
+        function populateFields(model) {
+            $("#Name").val(model.Name);
+            $("#PhoneNumber").val(model.PhoneNumber);
+            $("#Email").val(model.Email);
+            $("#UserName").val(model.UserName);
+            $("#Address").val(model.Address);
+            $("#Country").val(model.Country);
+            $("#State").val(model.State);
+            $("#City").val(model.City);
+            $("#Status").val(model.Status);
+            $("#Description").val(model.Description);
 
         }
 
+        function getAndPopulate() {
+            $.ajax({
+                type: "get",
+                url: "https://localhost:44357/api/organizations/" + $("#Id").val(),
+                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+                datatype: "json",
+                traditional: "true",
+                success: function (data) {
+                    var model = new OrganizationDetailsModel(data)
+                    populateFields(model);
 
 
-        <li>
+                    console.log(data);
 
-            @Html.DisplayNameFor(model => model.Organization.Country): @Model.Organization.Country
-        </li>
+                },
 
-        <li>
-
-            @Html.DisplayNameFor(model => model.Organization.State): @Model.Organization.State
-        </li>
-
-
-        <li>
-
-            @Html.DisplayNameFor(model => model.Organization.City): @Model.Organization.City
-        </li>
-
-
-        <li>
-
-            @Html.DisplayNameFor(model => model.Organization.Status): @Model.Organization.Status
-        </li>
-
-
-
-        <li>
-
-            @Html.DisplayNameFor(model => model.Organization.Description): @Model.Organization.Description
-        </li>
+                error: function (jqXHR, status, err) {
+                    alert("Not authorized")
+                    debugger;
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err);
+                }
 
 
 
 
-    </ul>
+            });
 
-</div>
+        }
+
+        $(document).ready(function () {
+            getAndPopulate()
+        });
+
+
+    </script>
+
+}

@@ -1,4 +1,10 @@
-﻿@model Medium_Assignment.Models.ReviewAssignViewModel
+﻿@using Medium_Assignment.Models
+
+@model Medium_Assignment.Models.ReviewAssignViewModel
+
+
+@{AuthDetails authDetails = (AuthDetails)Context.Session["AuthDetails"];}
+
 
 @{
     ViewBag.Title = "Assign Review";
@@ -6,55 +12,144 @@
 
 <h2>Assign Review</h2>
 
-@using (@Html.BeginForm("Assign", "Reviews", FormMethod.Post))
-{
+<form id="form">
     @Html.AntiForgeryToken()
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
     <div class="form-group">
         @Html.LabelFor(m => m.Id)
-        @Html.TextBoxFor(m => m.Id, new { @class = "form-control text-danger", @disabled = "disabled" })
+        @Html.TextBoxFor(m => m.Id, new { @class = "form-control text-danger", @disabled = "disabled", id = "Id" })
         @Html.ValidationMessageFor(m => m.Id)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.EmployeeIds)
-        @Html.ListBoxFor(m => m.EmployeeIds, Model.EmployeeSelectList, new { @class = "listbox form-control text-danger "})
+        @Html.ListBoxFor(m => m.EmployeeIds, new List<SelectListItem>(), new { @class = "listbox form-control text-danger", id = "Employees" })
         @Html.ValidationMessageFor(m => m.EmployeeIds)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.ReviewerId)
-        @Html.DropDownListFor(m => m.ReviewerId, Model.ReviewerSelectList, "Select Reviewer", new { @class = "form-control text-danger" })
+        @Html.DropDownListFor(m => m.ReviewerId, new List<SelectListItem>(), "Select Reviewer", new { @class = "form-control text-danger", id = "Reviewer" })
         @Html.ValidationMessageFor(m => m.ReviewerId)
     </div>
 
-    <button type="submit" class="btn btn-primary">
-        Assign
-    </button>
+</form>
 
-
-}
+<button type="submit" id="submit" class="btn btn-primary">
+    Assign
+</button>
 
 @section Scripts {
 
     <script>
 
-        $(document).ready(function () {
-                $('.listbox').selectpicker();
+        function ReviewAssignModel() {
+            this.Id = $("#Id").val();
+            this.EmployeeIds = [];
+            this.ReviewerId = 0;
+
+        }
+
+        function getFormData() {
+            return $.ajax({
+                type: "get",
+                url: "https://localhost:44357/api/employees/",
+                datatype: "json",
+                traditional: "true",
+                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+
+                error: function (jqXHR, status, err) {
+                    alert(jqXHR.responseJSON.ModelState[""]);
+                    debugger;
+                    console.log(jqXHR.responseJSON);
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err);
+                    alert("Error creating new record.");
+                }
+
+
+
+
+            });
+        }
+
+        function populateForm(data) {
+            var employees = data.Employees;
+
+            for (var i = 0; i < employees.length; i++) {               
+                $("#Employees").append("<option value=" + employees[i].Id + ">" + employees[i].DisplayName + "</option>");
+                $("#Reviewer").append("<option value=" + employees[i].Id + ">" + employees[i].DisplayName + "</option>");
+
+            }
+
+            $('.listbox').selectpicker('refresh');
+
+            return employees;
+
+        }
+
+        function submitForm() {
+            $("#form").validate({
+                debug: true
+            });
+
+
+            if (!$("#form").valid()) {
+                return;
+            }
+
+            var model = new ReviewAssignModel();
+
+            model.EmployeeIds = $("#Employees").val();
+            model.ReviewerId = $("#Reviewer").val();
+
+            $.ajax({
+                type: "put",
+                url: "https://localhost:44357/api/reviews/assign/" + $("#Id").val(),
+                data: model,
+                datatype: "json",
+                traditional: "true",
+                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+                success: function (data) {
+                    alert("Posted.");
+                    window.location.href = "https://localhost:44335/reviews/";
+
+                },
+
+                error: function (jqXHR, status, err) {
+                    alert(jqXHR.responseJSON.ModelState[""]);
+                    debugger;
+                    console.log(jqXHR.responseJSON);
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err);
+                    alert("Error creating new record.");
+                }
+
+
 
 
             });
 
-        @*$(document).ready(function () {
-            var jsonData = '@Html.Raw(Json.Encode(Model.SelectedEmployeeValues))';
-            var selectedValues = JSON.parse(jsonData);
+        }
+
+
+
+        $(document).ready(function () {
+            var employees = [];
+            getFormData()
+                .done((data) => populateForm(data))
+                .done((data) => { employees = data; });
+
+            $("#submit").click(submitForm);
+
             
-            $('.listbox').selectpicker('val', selectedValues);
 
 
-        });*@
+        });
 
 
     </script>

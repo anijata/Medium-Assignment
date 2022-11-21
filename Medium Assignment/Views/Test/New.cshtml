@@ -1,0 +1,74 @@
+﻿@model Medium_Assignment.Models.TestNewViewModel
+
+@{
+    ViewBag.Title = "New";
+}
+
+<h2>New</h2>
+
+<form id="form">
+    <div class="form-group">
+        @Html.LabelFor(m => m.value1)
+        @Html.TextBoxFor(m => m.value1, new { @id = "val1", @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.value1)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.value2)
+        @Html.TextBoxFor(m => m.value2, new { @id = "val2", @class = "form-control text-danger" })
+        @Html.ValidationMessageFor(m => m.value2)
+    </div>
+</form>
+
+
+
+<button type="submit" id="submit" class="btn btn-primary">
+    Save
+</button>
+
+@section Scripts { 
+    <script>    
+        $(document).ready(function () {
+            function TestNewModel() {
+                this.value1 = null;
+                this.value2 = null;
+            }
+
+            $("#submit").click(function () {
+                $("#form").validate({
+                    debug: true
+                });
+
+                let model = new TestNewModel();
+
+                model.value1 = $("#val1").val(); // parseInt($("#val1").val());
+            model.value2 = $("#val2").val(); // parseInt($("#val2").val());
+
+                $.ajax({
+                    type: "post",
+                    url: "https://localhost:44357/api/test",
+                    data: model,
+                    datatype: "json",
+                    traditional: "true",
+                    success: function (data) {
+                        alert("Posted.");
+                    },
+
+                    error: function (jqXHR, status, err) {
+                        debugger;
+                        console.log(jqXHR);
+                        console.log(status);
+                        console.log(err);
+                        alert("Erorr creating new record.");
+                    }
+
+
+
+
+                });
+            });
+
+        });
+
+    </script>
+}

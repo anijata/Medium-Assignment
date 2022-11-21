@@ -16,6 +16,38 @@ namespace Medium_Assignment.Controllers
 {
     public class AccountController : Controller
     {
+        public string AuthToken
+        {
+            get
+            {
+                if (HttpContext.Session["AuthToken"] != null)
+                    return HttpContext.Session["AuthToken"].ToString();
+                return "";
+            }
+            set { AuthToken = value; }
+        }
+        public bool IsAuthenticated
+        {
+            get
+            {
+                if (HttpContext.Session["IsAuthenticated"] != null)
+                    return (bool) HttpContext.Session["IsAuthenticated"];
+
+                return false;
+            }
+            set { IsAuthenticated = value; }
+        }
+        public string UserName
+        {
+            get
+            {
+                if (HttpContext.Session["UserName"] != null)
+                    return HttpContext.Session["UserName"].ToString();
+                return "";
+            }
+            set { UserName = value; }
+        }
+
         public AccountController()
         {
         }
@@ -48,11 +80,48 @@ namespace Medium_Assignment.Controllers
                 password = model.Password
             };
 
-            var result = await client.Authenticate(authTokenModel);
+            var result1 = await client.Authenticate(authTokenModel);
 
-            var token = result.AccessToken;
+            if (!result1.IsSuccess) {
+                foreach (var error in result1.Errors) {
+                    ModelState.AddModelError("", error); 
+                }
 
-            HttpContext.Session["AuthToken"] = token;
+                return View(model);
+            }
+
+            client.AuthToken = result1.AccessToken;
+
+            var result2 = await client.Get<AuthRolesViewModel>("account/roles");
+
+            if (!result2.IsSuccess)
+            {
+                foreach (var error in result2.Errors)
+                {
+                    ModelState.AddModelError("", error);
+                }
+
+                return View(model);
+            }
+
+            var token = result1.AccessToken;
+
+            var authDetails = new AuthDetails {
+                IsAuthenticted = true,
+                UserName = result1.UserName,
+                AccessToken = result1.AccessToken,
+                Expires = result1.Expires,
+                ExpiresIn = result1.ExpiresIn,               
+                Issued = result1.Issued,
+                Roles = result2.Roles,
+                TokenType = result1.TokenType,
+            };
+
+            HttpContext.Session["AuthDetails"] = authDetails;
+
+            //HttpContext.Session["AuthToken"] = token;
+            //HttpContext.Session["IsAuthenticated"] = true;
+            //HttpContext.Session["UserName"] = model.UserName;
 
             return RedirectToLocal(returnUrl);
 
@@ -75,7 +144,8 @@ namespace Medium_Assignment.Controllers
         // GET: /Account/LoginOff
         public ActionResult LogOff(string returnUrl)
         {
-            HttpContext.Session.Remove("AuthToken");
+            if (HttpContext.Session["AuthDetails"] != null)
+                HttpContext.Session.Remove("AuthDetails");
             return RedirectToAction("Index", "Home");
         }
 

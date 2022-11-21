@@ -9,20 +9,22 @@ using System.Data.Entity;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Medium_Assignment.Custom_Validation;
 
 namespace Medium_Assignment.Controllers
 {
+    [AuthorizeUser(Roles = "OrganizationAdmin")]
     public class ReviewsController : Controller
     {
-        public string AuthToken
+        public AuthDetails AuthDetails
         {
             get
             {
-                if (HttpContext.Session["AuthToken"] != null)
-                    return HttpContext.Session["AuthToken"].ToString();
-                return "";
+                if (HttpContext.Session["AuthDetails"] != null)
+                    return (AuthDetails)HttpContext.Session["AuthDetails"];
+                return new AuthDetails();
             }
-            set {; }
+            set { AuthDetails = value; }
         }
 
         private WebApiClient _apiClient;
@@ -31,7 +33,7 @@ namespace Medium_Assignment.Controllers
         {
             get
             {
-                return _apiClient ?? new WebApiClient(AuthToken);
+                return _apiClient ?? new WebApiClient(AuthDetails.AccessToken);
             }
 
             set
@@ -46,15 +48,9 @@ namespace Medium_Assignment.Controllers
 
         }
 
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            var bindingModel = await apiClient.Get<ReviewListViewModel>("reviews");
-            var viewModel = new ReviewIndexViewModel {
-                Reviews = bindingModel.Reviews
-
-            };
-
-            return View(viewModel);
+            return View();
         }
 
         public ActionResult New()
@@ -65,116 +61,30 @@ namespace Medium_Assignment.Controllers
 
         }
 
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> New(ReviewNewViewModel viewModel)
+        public ActionResult Assign(int id)
         {
-            var bindingModel = new ReviewNewViewModel { 
-                Agenda = viewModel.Agenda,
-                
-                Description = viewModel.Description,               
-                MaxRate = viewModel.MaxRate,
-                MinRate = viewModel.MinRate,
-                ReviewCycleStartDate = viewModel.ReviewCycleStartDate,
-                ReviewCycleEndDate = viewModel.ReviewCycleEndDate,
-            };
+            var viewModel = new ReviewAssignViewModel
+            {
 
-            var result = await apiClient.Post<ReviewNewViewModel>("reviews", bindingModel);
-
-            if (!result) { 
-                //Add error
-            }
-
-            return RedirectToAction("Index");
-
-
-        }
-
-        public async Task<ActionResult> Assign(int id)
-        {
-            var bindingModel = await apiClient.Get<EmployeeListViewModel>("employees");
-
-            var employees = bindingModel.Employees;
-
-            var viewModel = new ReviewAssignViewModel {
-
-                Id = id,
-
-                EmployeeSelectList = new MultiSelectList(employees, "Id", "DisplayName"),
-
-                ReviewerSelectList = new SelectList(employees, "Id", "DisplayName"),
+                Id = id
 
             };
 
             return View(viewModel);
 
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Assign(ReviewAssignViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-
-            var bindingModel = new ReviewAssignBindingModel { 
-                EmployeeIds = model.EmployeeIds,
-                ReviewerId = model.ReviewerId
-            };
-
-            var result= await apiClient.Put<ReviewAssignBindingModel>("reviews/assign", model.Id, bindingModel);
-
-            if (!result) { 
-            
-                // Add error
-            }
-
-            return RedirectToAction("Index");
-
-        }
-
 
         public async Task<ActionResult> Submit(int id)
         {
-            var bindModel = await apiClient.Get<ReviewGetViewModel>("reviews", id);
-
             var viewModel = new ReviewSubmitViewModel
             {
-                Id = bindModel.Id,
-                Employee = bindModel.Employee,
-                Reviewer = bindModel.Reviewer,
-                Feedback = bindModel.Feedback,
-                Rating = (int) bindModel.Rating
-
+                Id = id
             };
 
-            
+
             return View(viewModel);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Submit(ReviewSubmitViewModel viewModel)
-        {
-            var submitBindingModel = new ReviewSubmitBindingModel
-            {
-                Rating = viewModel.Rating,
-                Feedback = viewModel.Feedback
-            };
-
-            var result = await apiClient.Put<ReviewSubmitBindingModel>("reviews/submit", viewModel.Id, submitBindingModel);
-
-            if (!result) { 
-                //Add errrors
-            
-            }
-
-            return RedirectToAction("Index");
-        }
 
         //private void AddErrors(IdentityResult result)
         //{
@@ -214,13 +124,6 @@ namespace Medium_Assignment.Controllers
 
         //}
 
-        //public ActionResult Details(int Id)
-        //{
-
-
-        //    return View();
-
-        //}
 
 
     }

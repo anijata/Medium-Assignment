@@ -9,27 +9,29 @@ using System.Data.Entity;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Medium_Assignment.Custom_Validation;
 
 namespace Medium_Assignment.Controllers
 {
+    [AuthorizeUser(Roles = "SuperAdmin")]
     public class OrganizationsController : Controller
     {
-        public string AuthToken
+        public AuthDetails AuthDetails
         {
             get
             {
-                if (HttpContext.Session["AuthToken"] != null)
-                    return HttpContext.Session["AuthToken"].ToString();
-                return "";
+                if (HttpContext.Session["AuthDetails"] != null)
+                    return (AuthDetails)HttpContext.Session["AuthDetails"];
+                return new AuthDetails();
             }
-            set {; }
+            set { AuthDetails = value; }
         }
 
         private WebApiClient _apiClient;
 
         public WebApiClient apiClient {
             get {
-                return _apiClient ?? new WebApiClient(AuthToken);                      
+                return _apiClient ?? new WebApiClient(AuthDetails.AccessToken);                      
             }
 
             set
@@ -44,30 +46,27 @@ namespace Medium_Assignment.Controllers
             
         }
 
-        public async Task<ActionResult> Details(int id)
-        {
-
-            var bindingModel = await apiClient.Get<OrganizationGetViewModel>("organizations", id); ;
-
-            var viewModel = new OrganizationDetailsViewModel {
-                Organization = bindingModel
-            };
-
-            return View(viewModel);
+        public void AddModelErrors(List<string> errors) {
+            foreach (var error in errors)
+            {
+                ModelState.AddModelError("", error);
+            }
         }
 
-        public async Task<ActionResult> Index()
+        public ActionResult Details(int id)
         {
 
-
-            var bindingModel = await apiClient.Get<OrganizationListViewModel>("organizations"); ;
-
-            var viewModel = new OrganizationIndexViewModel
+            var model = new OrganizationDetailsViewModel
             {
-                Organizations = bindingModel.Organizations
+                Id = id
             };
 
-            return View(viewModel);
+            return View(model);
+        }
+
+        public ActionResult Index()
+        {
+            return View();
         }
 
         public ActionResult New()
@@ -79,110 +78,35 @@ namespace Medium_Assignment.Controllers
         }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> New(OrganizationNewViewModel model)
+        public ActionResult Edit(int id)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-
-
-            var bindingModel = new OrganizationPostViewModel { 
-                Name = model.Name,
-                UserName = model.UserName,
-                Address1 = model.Address1,
-                Address2 = model.Address2,
-                CityId = model.CityId,
-                CountryId = model.CountryId,
-                StateId = model.StateId,
-                Description = model.Description,
-                Email = model.Email,
-                Password = model.Password,
-                PhoneNumber = model.PhoneNumber,
-                Status = model.Status
+            var model = new OrganizationEditViewModel {
+                Id = id
             };
+            
 
-            var result = await apiClient.Post<OrganizationPostViewModel>("organizations", bindingModel);
-
-            if (!result)
-                return View(model);
-
-            return RedirectToAction("Index");
-
+            return View(model);
 
         }
 
-        public async Task<ActionResult> Edit(int id)
+        private void AddErrors(IdentityResult result)
         {
-
-            var bindingModel = await apiClient.Get<OrganizationGetViewModel>("organizations", id);
-
-            var viewModel = new OrganizationEditViewModel{
-                Name = bindingModel.Name,
-                UserName = bindingModel.UserName,
-                PhoneNumber = bindingModel.PhoneNumber,
-                Email = bindingModel.Email,
-                Address1 = bindingModel.Address1,
-                Address2 = bindingModel.Address2,
-                CountryId = bindingModel.CountryId,
-                StateId = bindingModel.StateId,
-                CityId = bindingModel.CityId,                
-                Description = bindingModel.Description,             
-                Status = bindingModel.Status
-            };
-
-            return View(viewModel);
-
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(OrganizationEditViewModel viewModel)
-        {
-            if (!ModelState.IsValid)
-                return View(viewModel);
 
 
-            var bindingModel = new OrganizationPutViewModel { 
-                Name = viewModel.Name,
-                UserName = viewModel.UserName,
-                PhoneNumber = viewModel.PhoneNumber,
-                Email = viewModel.Email,
-                Address1 = viewModel.Address1,
-                Address2 = viewModel.Address2,
-                CountryId = viewModel.CountryId,
-                StateId = viewModel.StateId,
-                CityId = viewModel.CityId,
-                Status = viewModel.Status,
-                Description = viewModel.Description            
-            };
 
-            var result = await apiClient.Put<OrganizationPutViewModel>("organizations", viewModel.Id, bindingModel);
+        //public async Task<ActionResult> Delete(int id) {
 
-            if (!result)
-                return View(viewModel);
 
-            return RedirectToAction("Index");
-        }
+        //    var result = await apiClient.Delete("organizations", id);
 
-        //private void AddErrors(IdentityResult result)
-        //{
-        //    foreach (var error in result.Errors)
-        //    {
-        //        ModelState.AddModelError("", error);
-        //    }
+        //    return RedirectToAction("Index");
         //}
-
-
-
-
-        public async Task<ActionResult> Delete(int id) {
-
-
-            var result = await apiClient.Delete("organizations", id);
-
-            return RedirectToAction("Index");
-        }
 
 
     }

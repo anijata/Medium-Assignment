@@ -9,21 +9,22 @@ using System.Data.Entity;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-
+using Medium_Assignment.Custom_Validation;
 
 namespace Medium_Assignment.Controllers
 {
+    [AuthorizeUser(Roles = "OrganizationAdmin")]
     public class DepartmentsController : Controller
     {
-        public string AuthToken
+        public AuthDetails AuthDetails
         {
             get
             {
-                if (HttpContext.Session["AuthToken"] != null)
-                    return HttpContext.Session["AuthToken"].ToString();
-                return "";
+                if (HttpContext.Session["AuthDetails"] != null)
+                    return (AuthDetails)HttpContext.Session["AuthDetails"];
+                return new AuthDetails();
             }
-            set {; }
+            set { AuthDetails = value; }
         }
 
         private WebApiClient _apiClient;
@@ -32,7 +33,7 @@ namespace Medium_Assignment.Controllers
         {
             get
             {
-                return _apiClient ?? new WebApiClient(AuthToken);
+                return _apiClient ?? new WebApiClient(AuthDetails.AccessToken);
             }
 
             set
@@ -47,16 +48,9 @@ namespace Medium_Assignment.Controllers
 
         }
 
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            var bindingModel = await apiClient.Get<DepartmentListViewModel>("departments");
-
-            var viewModel = new DepartmentIndexViewModel
-            {
-                Departments = bindingModel.Departments
-            };
-
-            return View(viewModel);
+            return View();
         }
 
         public ActionResult New()
@@ -66,33 +60,11 @@ namespace Medium_Assignment.Controllers
             return View(viewModel);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> New(DepartmentNewViewModel viewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var bindingModel = new DepartmentPostViewModel { Name = viewModel.Name };
-
-                var result = await apiClient.Post<DepartmentPostViewModel>("departments", bindingModel);
-
-                if (result)
-                    return RedirectToAction("Index");
-            }
-
-            return View(viewModel);
-
-            
-        }
-
-        public async Task<ActionResult> Edit(int id)
+        public ActionResult Edit(int id)
         {
 
-            var bindingModel = await apiClient.Get<DepartmentGetViewModel>("departments", id);
-
-            var viewModel = new DepartmentEditViewModel { 
-                Id = bindingModel.Id,
-                Name = bindingModel.Name
+            var viewModel = new DepartmentEditViewModel {
+                Id = id
             };
 
             return View(viewModel);
@@ -101,38 +73,19 @@ namespace Medium_Assignment.Controllers
         }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(DepartmentEditViewModel viewModel)
-        {
-            
-            if (ModelState.IsValid)
-            {
-                var bindingModel = new DepartmentPutViewModel { Name = viewModel.Name};
+        //public async Task<ActionResult> Delete(int id)
+        //{
 
-                var result = await apiClient.Put<DepartmentPutViewModel>("departments", viewModel.Id, bindingModel);
+        //    var result = await apiClient.Delete("departments", id);
 
-                if (result)
-                    return RedirectToAction("Index");
-                
-            }
+        //    if (!result)
+        //    {
+        //        // Add error
+        //    }
+
+        //    return RedirectToAction("Index");
 
 
-            return View(viewModel);
-        }
-
-        public async Task<ActionResult> Delete(int id)
-        {
-
-            var result = await apiClient.Delete("departments", id);
-
-            if (!result) { 
-                // Add error
-            }
-
-            return RedirectToAction("Index");
-
-
-        }
+        //}
     }
 }
