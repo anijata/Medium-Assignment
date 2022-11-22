@@ -193,16 +193,17 @@ namespace Medium_Assignment.Models
         [Display(Name = "Address field 2")]
         public string Address2 { get; set; }
 
-        [Required]
         [Display(Name = "Country")]
+        [Range(1, int.MaxValue, ErrorMessage = "Select Country from dropdown.")]
         public int CountryId { get; set; }
 
-        [Required]
+
         [Display(Name = "State")]
+        [Range(1, int.MaxValue, ErrorMessage = "Select Country from dropdown.")]
         public int StateId { get; set; }
 
-        [Required]
         [Display(Name = "City")]
+        [Range(1, int.MaxValue, ErrorMessage = "Select Country from dropdown.")]
         public int CityId { get; set; }
 
         [Required]
@@ -252,16 +253,17 @@ namespace Medium_Assignment.Models
         [Display(Name = "Address field 2")]
         public string Address2 { get; set; }
 
-        [Required]
         [Display(Name = "Country")]
+        [Range(1, int.MaxValue, ErrorMessage = "Select Country from dropdown.")]
         public int CountryId { get; set; }
 
-        [Required]
+
         [Display(Name = "State")]
+        [Range(1, int.MaxValue, ErrorMessage = "Select Country from dropdown.")]
         public int StateId { get; set; }
 
-        [Required]
         [Display(Name = "City")]
+        [Range(1, int.MaxValue, ErrorMessage = "Select Country from dropdown.")]
         public int CityId { get; set; }
 
         [Required]

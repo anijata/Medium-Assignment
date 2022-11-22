@@ -8,7 +8,21 @@
     ViewBag.Title = "Edit";
 }
 
+<style>
+
+    .left {
+        float: left;
+        width: 50%;
+    }
+
+    .right {
+        float: right;
+        width: 50%;
+    }
+</style>
+
 <h2>Edit Organization</h2>
+
 
 
 <form id="form">
@@ -19,82 +33,91 @@
 
     @Html.HiddenFor(m => m.Id, new { id = "Id" })
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name, new { @class = "form-control text-danger", id = "Name" })
-        @Html.ValidationMessageFor(m => m.Name)
+    <div class="left">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Name)
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control text-danger", id = "Name" })
+            @Html.ValidationMessageFor(m => m.Name)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.PhoneNumber)
+            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control text-danger", id = "PhoneNumber" })
+            @Html.ValidationMessageFor(m => m.PhoneNumber)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control text-danger", id = "Email" })
+            @Html.ValidationMessageFor(m => m.Email)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserName)
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control text-danger", id = "UserName" })
+            @Html.ValidationMessageFor(m => m.UserName)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Address1)
+            @Html.TextBoxFor(m => m.Address1, new { @class = "form-control text-danger", id = "Address1" })
+            @Html.ValidationMessageFor(m => m.Address1)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Address2)
+            @Html.TextBoxFor(m => m.Address2, new { @class = "form-control text-danger", id = "Address2" })
+            @Html.ValidationMessageFor(m => m.Address2)
+        </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.PhoneNumber)
-        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control text-danger", id = "PhoneNumber" })
-        @Html.ValidationMessageFor(m => m.PhoneNumber)
+    <div class="right">
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.CountryId)
+            @Html.DropDownListFor(m => m.CountryId, new List<SelectListItem>(), "Select Country", new { @class = "form-control text-danger", id = "Countries", })
+            @Html.ValidationMessageFor(m => m.CountryId)
+
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.StateId)
+            @Html.DropDownListFor(m => m.StateId, new List<SelectListItem>(), "Select State", new { @class = "form-control text-danger", id = "States" })
+            @Html.ValidationMessageFor(m => m.StateId)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.CityId)
+            @Html.DropDownListFor(m => m.CityId, new List<SelectListItem>(), "Select City", new { @class = "form-control text-danger", id = "Cities" })
+            @Html.ValidationMessageFor(m => m.CityId)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Status)
+        </div>
+
+        <div class="form-group">
+            @Html.RadioButtonFor(m => m.Status, "Active", new { id = "Status" }) Active
+            @Html.RadioButtonFor(m => m.Status, "Inactive", new { id = "Status" }) Inactive
+        </div>
+
+        <div class="form-group">
+            @Html.ValidationMessageFor(m => m.Status)
+
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Description)
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control text-danger", id = "Description" })
+            @Html.ValidationMessageFor(m => m.Description)
+        </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email)
-        @Html.TextBoxFor(m => m.Email, new { @class = "form-control text-danger", id = "Email" })
-        @Html.ValidationMessageFor(m => m.Email)
-    </div>
+   
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.UserName)
-        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control text-danger", id = "UserName" })
-        @Html.ValidationMessageFor(m => m.UserName)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Address1)
-        @Html.TextBoxFor(m => m.Address1, new { @class = "form-control text-danger", id = "Address1" })
-        @Html.ValidationMessageFor(m => m.Address1)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Address2)
-        @Html.TextBoxFor(m => m.Address2, new { @class = "form-control text-danger", id = "Address2" })
-        @Html.ValidationMessageFor(m => m.Address2)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.CountryId)
-        @Html.DropDownListFor(m => m.CountryId, new List<SelectListItem>(), "Select Country", new { @class = "form-control text-danger", id = "Countries", })
-        @Html.ValidationMessageFor(m => m.CountryId)
-
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.StateId)
-        @Html.DropDownListFor(m => m.StateId, new List<SelectListItem>(), "Select State", new { @class = "form-control text-danger", id = "States" })
-        @Html.ValidationMessageFor(m => m.StateId)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.CityId)
-        @Html.DropDownListFor(m => m.CityId, new List<SelectListItem>(), "Select City", new { @class = "form-control text-danger", id = "Cities" })
-        @Html.ValidationMessageFor(m => m.CityId)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Status)
-    </div>
-
-    <div class="form-group">
-        @Html.RadioButtonFor(m => m.Status, "Active", new { id = "Status" }) Active
-        @Html.RadioButtonFor(m => m.Status, "Inactive", new { id = "Status" }) Inactive
-    </div>
-
-    <div class="form-group">
-        @Html.ValidationMessageFor(m => m.Status)
-
-    </div>
-
-
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Description)
-        @Html.TextAreaFor(m => m.Description, new { @class = "form-control text-danger", id = "Description" })
-        @Html.ValidationMessageFor(m => m.Description)
-    </div>
+   
 
 </form>
 
@@ -175,7 +198,7 @@
                 },
 
                 error: function (jqXHR, status, err) {
-                    debugger;
+                    
                     console.log(jqXHR);
                     console.log(status);
                     console.log(err);
@@ -205,7 +228,7 @@
                 },
 
                 error: function (jqXHR, status, err) {
-                    debugger;
+                    
                     console.log(jqXHR);
                     console.log(status);
                     console.log(err);
@@ -228,7 +251,7 @@
 
                 error: function (jqXHR, status, err) {
                     alert(jqXHR.responseJSON.ModelState[""]);
-                    debugger;
+                    
                     console.log(jqXHR.responseJSON);
                     console.log(jqXHR);
                     console.log(status);
@@ -329,7 +352,7 @@
                 },
 
                 error: function (jqXHR, status, err) {
-                    debugger;
+                    
                     alert(jqXHR.responseJSON.ModelState[""]);
 
                     console.log(jqXHR.responseJSON);

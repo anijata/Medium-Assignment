@@ -8,6 +8,20 @@
 @{
     ViewBag.Title = "New";
 }
+
+<style>
+
+    .left {
+        float: left;
+        width: 50%;
+    }
+
+    .right {
+        float: right;
+        width: 50%;
+    }
+</style>
+
 <h2>New Employee</h2>
 
 
@@ -17,133 +31,140 @@
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.FirstName)
-        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control text-danger", id = "FirstName" })
-        @Html.ValidationMessageFor(m => m.FirstName)
+    <div class="left">
+        <div class="form-group">
+            @Html.LabelFor(m => m.FirstName)
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control text-danger", id = "FirstName" })
+            @Html.ValidationMessageFor(m => m.FirstName)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.LastName)
+            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control text-danger", id = "LastName" })
+            @Html.ValidationMessageFor(m => m.LastName)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserName)
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control text-danger", id = "UserName" })
+            @Html.ValidationMessageFor(m => m.UserName)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.PhoneNumber)
+            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control text-danger", id = "PhoneNumber" })
+            @Html.ValidationMessageFor(m => m.PhoneNumber)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control text-danger", id = "Email" })
+            @Html.ValidationMessageFor(m => m.Email)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password)
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control text-danger", id = "Password" })
+            @Html.ValidationMessageFor(m => m.Password)
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.DOB)
+            @Html.TextBoxFor(m => m.DOB, new { @class = "form-control text-danger", id = "DOB" })
+            @Html.ValidationMessageFor(m => m.DOB)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Gender)
+            @Html.TextBoxFor(m => m.Gender, new { @class = "form-control text-danger", id = "Gender" })
+            @Html.ValidationMessageFor(m => m.Gender)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Designation)
+            @Html.TextBoxFor(m => m.Designation, new { @class = "form-control text-danger", id = "Designation" })
+            @Html.ValidationMessageFor(m => m.Designation)
+        </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.LastName)
-        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control text-danger", id = "LastName" })
-        @Html.ValidationMessageFor(m => m.LastName)
+    
+    <div class="right">
+        <div class="form-group">
+            @Html.LabelFor(m => m.DOJ)
+            @Html.TextBoxFor(m => m.DOJ, new { @class = "form-control text-danger", id = "DOJ" })
+            @Html.ValidationMessageFor(m => m.DOJ)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.DepartmentId)
+            @Html.DropDownListFor(m => m.DepartmentId, new List<SelectListItem>(), "Select Department", new { @class = "form-control text-danger", id = "Departments" })
+            @Html.ValidationMessageFor(m => m.DepartmentId)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Address1)
+            @Html.TextBoxFor(m => m.Address1, new { @class = "form-control text-danger", id = "Address1" })
+            @Html.ValidationMessageFor(m => m.Address1)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Address2)
+            @Html.TextBoxFor(m => m.Address2, new { @class = "form-control text-danger", id = "Address2" })
+            @Html.ValidationMessageFor(m => m.Address2)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.CountryId)
+            @Html.DropDownListFor(m => m.CountryId, new List<SelectListItem>(), "Select Country", new { @class = "form-control text-danger", id = "Countries", })
+            @Html.ValidationMessageFor(m => m.CountryId)
+
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.StateId)
+            @Html.DropDownListFor(m => m.StateId, new List<SelectListItem>(), "Select State", new { @class = "form-control text-danger", id = "States" })
+            @Html.ValidationMessageFor(m => m.StateId)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.CityId)
+            @Html.DropDownListFor(m => m.CityId, new List<SelectListItem>(), "Select City", new { @class = "form-control text-danger", id = "Cities" })
+            @Html.ValidationMessageFor(m => m.CityId)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.EmployeeType)
+        </div>
+
+        <div class="form-group">
+            @Html.RadioButtonFor(m => m.EmployeeType, "Full Time", new { id = "EmployeeType1" }) Full Time
+            @Html.RadioButtonFor(m => m.EmployeeType, "Contract", new { id = "EmployeeType2" }) Contract
+        </div>
+
+        <div class="form-group">
+            @Html.ValidationMessageFor(m => m.EmployeeType)
+
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Status)
+        </div>
+
+        <div class="form-group">
+            @Html.RadioButtonFor(m => m.Status, "Active", new { id = "Status1" }) Active
+            @Html.RadioButtonFor(m => m.Status, "Inactive", new { id = "Status2" }) Inactive
+        </div>
+
+        <div class="form-group">
+            @Html.ValidationMessageFor(m => m.Status)
+
+        </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.UserName)
-        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control text-danger", id = "UserName" })
-        @Html.ValidationMessageFor(m => m.UserName)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.PhoneNumber)
-        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control text-danger", id = "PhoneNumber" })
-        @Html.ValidationMessageFor(m => m.PhoneNumber)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email)
-        @Html.TextBoxFor(m => m.Email, new { @class = "form-control text-danger", id = "Email" })
-        @Html.ValidationMessageFor(m => m.Email)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password)
-        @Html.PasswordFor(m => m.Password, new { @class = "form-control text-danger", id = "Password" })
-        @Html.ValidationMessageFor(m => m.Password)
-    </div>
-
-
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.DOB)
-        @Html.TextBoxFor(m => m.DOB, new { @class = "form-control text-danger", id = "DOB" })
-        @Html.ValidationMessageFor(m => m.DOB)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Gender)
-        @Html.TextBoxFor(m => m.Gender, new { @class = "form-control text-danger", id = "Gender" })
-        @Html.ValidationMessageFor(m => m.Gender)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Designation)
-        @Html.TextBoxFor(m => m.Designation, new { @class = "form-control text-danger", id = "Designation" })
-        @Html.ValidationMessageFor(m => m.Designation)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.DOJ)
-        @Html.TextBoxFor(m => m.DOJ, new { @class = "form-control text-danger", id = "DOJ" })
-        @Html.ValidationMessageFor(m => m.DOJ)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.DepartmentId)
-        @Html.DropDownListFor(m => m.DepartmentId, new List<SelectListItem>(), "Select Department", new { @class = "form-control text-danger", id = "Departments" })
-        @Html.ValidationMessageFor(m => m.DepartmentId)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Address1)
-        @Html.TextBoxFor(m => m.Address1, new { @class = "form-control text-danger", id = "Address1" })
-        @Html.ValidationMessageFor(m => m.Address1)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Address2)
-        @Html.TextBoxFor(m => m.Address2, new { @class = "form-control text-danger", id = "Address2" })
-        @Html.ValidationMessageFor(m => m.Address2)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.CountryId)
-        @Html.DropDownListFor(m => m.CountryId, new List<SelectListItem>(), "Select Country", new { @class = "form-control text-danger", id = "Countries", })
-        @Html.ValidationMessageFor(m => m.CountryId)
-
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.StateId)
-        @Html.DropDownListFor(m => m.StateId, new List<SelectListItem>(), "Select State", new { @class = "form-control text-danger", id = "States" })
-        @Html.ValidationMessageFor(m => m.StateId)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.CityId)
-        @Html.DropDownListFor(m => m.CityId, new List<SelectListItem>(), "Select City", new { @class = "form-control text-danger", id = "Cities" })
-        @Html.ValidationMessageFor(m => m.CityId)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.EmployeeType)
-    </div>
-
-    <div class="form-group">
-        @Html.RadioButtonFor(m => m.EmployeeType, "Full Time", new { id = "EmployeeType1" }) Full Time
-        @Html.RadioButtonFor(m => m.EmployeeType, "Contract", new { id = "EmployeeType2" }) Contract
-    </div>
-
-    <div class="form-group">
-        @Html.ValidationMessageFor(m => m.EmployeeType)
-
-    </div>
-
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Status)
-    </div>
-
-    <div class="form-group">
-        @Html.RadioButtonFor(m => m.Status, "Active", new { id = "Status1" }) Active
-        @Html.RadioButtonFor(m => m.Status, "Inactive", new { id = "Status2" }) Inactive
-    </div>
-
-    <div class="form-group">
-        @Html.ValidationMessageFor(m => m.Status)
-
-    </div>
+    
 </form>
 
 
@@ -198,7 +219,7 @@
 
                 error: function (jqXHR, status, err) {
                     alert(jqXHR.responseJSON.ModelState[""]);
-                    debugger;
+                    
                     console.log(jqXHR.responseJSON);
                     console.log(jqXHR);
                     console.log(status);
@@ -266,7 +287,7 @@
                 },
 
                 error: function (jqXHR, status, err) {
-                    debugger;
+                    
                     console.log(jqXHR);
                     console.log(status);
                     console.log(err);
@@ -296,7 +317,7 @@
                 },
 
                 error: function (jqXHR, status, err) {
-                    debugger;
+                    
                     console.log(jqXHR);
                     console.log(status);
                     console.log(err);
@@ -308,7 +329,29 @@
             });
         }
 
+        function addValidations() {
+            var pwregex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{6,}$");
+
+            jQuery.validator.addMethod("password",
+                function (value, element) {
+                    console.log(value);
+                    console.log(element);
+                    return pwregex.test(value);
+                }
+                , "Passwords must be at least 6 characters.Passwords must have at least one non letter or digit character.Passwords must have at least one digit ('0'-'9').Passwords must have at least one uppercase ('A'-'Z').");
+
+
+            $("#form").rules({
+                Password: {
+                    password: true
+                }
+            });
+
+        }
+
         function submitForm() {
+            addValidations();
+
             $("#form").validate({
                 debug: true
             });
@@ -355,7 +398,7 @@
 
                 error: function (jqXHR, status, err) {
                     alert(jqXHR.responseJSON.ModelState[""]);
-                    debugger;
+                    
                     console.log(jqXHR.responseJSON);
                     console.log(jqXHR);
                     console.log(status);

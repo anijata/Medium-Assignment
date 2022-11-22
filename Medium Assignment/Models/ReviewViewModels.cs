@@ -111,10 +111,12 @@ namespace Medium_Assignment.Models
 
         [Required]
         [Display(Name = "Employees")]
+        [MinLength(1, ErrorMessage = "Select Employee from dropdown.")]
         public List<int?> EmployeeIds { get; set; }
 
         [Required]
         [Display(Name = "Reviewer")]
+        [Range(1, int.MaxValue, ErrorMessage = "Select Reviewer from dropdown.")]
         public int? ReviewerId { get; set; }
 
         public MultiSelectList EmployeeSelectList { get; set; }

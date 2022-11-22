@@ -25,9 +25,12 @@
 
     <div class="form-group">
         @Html.LabelFor(m => m.EmployeeIds)
-        @Html.ListBoxFor(m => m.EmployeeIds, new List<SelectListItem>(), new { @class = "listbox form-control text-danger", id = "Employees" })
-        @Html.ValidationMessageFor(m => m.EmployeeIds)
-    </div>
+        <p> </p>
+
+        @Html.ListBoxFor(m => m.EmployeeIds, new List<SelectListItem>(),
+       new { @class = "listbox form-control text-danger", id = "Employees", @data_width = "fit" })
+    @Html.ValidationMessageFor(m => m.EmployeeIds)
+</div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.ReviewerId)
@@ -62,7 +65,7 @@
 
                 error: function (jqXHR, status, err) {
                     alert(jqXHR.responseJSON.ModelState[""]);
-                    debugger;
+                    
                     console.log(jqXHR.responseJSON);
                     console.log(jqXHR);
                     console.log(status);
@@ -121,7 +124,7 @@
 
                 error: function (jqXHR, status, err) {
                     alert(jqXHR.responseJSON.ModelState[""]);
-                    debugger;
+                    
                     console.log(jqXHR.responseJSON);
                     console.log(jqXHR);
                     console.log(status);
