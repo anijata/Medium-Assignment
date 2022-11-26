@@ -70,7 +70,7 @@
     function getFormData() {
         return $.ajax({
             type: "get",
-            url: "https://localhost:44357/api/reviews/" + $("#Id").val(),
+            url: "https://localhost:44357/api/reviews/assigned/" + $("#Id").val(),
             datatype: "json",
             traditional: "true",
             headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},

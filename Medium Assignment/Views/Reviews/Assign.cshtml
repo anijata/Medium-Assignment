@@ -104,6 +104,13 @@
                 return;
             }
 
+            if ($("#Employees").val().includes($("#Reviewer").val().toString())) {
+                alert("Reviewer cannot be part of selected list of employees.");
+                return;
+            }
+
+            
+
             var model = new ReviewAssignModel();
 
             model.EmployeeIds = $("#Employees").val();
@@ -139,9 +146,8 @@
 
         }
 
-
-
         $(document).ready(function () {
+
             var employees = [];
             getFormData()
                 .done((data) => populateForm(data))

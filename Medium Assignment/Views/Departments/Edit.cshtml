@@ -32,6 +32,19 @@
 @section Scripts {
     <script>
 
+        function DepartmentEditModel() {
+            this.Id = 0;
+            this.Name = "";
+
+        }
+
+        function createFormModel(data) {
+            let model = new DepartmentEditModel();
+            model.Id = data.Id;
+            model.Name = data.Name;
+            return model
+        }
+
         function submitForm() {
 
             $("#form").validate();
@@ -53,7 +66,7 @@
                 },
 
                 error: function (jqXHR, status, err) {
-                    
+
                     alert(jqXHR.responseJSON.ModelState[""]);
 
                     console.log(jqXHR.responseJSON);
@@ -70,9 +83,47 @@
 
         }
 
+        function getFormData() {
+
+            return $.ajax({
+                type: "get",
+                url: "https://localhost:44357/api/departments/" + $("#Id").val(),
+                datatype: "json",
+                traditional: "true",
+                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+
+                error: function (jqXHR, status, err) {
+                    alert(jqXHR.responseJSON.ModelState[""]);
+
+                    console.log(jqXHR.responseJSON);
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err);
+                    alert("Error creating new record.");
+                }
 
 
-        $("#submit").click(submitForm);
+
+
+            });
+        }
+
+        async function populateForm() {
+            let formRequest = await getFormData();
+
+            let model = createFormModel(formRequest);
+            
+            $("#Id").val(model.Id);
+            $("#Name").val(model.Name);
+
+        }
+
+        $(document).ready(function () {
+            populateForm();
+            $("#submit").click(submitForm);
+
+        });
+
 
     </script>
 

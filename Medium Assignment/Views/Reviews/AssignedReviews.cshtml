@@ -6,11 +6,8 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Reviews</h2>
+<h2>Assigned Reviews</h2>
 
-<p>
-    @Html.ActionLink("New Review", "New", "Reviews", null, new { @class = "btn btn-primary" })
-</p>
 
 <table id="table" class="table table-bordered table-hover">
 
@@ -53,14 +50,14 @@
     function getReviews() {
         return $.ajax({
                 type: "get",
-                url: "https://localhost:44357/api/reviews/",
+                url: "https://localhost:44357/api/reviews/assigned/",
                 datatype: "json",
                 traditional: "true",
                 headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
 
                 error: function (jqXHR, status, err) {
                     alert(jqXHR.responseJSON.ModelState[""]);
-                    
+
                     console.log(jqXHR.responseJSON);
                     console.log(jqXHR);
                     console.log(status);
@@ -109,8 +106,8 @@
 
              + rev.ReviewStatus + "</td>";
 
-            
-            
+
+
 
             element += "</tr>";
 

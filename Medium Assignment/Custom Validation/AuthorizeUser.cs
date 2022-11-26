@@ -9,8 +9,7 @@ using System.Web.Routing;
 
 namespace Medium_Assignment.Custom_Validation
 {
-    [AttributeUsage(AttributeTargets.Class)]
-
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class AuthorizeUser : AuthorizeAttribute, IAuthorizationFilter
     {
         protected override bool AuthorizeCore(HttpContextBase httpContext) {

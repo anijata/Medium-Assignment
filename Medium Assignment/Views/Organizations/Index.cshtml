@@ -26,7 +26,7 @@
             <th scope="col">City</th>
             <th scope="col">Status</th>
             <th scope="col">Description</th>
-            @*<th scope="col">Actions</th>*@
+            <th scope="col">Actions</th>
 
         </tr>
 
@@ -50,7 +50,7 @@
 
                 error: function (jqXHR, status, err) {
                     alert(jqXHR.responseJSON.ModelState[""]);
-                    
+
                     console.log(jqXHR.responseJSON);
                     console.log(jqXHR);
                     console.log(status);
@@ -65,31 +65,37 @@
 
     }
 
-    function populateTable(organizations) {
-        for (let i = 0; i < organizations.length; i++) {
-            var element = "<tr>";
-            var org = organizations[i];
-            element += "<td>" + org.Name + "</td>";
-            element += "<td>" + org.PhoneNumber + "</td>";
-            element += "<td>" + org.Email + "</td>";
-            element += "<td>" + org.UserName + "</td>";
+        function populateTable(organizations) {
 
-            if (org.Address2) {
-                element += "<td>" + org.Address1 + ", " + org.Address2 + "</td>";
-            } else {
-                element += "<td>" + org.Address1 + "</td>";
+            for (let i = 0; i < organizations.length; i++) {
+                var element = "<tr>";
+
+                var org = organizations[i];
+                element += "<td>" + org.Name + "</td>";
+                element += "<td>" + org.PhoneNumber + "</td>";
+                element += "<td>" + org.Email + "</td>";
+                element += "<td>" + org.UserName + "</td>";
+
+                if (org.Address2) {
+                    element += "<td>" + org.Address1 + ", " + org.Address2 + "</td>";
+                } else {
+                    element += "<td>" + org.Address1 + "</td>";
+                }
+
+                element += "<td>" + org.Country + "</td>";
+                element += "<td>" + org.State + "</td>";
+                element += "<td>" + org.City + "</td>";
+                element += "<td>" + org.Status + "</td>";
+                element += "<td>" + org.Description + "</td>";
+                element += "<td>"
+                element += "<a href= \"/Organizations/Details/" + org.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Details </a>";
+                element += "<a href= \"/Organizations/Edit/" + org.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\"> Edit </a> </td>";
+                element += "</td>"
+
+                element += "</tr>";
+
+                $('#table > tbody').append(element);
             }
-
-            element += "<td>" + org.Country + "</td>";
-            element += "<td>" + org.State + "</td>";
-            element += "<td>" + org.City + "</td>";
-            element += "<td>" + org.Status + "</td>";
-            element += "<td>" + org.Description + "</td>";
-
-            element += "</tr>";
-
-            $('#table > tbody').append(element);
-        }
 
     }
 

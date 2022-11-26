@@ -53,6 +53,13 @@ namespace Medium_Assignment.Controllers
             return View();
         }
 
+        [AuthorizeUser(Roles = "Employee")]
+        [Route("reviews/assigned")]
+        public ActionResult AssignedReviews()
+        {
+            return View();
+        }
+
         public ActionResult New()
         {
             var viewModel = new ReviewNewViewModel();
@@ -74,7 +81,8 @@ namespace Medium_Assignment.Controllers
 
         }
 
-        public async Task<ActionResult> Submit(int id)
+        [AuthorizeUser(Roles = "Employee")]
+        public ActionResult Submit(int id)
         {
             var viewModel = new ReviewSubmitViewModel
             {

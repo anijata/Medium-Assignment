@@ -33,6 +33,7 @@
             <th scope="col">City</th>
             <th scope="col">EmployeeType</th>
             <th scope="col">Status</th>
+            <th scope="col">Actions</th>
 
         </tr>
     </thead>
@@ -97,6 +98,11 @@
             element += "<td>" + emp.City + "</td>";
             element += "<td>" + emp.EmployeeType + "</td>";
             element += "<td>" + emp.Status + "</td>";
+
+            element += "<td>"
+            element += "<a href= \"/Employees/Details/" + emp.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Details </a>";
+            element += "<a href= \"/Employees/Edit/" + emp.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\"> Edit </a> </td>";
+            element += "</td>"
 
             element += "</tr>";
 

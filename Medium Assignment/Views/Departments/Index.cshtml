@@ -20,6 +20,7 @@
         <tr>
             <th scope="col">Id</th>
             <th scope="col">Name</th>
+            <th scope="col">Actions</th>
 
         </tr>
     </thead>
@@ -62,6 +63,12 @@
             var element = "<tr>";
             element += "<td>" + department.Id + "</td>";
             element += "<td>" + department.Name + "</td>";
+
+
+            element += "<td>"
+            element += "<a href= \"/Departments/Edit/" + department.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\"> Edit </a> </td>";
+            element += "</td>"
+
 
             element += "</tr>";
 

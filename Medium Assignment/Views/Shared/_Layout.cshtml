@@ -43,10 +43,14 @@
                             <li>@Html.ActionLink("Employees", "Index", "Employees")</li>
                         }
 
-                        if (authDetails.IsInRole("OrganizationAdmin")
-                            || authDetails.IsInRole("Employee"))
+                        if (authDetails.IsInRole("OrganizationAdmin"))
                         {
                             <li>@Html.ActionLink("Reviews", "Index", "Reviews")</li>
+                        }
+
+                        if (authDetails.IsInRole("Employee"))
+                        {
+                            <li>@Html.ActionLink("Assigned Reviews", "AssignedReviews", "Reviews")</li>
                         }
 
                     }

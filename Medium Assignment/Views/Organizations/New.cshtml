@@ -282,12 +282,12 @@
                 headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
                 success: function (data) {
                     alert("Posted.");
-                    window.location.href = "https://localhost:44335/api/organizations/";
+                    window.location.href = "https://localhost:44335/organizations/";
 
                 },
 
                 error: function (jqXHR, status, err) {
-                    alert(jqXHR.responseJSON.ModelState[""]);
+                    alert(jqXHR.responseJSON);
                     
                     console.log(jqXHR.responseJSON);
                     console.log(jqXHR);
@@ -308,8 +308,6 @@
 
             jQuery.validator.addMethod("password",
                 function (value, element) {
-                    console.log(value);
-                    console.log(element);
                     return pwregex.test(value);
                 }
                 , "Passwords must be at least 6 characters.Passwords must have at least one non letter or digit character.Passwords must have at least one digit ('0'-'9').Passwords must have at least one uppercase ('A'-'Z').");
