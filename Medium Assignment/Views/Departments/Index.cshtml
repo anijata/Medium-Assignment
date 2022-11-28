@@ -8,7 +8,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Organizations</h2>
+<h2>Departments</h2>
 
 <p>
     @Html.ActionLink("New Department", "New", "Departments", null, new { @class = "btn btn-primary" })
@@ -21,7 +21,6 @@
             <th scope="col">Id</th>
             <th scope="col">Name</th>
             <th scope="col">Actions</th>
-
         </tr>
     </thead>
     <tbody>
@@ -41,7 +40,7 @@
 
                 error: function (jqXHR, status, err) {
                     alert(jqXHR.responseJSON.ModelState[""]);
-                    
+
                     console.log(jqXHR.responseJSON);
                     console.log(jqXHR);
                     console.log(status);
@@ -65,10 +64,12 @@
             element += "<td>" + department.Name + "</td>";
 
 
-            element += "<td>"
-            element += "<a href= \"/Departments/Edit/" + department.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\"> Edit </a> </td>";
-            element += "</td>"
+            element += "<td>";
+            element += "<a href= \"/Departments/Edit/" + department.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\"> Edit </a>";
 
+            element += "<button class= \"btn btn-primary delete\" value= \"" + department.Id + "\"> Delete</button>";
+
+            element += "</td>";
 
             element += "</tr>";
 
@@ -77,17 +78,45 @@
 
     }
 
-    $(document).ready(function () {
+    function deleteRequest(id) {
+        return $.ajax({
+            type: "DELETE",
+            url: "https://localhost:44357/api/departments/" + id,
+            datatype: "json",
+            traditional: "true",
+            headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
 
-        getDepartments()
-            .done((data) => { populateTable(data.Departments);})
-            .done(() => { $("#table").DataTable();});
+            error: function (jqXHR, status, err) {
+                alert(jqXHR.responseJSON.ModelState[""]);
 
-        $(".delete").click(function (event) {
-            if (!confirm("Are you sure you want to delete this organization?")) {
-                event.preventDefault()
+                console.log(jqXHR.responseJSON);
+                console.log(jqXHR);
+                console.log(status);
+                console.log(err);
+                alert("Error getting data.");
+            }
+
+        });
+
+    }
+
+    function deleteButtonHandler() {
+        $('.delete').click(function () {
+            if (confirm("Are you sure you want to delete this department record?")) {
+                deleteRequest($(this).val()).done(() => { window.location.reload(); });
             }
         });
+    }
+
+        $(document).ready(function () {
+
+            getDepartments()
+                .done((data) => { populateTable(data.Departments); })
+                .done(() => { $("#table").DataTable(); })
+                .done(deleteButtonHandler);
+
+        
+
     });
     </script>
 }

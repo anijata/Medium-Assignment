@@ -202,6 +202,7 @@ namespace Medium_Assignment.Models
         public string PhoneNumber { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
         [Display(Name = "Date of Birth")]
         public DateTime DOB { get; set; }
 
@@ -351,15 +352,14 @@ namespace Medium_Assignment.Models
 
         [Required]
         [Display(Name = "Department")]
+        [Range(1, int.MaxValue, ErrorMessage = "Select Department from dropdown.")]
         public int DepartmentId { get; set; }
 
         [Required]
         [Display(Name = "Address field 1")]
         public string Address1 { get; set; }
 
-        [Required]
         [Display(Name = "Address field 2")]
-
         public string Address2 { get; set; }
 
         [Display(Name = "Country")]
@@ -433,7 +433,7 @@ namespace Medium_Assignment.Models
         [Display(Name = "Address field 1")]
         public string Address1 { get; set; }
 
-        [Required]
+        
         [Display(Name = "Address field 2")]
 
         public string Address2 { get; set; }

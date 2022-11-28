@@ -70,9 +70,11 @@
 
 
 
+
+
         <div class="form-group">
             @Html.LabelFor(m => m.DOB)
-            @Html.TextBoxFor(m => m.DOB, new { @class = "form-control text-danger", id = "DOB" })
+            <input type="text" id="DOB" class="datepicker form-control text-danger">
             @Html.ValidationMessageFor(m => m.DOB)
         </div>
 
@@ -88,12 +90,12 @@
             @Html.ValidationMessageFor(m => m.Designation)
         </div>
     </div>
-
-    
+   
     <div class="right">
         <div class="form-group">
             @Html.LabelFor(m => m.DOJ)
-            @Html.TextBoxFor(m => m.DOJ, new { @class = "form-control text-danger", id = "DOJ" })
+            <input type="text" id="DOJ" class="datepicker form-control text-danger">
+
             @Html.ValidationMessageFor(m => m.DOJ)
         </div>
 
@@ -352,9 +354,7 @@
         function submitForm() {
             addValidations();
 
-            $("#form").validate({
-                debug: true
-            });
+            $("#form").validate();
 
 
             if (!$("#form").valid()) {
@@ -414,6 +414,8 @@
         }
 
         $(document).ready(function () {
+            $('.datepicker').datepicker();
+
             populateDepartments().catch(() => { alert("Error retreiving data."); });
             populateCountries().catch(() => { alert("Error retreiving data.");} );
 

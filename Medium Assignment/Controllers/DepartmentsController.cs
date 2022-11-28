@@ -73,19 +73,5 @@ namespace Medium_Assignment.Controllers
         }
 
 
-        //public async Task<ActionResult> Delete(int id)
-        //{
-
-        //    var result = await apiClient.Delete("departments", id);
-
-        //    if (!result)
-        //    {
-        //        // Add error
-        //    }
-
-        //    return RedirectToAction("Index");
-
-
-        //}
     }
 }

@@ -68,7 +68,7 @@
 
         <div class="form-group">
             @Html.LabelFor(m => m.DOB)
-            @Html.TextBoxFor(m => m.DOB, new { @class = "form-control text-danger", id = "DOB" })
+            <input type="text" id="DOB" class="datepicker form-control text-danger">
             @Html.ValidationMessageFor(m => m.DOB)
         </div>
 
@@ -86,7 +86,7 @@
 
         <div class="form-group">
             @Html.LabelFor(m => m.DOJ)
-            @Html.TextBoxFor(m => m.DOJ, new { @class = "form-control text-danger", id = "DOJ" })
+            <input type="text" id="DOJ" class="datepicker form-control text-danger">
             @Html.ValidationMessageFor(m => m.DOJ)
         </div>
 
@@ -473,6 +473,7 @@
         }
 
         $(document).ready(function () {
+            $('.datepicker').datepicker();
             populateForm();
             $("#Countries").change(() => populateStates($("#Countries").val()));
             $("#States").change(() => populateCities($("#States").val()));

@@ -57,7 +57,7 @@
 
                 error: function (jqXHR, status, err) {
                     alert(jqXHR.responseJSON.ModelState[""]);
-                    
+
                     console.log(jqXHR.responseJSON);
                     console.log(jqXHR);
                     console.log(status);
@@ -101,7 +101,8 @@
 
             element += "<td>"
             element += "<a href= \"/Employees/Details/" + emp.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Details </a>";
-            element += "<a href= \"/Employees/Edit/" + emp.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\"> Edit </a> </td>";
+            element += "<a href= \"/Employees/Edit/" + emp.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\"> Edit </a>";
+            element += "<button class= \"btn btn-primary delete\" value= \"" + emp.Id + "\"> Delete</button>";
             element += "</td>"
 
             element += "</tr>";
@@ -111,19 +112,43 @@
 
     }
 
+    function deleteRequest(id) {
+        return $.ajax({
+            type: "DELETE",
+            url: "https://localhost:44357/api/employees/" + id,
+            datatype: "json",
+            traditional: "true",
+            headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+
+            error: function (jqXHR, status, err) {
+                alert(jqXHR.responseJSON.ModelState[""]);
+
+                console.log(jqXHR.responseJSON);
+                console.log(jqXHR);
+                console.log(status);
+                console.log(err);
+                alert("Error getting data.");
+            }
+
+        });
+
+    }
+
+    function deleteButtonHandler() {
+        $('.delete').click(function () {
+            if (confirm("Are you sure you want to delete this employee record?")) {
+                deleteRequest($(this).val()).done(() => { window.location.reload(); });
+            }
+        });
+    }
+
 
     $(document).ready(function () {
 
         getEmployees()
             .done((data) => { populateTable(data.Employees); })
-            .done(() => { $("#table").DataTable(); });
+            .done(() => { $("#table").DataTable(); }).done(deleteButtonHandler);
 
-        $(".delete").click(function (event) {
-            if (!confirm("Are you sure you want to delete this employee?")) {
-                event.preventDefault()
-            }
-
-        });
     });
 
 
