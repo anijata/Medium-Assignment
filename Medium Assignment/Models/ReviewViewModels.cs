@@ -77,6 +77,36 @@ namespace Medium_Assignment.Models
         public string Description { get; set; }
     }
 
+    public class ReviewEditViewModel {
+
+        [Required]
+        public int Id { get; set; }
+
+        [Required]
+        public string Agenda { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Review Cycle Start Date")]
+        public DateTime ReviewCycleStartDate { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Review Cycle End Date")]
+        public DateTime ReviewCycleEndDate { get; set; }
+
+        [Required]
+        [Display(Name = "Min Rate")]
+        public decimal MinRate { get; set; }
+
+        [Required]
+        [Display(Name = "Max Rate")]
+        public decimal MaxRate { get; set; }
+
+        [Required]
+        public string Description { get; set; }
+    }
+
     public class ReviewIndexViewModel {
         public List<ReviewGetViewModel> Reviews;
 

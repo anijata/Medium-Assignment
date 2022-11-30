@@ -259,11 +259,11 @@ namespace Medium_Assignment.Models
 
 
         [Display(Name = "State")]
-        [Range(1, int.MaxValue, ErrorMessage = "Select Country from dropdown.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Select State from dropdown.")]
         public int StateId { get; set; }
 
         [Display(Name = "City")]
-        [Range(1, int.MaxValue, ErrorMessage = "Select Country from dropdown.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Select City from dropdown.")]
         public int CityId { get; set; }
 
         [Required]

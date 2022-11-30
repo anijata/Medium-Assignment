@@ -1,17 +1,29 @@
 ﻿
 @using Medium_Assignment.Models
 
-@model Medium_Assignment.Models.ReviewNewViewModel
+@model Medium_Assignment.Models.ReviewEditViewModel
 
 
 @{AuthDetails authDetails = (AuthDetails)Context.Session["AuthDetails"];}
 
 
 @{
-    ViewBag.Title = "Create Review";
+    ViewBag.Title = "Edit";
 }
 
+<h2>Edit</h2>
+
 <style>
+
+    .left {
+        float: left;
+        width: 50%;
+    }
+
+    .right {
+        float: right;
+        width: 50%;
+    }
 
     .field-validation-error {
         color: #a94442;
@@ -19,10 +31,10 @@
     }
 </style>
 
-<h2>Create Review</h2>
-
 <form id="form">
     @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(m => m.Id)
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
@@ -35,14 +47,12 @@
     <div class="form-group">
         @Html.LabelFor(m => m.ReviewCycleStartDate)
         <input type="text" id="ReviewCycleStartDate" class="datepicker form-control text-danger">
-        @*@Html.TextBoxFor(m => m.ReviewCycleStartDate, new { @class = "form-control text-danger", id = "ReviewCycleStartDate" })*@
         @Html.ValidationMessageFor(m => m.ReviewCycleStartDate)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.ReviewCycleEndDate)
         <input type="text" id="ReviewCycleEndDate" class="datepicker form-control text-danger">
-        @*@Html.TextBoxFor(m => m.ReviewCycleEndDate, new { @class = "form-control text-danger", id = "ReviewCycleEndDate" })*@
         @Html.ValidationMessageFor(m => m.ReviewCycleEndDate)
     </div>
 
@@ -70,37 +80,83 @@
 
 </form>
 
-<div class="right">
+<div>
     <button type="submit" , id="submit" class="btn btn-primary">
         Save
     </button>
 </div>
 
-
-
-
 @section Scripts {
 
     <script>
-        function ReviewNewModel() {
+
+
+
+        function ReviewEditModel() {
             this.Agenda = "";
             this.ReviewCycleStartDate = "";
             this.ReviewCycleEndDate = "";
-            this.MinRate = "";
-            this.MaxRate = "";
+            this.MinRate = 0;
+            this.MaxRate = 0;
             this.Description = "";
         }
 
-        function submitForm() {
-            $("#form").validate({
-                debug: true
+        function createModel(data) {
+            let model = new ReviewEditModel();
+            model.Agenda = data.Agenda;
+            model.ReviewCycleStartDate = data.ReviewCycleStartDate;
+            model.ReviewCycleEndDate = data.ReviewCycleEndDate;
+            model.MinRate = data.MinRate;
+            model.MaxRate = data.MaxRate;
+            model.Description = data.Description;
+
+            return model;
+        }
+
+        function populateForm(data) {
+            let model = createModel(data);
+            $("#Agenda").val(model.Agenda);
+            $("#ReviewCycleStartDate").val(model.ReviewCycleStartDate);
+            $("#ReviewCycleEndDate").val(model.ReviewCycleEndDate);
+            $("#MinRate").val(model.MinRate);
+            $("#MaxRate").val(model.MaxRate);
+            $("#Description").val(model.Description);
+
+        }
+
+        function getFormData() {
+            return $.ajax({
+                type: "get",
+                url: "https://localhost:44357/api/reviews/" + $("#Id").val(),
+                datatype: "json",
+                traditional: "true",
+                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+
+                error: function (jqXHR, status, err) {
+                    alert(jqXHR.responseJSON.ModelState[""]);
+
+                    console.log(jqXHR.responseJSON);
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err);
+                    alert("Error creating new record.");
+                }
+
+
+
+
             });
+        }
+
+        function submitForm() {
+            $("#form").validate();
 
             if (!$("#form").valid()) {
                 return;
             }
 
-            var model = new ReviewNewModel();
+
+            var model = new ReviewEditModel();
 
             model.Agenda = $("#Agenda").val();
             model.ReviewCycleStartDate = $("#ReviewCycleStartDate").val();
@@ -109,23 +165,24 @@
             model.MaxRate = $("#MaxRate").val();
             model.Description = $("#Description").val();
 
-
             $.ajax({
-                type: "post",
-                url: "https://localhost:44357/api/reviews/new",
+                type: "put",
+                url: "https://localhost:44357/api/reviews/edit/" + $("#Id").val(),
                 data: model,
                 datatype: "json",
                 traditional: "true",
                 headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
                 success: function (data) {
+                    debugger;
                     alert("Posted.");
                     window.location.href = "https://localhost:44335/reviews/";
 
                 },
 
                 error: function (jqXHR, status, err) {
+                    debugger;
                     alert(jqXHR.responseJSON.ModelState[""]);
-                    
+
                     console.log(jqXHR.responseJSON);
                     console.log(jqXHR);
                     console.log(status);
@@ -142,10 +199,12 @@
 
         $(document).ready(function () {
             $('.datepicker').datepicker();
+
+            getFormData()
+                .done((data) => { populateForm(data) });
+
             $("#submit").click(submitForm);
         });
 
-
     </script>
-
 }

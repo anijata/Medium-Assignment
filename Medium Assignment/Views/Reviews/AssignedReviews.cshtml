@@ -33,6 +33,10 @@
                 Status
             </th>
 
+            <th>
+                Actions
+            </th>
+
 
         </tr>
     </thead>
@@ -79,34 +83,36 @@
 
             element += "<td>" + rev.Id + "</td>";
             element += "<td>" + rev.Agenda + "</td>";
-            if (rev.Reviewer && rev.Employee) {
+
+
+            if (rev.Reviewer) {
                 element += "<td>" + rev.Reviewer + "</td>";
+
+            } else {
+                element += "<td>Unassigned</td>";
+
+
+            }
+
+            if (rev.Employee) {
                 element += "<td>" + rev.Employee + "</td>";
             } else {
                 element += "<td>Unassigned</td>";
-                element += "<td>Unassigned</td>";
-
             }
 
             element += "<td>"
-
-            if (rev.ReviewStatus == "New") {
-
-                element += "<a href= \"/Reviews/Assign/" + rev.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >New </a>";
-
-            } else if (rev.ReviewStatus == "Assigned") {
-
-                element += "<a href= \"/Reviews/Submit/" + rev.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Assigned </a>";
-
-            } else if (rev.ReviewStatus == "Submitted") {
-                element += "Submitted";
-            }
-
+            element += rev.ReviewStatus;
             element += "</td>"
 
-             + rev.ReviewStatus + "</td>";
+            element += "<td>"
 
+            if (rev.ReviewStatus == "Assigned") {
 
+                element += "<a href= \"/Reviews/Submit/" + rev.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Submit </a>";
+
+            } 
+
+            element += "</td>"
 
 
             element += "</tr>";
@@ -120,12 +126,6 @@
         getReviews()
             .done((data) => { populateTable(data.Reviews);})
             .done(() => { $("#table").DataTable();});
-
-        $(".delete").click(function (event) {
-            if (!confirm("Are you sure you want to delete this organization?")) {
-                event.preventDefault()
-            }
-        });
     });
     </script>
 

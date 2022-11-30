@@ -68,6 +68,15 @@ namespace Medium_Assignment.Controllers
 
         }
 
+        public ActionResult Edit(int id) {
+            var viewModel = new ReviewEditViewModel { 
+                Id = id
+            };
+
+            return View(viewModel);
+
+        }
+
         public ActionResult Assign(int id)
         {
             var viewModel = new ReviewAssignViewModel

@@ -20,6 +20,12 @@
         float: right;
         width: 50%;
     }
+
+    .field-validation-error {
+        color: #a94442;
+        background-color: #fff;
+    }
+
 </style>
 
 <h2>New Employee</h2>
@@ -67,10 +73,6 @@
             @Html.PasswordFor(m => m.Password, new { @class = "form-control text-danger", id = "Password" })
             @Html.ValidationMessageFor(m => m.Password)
         </div>
-
-
-
-
 
         <div class="form-group">
             @Html.LabelFor(m => m.DOB)
@@ -164,15 +166,18 @@
             @Html.ValidationMessageFor(m => m.Status)
 
         </div>
+
     </div>
 
     
 </form>
 
+<div class="right">
+    <button type="submit" , id="submit" class="btn btn-primary">
+        Save
+    </button>
+</div>
 
-<button type="submit" id="submit" class="btn btn-primary">
-    Save
-</button>
 
 
 @section Scripts {

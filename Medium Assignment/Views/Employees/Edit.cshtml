@@ -20,6 +20,12 @@
         float: right;
         width: 50%;
     }
+
+    .field-validation-error {
+        color: #a94442;
+        background-color: #fff;
+    }
+
 </style>
 
 <h2>Edit Employee</h2>
@@ -159,6 +165,8 @@
             @Html.ValidationMessageFor(m => m.Status)
 
         </div>
+
+
     </div>
 
     
@@ -166,10 +174,12 @@
    
 </form>
 
+<div class="right">
+    <button type="submit" , id="submit" class="btn btn-primary">
+        Save
+    </button>
+</div>
 
-<button type="submit" id="submit" class="btn btn-primary">
-    Save
-</button>
 
 
 @section Scripts {

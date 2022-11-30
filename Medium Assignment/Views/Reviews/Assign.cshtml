@@ -12,6 +12,13 @@
 
 <h2>Assign Review</h2>
 
+<style>
+    .field-validation-error {
+        color: #a94442;
+        background-color: #fff;
+    }
+    </style>
+
 <form id="form">
     @Html.AntiForgeryToken()
 
@@ -96,7 +103,11 @@
 
         function submitForm() {
             $("#form").validate({
-                debug: true
+                messages: {
+                    Reviewer: {
+                        ReviewerNotInEmployees: "Selected Reviewer must not be in the selected list of employees."
+                    }
+                }
             });
 
 
@@ -109,7 +120,6 @@
                 return;
             }
 
-            
 
             var model = new ReviewAssignModel();
 
@@ -146,8 +156,19 @@
 
         }
 
-        $(document).ready(function () {
+        function addValidations() {
+            $("#form").rules('add',
+                {
+                    Reviewer: {
+                        ReviewerNotInEmployees: function (element) {
+                            return !$("#Employees").val().includes($("#Reviewer").val().toString())
+                        }
+                    }
+                });
+        }
 
+        $(document).ready(function () {
+            addValidations();
             var employees = [];
             getFormData()
                 .done((data) => populateForm(data))

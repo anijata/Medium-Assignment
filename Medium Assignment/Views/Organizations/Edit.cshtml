@@ -19,6 +19,11 @@
         float: right;
         width: 50%;
     }
+
+    .field-validation-error {
+        color: #a94442;
+        background-color: #fff;
+    }
 </style>
 
 <h2>Edit Organization</h2>
@@ -113,17 +118,18 @@
             @Html.TextAreaFor(m => m.Description, new { @class = "form-control text-danger", id = "Description" })
             @Html.ValidationMessageFor(m => m.Description)
         </div>
+
+
+
     </div>
-
-   
-
-   
 
 </form>
 
-<button type="submit" , id="submit" class="btn btn-primary">
-    Save
-</button>
+<div class="right">
+    <button type="submit" , id="submit" class="btn btn-primary">
+        Save
+    </button>
+</div>
 
 
 
@@ -198,7 +204,7 @@
                 },
 
                 error: function (jqXHR, status, err) {
-                    
+
                     console.log(jqXHR);
                     console.log(status);
                     console.log(err);
@@ -228,7 +234,7 @@
                 },
 
                 error: function (jqXHR, status, err) {
-                    
+
                     console.log(jqXHR);
                     console.log(status);
                     console.log(err);
@@ -251,7 +257,7 @@
 
                 error: function (jqXHR, status, err) {
                     alert(jqXHR.responseJSON.ModelState[""]);
-                    
+
                     console.log(jqXHR.responseJSON);
                     console.log(jqXHR);
                     console.log(status);
@@ -298,7 +304,7 @@
             await statesRequest;
 
             var citiesRequest = populateCities(model.StateId);
-            
+
             await citiesRequest;
 
             $("#Name").val(model.Name);
@@ -338,6 +344,7 @@
             model.Status = $("[name='Status']:checked").val();
             model.Description = $("#Description").val();
 
+            debugger;
 
             $.ajax({
                 type: "put",
@@ -347,12 +354,13 @@
                 traditional: "true",
                 headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
                 success: function (data) {
+                    debugger;
                     alert("Posted.");
                     window.location.href = "https://localhost:44335/organizations/";
                 },
 
                 error: function (jqXHR, status, err) {
-                    
+                    debugger;
                     alert(jqXHR.responseJSON.ModelState[""]);
 
                     console.log(jqXHR.responseJSON);
