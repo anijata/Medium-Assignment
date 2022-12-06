@@ -124,6 +124,16 @@
                 },
 
                 error: function (jqXHR, status, err) {
+
+                    switch (jqXHR.status) {
+                        case 404:
+                            //alert("Resource not available.");
+                            window.location.href = "https://localhost:44335/home/NotFound";
+                            break;
+                        case 500:
+                            window.location.href = "https://localhost:44335/home/InternalServerError";
+                    }
+
                     alert(jqXHR.responseJSON.ModelState[""]);
                     
                     console.log(jqXHR.responseJSON);

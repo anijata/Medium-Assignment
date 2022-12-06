@@ -55,28 +55,6 @@
 
                     }
 
-                    @*
-
-        @if (User.IsInRole("SuperAdmin"))
-        {
-            <li>@Html.ActionLink("Organizations", "Index", "Organization")</li>
-
-        }
-
-        @if (User.IsInRole("OrganizationAdmin"))
-        {
-            <li>@Html.ActionLink("Departments", "Index", "Department")</li>
-            <li>@Html.ActionLink("Employees", "Index", "Employee")</li>
-        }
-
-        @if (User.IsInRole("OrganizationAdmin") || User.IsInRole("Employee"))
-        {
-            <li>@Html.ActionLink("Reviews", "Index", "Review")</li>
-        }
-
-                    *@
-
-
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Medium_Assignment.Models
 {
-    public class OrganizationGetViewModel : WebAPIClientBindingModel
+    public class OrganizationGetViewModel : APIBindingModel
     {
         [Required]
         public int Id { get; set; }
@@ -70,7 +70,7 @@ namespace Medium_Assignment.Models
         public string Description { get; set; }
     }
 
-    public class OrganizationPostViewModel : WebAPIClientBindingModel
+    public class OrganizationPostViewModel : APIBindingModel
     {
         [Required]
         [MaxLength(50)]
@@ -122,7 +122,7 @@ namespace Medium_Assignment.Models
 
     }
 
-    public class OrganizationListViewModel : WebAPIClientBindingModel
+    public class OrganizationListViewModel : APIBindingModel
     {
         public List<OrganizationGetViewModel> Organizations { get; set; }
     }
@@ -336,7 +336,7 @@ namespace Medium_Assignment.Models
         public string Description { get; set; }
     }
 
-    public class OrganizationDeleteViewModel : WebAPIClientBindingModel
+    public class OrganizationDeleteViewModel : APIBindingModel
     {
     }
 }

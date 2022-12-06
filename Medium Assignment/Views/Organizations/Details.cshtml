@@ -108,6 +108,25 @@
     @section Scripts {
 
         <script>
+
+        function errorHandler(jqXHR, status, err) {
+            switch (jqXHR.status) {
+                case 401:
+                    window.location.href = "https://localhost:44335/error/NotAuthorized";
+                    break;
+                case 404:
+                    window.location.href = "https://localhost:44335/error/NotFound";
+                    break;
+                case 500:
+                    window.location.href = "https://localhost:44335/error/InternalServerError";
+                    break;
+                default:
+                    alert(jqXHR.responseJSON.Message);
+                    break;
+            }
+
+        }
+
         function OrganizationDetailsModel(data) {
             this.Name = data.Name;
             this.PhoneNumber = data.PhoneNumber;
@@ -157,13 +176,7 @@
 
                 },
 
-                error: function (jqXHR, status, err) {
-                    alert("Not authorized")
-
-                    console.log(jqXHR);
-                    console.log(status);
-                    console.log(err);
-                }
+                error: errorHandler
 
 
 

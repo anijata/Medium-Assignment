@@ -20,12 +20,17 @@ namespace Medium_Assignment.Custom_Validation
 
             AuthDetails authDetails = (AuthDetails)httpContext.Session["AuthDetails"];
 
+            if (Roles.Length == 0)
+            {
+                return true;
+            }
+
             return authDetails.Roles.Contains(Roles);
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext) {
             filterContext.Result = new RedirectToRouteResult(
-           new RouteValueDictionary{{ "controller", "Home" },
+           new RouteValueDictionary{{ "controller", "Error" },
                                           { "action", "NotAuthorized" }});
         }
 

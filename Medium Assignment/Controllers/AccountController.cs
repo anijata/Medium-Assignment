@@ -11,51 +11,41 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Medium_Assignment.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Medium_Assignment.Custom_Validation;
 
 namespace Medium_Assignment.Controllers
 {
     public class AccountController : Controller
     {
-        public string AuthToken
+        public AuthDetails AuthDetails
         {
             get
             {
-                if (HttpContext.Session["AuthToken"] != null)
-                    return HttpContext.Session["AuthToken"].ToString();
-                return "";
+                if (HttpContext.Session["AuthDetails"] != null)
+                    return (AuthDetails)HttpContext.Session["AuthDetails"];
+                return new AuthDetails();
             }
-            set { AuthToken = value; }
-        }
-        public bool IsAuthenticated
-        {
-            get
-            {
-                if (HttpContext.Session["IsAuthenticated"] != null)
-                    return (bool) HttpContext.Session["IsAuthenticated"];
-
-                return false;
-            }
-            set { IsAuthenticated = value; }
-        }
-        public string UserName
-        {
-            get
-            {
-                if (HttpContext.Session["UserName"] != null)
-                    return HttpContext.Session["UserName"].ToString();
-                return "";
-            }
-            set { UserName = value; }
+            set { AuthDetails = value; }
         }
 
         public AccountController()
         {
         }
 
+        [AuthorizeUser]
+        public ActionResult Index() {
+
+            return View();
+        }
+
         //
         // GET: /Account/Login
+        [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (AuthDetails.IsAuthenticted) {
+                return RedirectToAction("Index");
+            }
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -142,6 +132,7 @@ namespace Medium_Assignment.Controllers
 
         //
         // GET: /Account/LoginOff
+        [AuthorizeUser]
         public ActionResult LogOff(string returnUrl)
         {
             if (HttpContext.Session["AuthDetails"] != null)
@@ -149,7 +140,21 @@ namespace Medium_Assignment.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [AuthorizeUser]
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
 
+        [AuthorizeUser]
+        public ActionResult ChangePasswordConfirmation()
+        {
+            if (HttpContext.Session["AuthDetails"] != null)
+                HttpContext.Session.Remove("AuthDetails");
+
+            return View();
+
+        }
 
         protected override void Dispose(bool disposing)
         {

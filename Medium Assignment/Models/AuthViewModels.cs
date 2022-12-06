@@ -17,7 +17,7 @@ namespace Medium_Assignment.Models
 
     }
 
-    public class AuthTokenViewModel: WebAPIClientBindingModel
+    public class AuthTokenViewModel: APIBindingModel
     { 
 
         public string AccessToken { get; set; }
@@ -31,7 +31,7 @@ namespace Medium_Assignment.Models
 
     }
 
-    public class AuthRolesViewModel: WebAPIClientBindingModel
+    public class AuthRolesViewModel: APIBindingModel
     {        
         public List<string> Roles { get; set; }
     }

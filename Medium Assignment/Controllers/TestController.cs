@@ -39,17 +39,8 @@ namespace Medium_Assignment.Controllers
     }
 
 
-    [AuthorizeUser(Roles = "SuperAdmin")]
     public class TestController : Controller
     {
-        public string AuthToken {
-            get {
-                if (HttpContext.Session["AuthToken"] != null)
-                    return HttpContext.Session["AuthToken"].ToString();
-                return "";
-            }
-            set {; }
-        }
 
         public ActionResult New() {
 
@@ -60,10 +51,6 @@ namespace Medium_Assignment.Controllers
 
         public ActionResult Index()
         {
-            // var client = new WebApiClient(AuthToken);
-
-            //var result = await client.Get<TestGetViewModel>("test", 23);
-            
             return View();
         }
 

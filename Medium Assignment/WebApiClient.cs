@@ -74,7 +74,7 @@ namespace Medium_Assignment
             return content;
         }
 
-        public async Task<BindingModel> Get<BindingModel>(string resourcePath) where BindingModel: WebAPIClientBindingModel
+        public async Task<BindingModel> Get<BindingModel>(string resourcePath) where BindingModel: APIBindingModel
         {
 
 
@@ -122,7 +122,7 @@ namespace Medium_Assignment
         }
 
 
-        public async Task<BindingModel> Get<BindingModel>(string resourcePath, int id) where BindingModel : WebAPIClientBindingModel
+        public async Task<BindingModel> Get<BindingModel>(string resourcePath, int id) where BindingModel : APIBindingModel
         
         {
 
@@ -169,7 +169,7 @@ namespace Medium_Assignment
 
         }
 
-        public async Task<BindingModel> Post<BindingModel>(string resourcePath, BindingModel model) where BindingModel : WebAPIClientBindingModel
+        public async Task<BindingModel> Post<BindingModel>(string resourcePath, BindingModel model) where BindingModel : APIBindingModel
         {
             var client = new HttpClient();
             
@@ -209,7 +209,7 @@ namespace Medium_Assignment
             return model;
         }
 
-        public async Task<BindingModel> Put<BindingModel>(string resourcePath, int id, BindingModel model) where BindingModel : WebAPIClientBindingModel
+        public async Task<BindingModel> Put<BindingModel>(string resourcePath, int id, BindingModel model) where BindingModel : APIBindingModel
 
         {
             var client = new HttpClient();
@@ -253,7 +253,7 @@ namespace Medium_Assignment
 
         }
 
-        public async Task<BindingModel> Delete<BindingModel>(string resourcePath, int id) where BindingModel : WebAPIClientBindingModel
+        public async Task<BindingModel> Delete<BindingModel>(string resourcePath, int id) where BindingModel : APIBindingModel
 
         {
             BindingModel model = default(BindingModel);

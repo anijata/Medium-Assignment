@@ -8,12 +8,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Medium_Assignment.Models
 {
-    public class DepartmentListViewModel : WebAPIClientBindingModel
+    public class DepartmentListViewModel : APIBindingModel
     {
         public List<DepartmentGetViewModel> Departments { get; set; }
     }
 
-    public class DepartmentGetViewModel : WebAPIClientBindingModel
+    public class DepartmentGetViewModel : APIBindingModel
     {
         [Required]
         public int Id { get; set; }
@@ -23,13 +23,13 @@ namespace Medium_Assignment.Models
 
     }
 
-    public class DepartmentPostViewModel : WebAPIClientBindingModel
+    public class DepartmentPostViewModel : APIBindingModel
     {
         [Required]
         public string Name { get; set; }
     }
 
-    public class DepartmentPutViewModel : WebAPIClientBindingModel
+    public class DepartmentPutViewModel : APIBindingModel
     {
 
         [Required]

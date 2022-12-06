@@ -136,6 +136,25 @@
 @section Scripts {
 
     <script>
+
+        function errorHandler(jqXHR, status, err) {
+            switch (jqXHR.status) {
+                case 401:
+                    window.location.href = "https://localhost:44335/error/NotAuthorized";
+                    break;
+                case 404:
+                    window.location.href = "https://localhost:44335/error/NotFound";
+                    break;
+                case 500:
+                    window.location.href = "https://localhost:44335/error/InternalServerError";
+                    break;
+                default:
+                    alert(jqXHR.responseJSON.Message);
+                    break;
+            }
+
+        }
+
         function OrganizationEditModel() {
             this.Name = "";
             this.PhoneNumber = "";
@@ -176,6 +195,8 @@
                     }
                 },
 
+                error: errorHandler
+
 
 
 
@@ -203,12 +224,7 @@
                     }
                 },
 
-                error: function (jqXHR, status, err) {
-
-                    console.log(jqXHR);
-                    console.log(status);
-                    console.log(err);
-                }
+                error: errorHandler
 
 
 
@@ -233,12 +249,7 @@
 
                 },
 
-                error: function (jqXHR, status, err) {
-
-                    console.log(jqXHR);
-                    console.log(status);
-                    console.log(err);
-                }
+                error: errorHandler
 
 
 
@@ -255,15 +266,7 @@
                 traditional: "true",
                 headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
 
-                error: function (jqXHR, status, err) {
-                    alert(jqXHR.responseJSON.ModelState[""]);
-
-                    console.log(jqXHR.responseJSON);
-                    console.log(jqXHR);
-                    console.log(status);
-                    console.log(err);
-                    alert("Error creating new record.");
-                }
+                error: errorHandler
 
 
 
@@ -344,7 +347,6 @@
             model.Status = $("[name='Status']:checked").val();
             model.Description = $("#Description").val();
 
-            debugger;
 
             $.ajax({
                 type: "put",
@@ -354,24 +356,11 @@
                 traditional: "true",
                 headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
                 success: function (data) {
-                    debugger;
                     alert("Posted.");
                     window.location.href = "https://localhost:44335/organizations/";
                 },
 
-                error: function (jqXHR, status, err) {
-                    debugger;
-                    alert(jqXHR.responseJSON.ModelState[""]);
-
-                    console.log(jqXHR.responseJSON);
-                    console.log(jqXHR);
-                    console.log(status);
-                    console.log(err);
-                    alert("Error creating new record.");
-                }
-
-
-
+                error: errorHandler
 
             });
 

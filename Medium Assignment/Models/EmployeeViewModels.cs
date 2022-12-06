@@ -8,11 +8,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Medium_Assignment.Models
 {
-    public class EmployeeListViewModel : WebAPIClientBindingModel
+    public class EmployeeListViewModel : APIBindingModel
     {
         public List<EmployeeGetViewModel> Employees { get; set; }
     }
-    public class EmployeeGetViewModel : WebAPIClientBindingModel
+    public class EmployeeGetViewModel : APIBindingModel
     {
 
         [Required]
@@ -100,7 +100,7 @@ namespace Medium_Assignment.Models
 
     }
 
-    public class EmployeePostViewModel : WebAPIClientBindingModel
+    public class EmployeePostViewModel : APIBindingModel
     {
 
         [Required]
@@ -175,7 +175,7 @@ namespace Medium_Assignment.Models
 
     }
 
-    public class EmployeePutViewModel : WebAPIClientBindingModel
+    public class EmployeePutViewModel : APIBindingModel
     {
 
         [Required]

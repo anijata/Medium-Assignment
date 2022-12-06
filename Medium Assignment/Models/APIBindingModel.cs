@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Net;
 namespace Medium_Assignment.Models
 {
-    public abstract class WebAPIClientBindingModel
+    public abstract class APIBindingModel
     {
 
         public bool IsSuccess { get; set; }

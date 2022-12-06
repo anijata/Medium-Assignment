@@ -6,28 +6,27 @@ using System.Web.Mvc;
 
 namespace Medium_Assignment.Controllers
 {
-    public class HomeController : Controller
+    public class ErrorController : Controller
     {
-        public ActionResult Index()
+        // GET: Error
+        //public ActionResult Index()
+        //{
+        //    return View();
+        //}
+
+        public ActionResult NotAuthorized()
         {
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult InternalServerError()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult NotFound()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
-
-
-
     }
 }
