@@ -109,25 +109,19 @@ namespace Medium_Assignment.Controllers
 
             HttpContext.Session["AuthDetails"] = authDetails;
 
+
+            HttpCookie cookie = new HttpCookie("token", authDetails.AccessToken);
+            cookie.Expires = DateTime.Now.AddDays(1);
+
+
+            Response.Cookies.Add(cookie);
+
             //HttpContext.Session["AuthToken"] = token;
             //HttpContext.Session["IsAuthenticated"] = true;
             //HttpContext.Session["UserName"] = model.UserName;
 
             return RedirectToLocal(returnUrl);
 
-            //switch (result)
-            //{
-            //    case SignInStatus.Success:
-            //        return RedirectToLocal(returnUrl);
-            //    case SignInStatus.LockedOut:
-            //        return View("Lockout");
-            //    case SignInStatus.RequiresVerification:
-            //        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-            //    case SignInStatus.Failure:
-            //    default:
-            //        ModelState.AddModelError("", "Invalid login attempt.");
-            //        return View(model);
-            //}
         }
 
         //
@@ -137,6 +131,11 @@ namespace Medium_Assignment.Controllers
         {
             if (HttpContext.Session["AuthDetails"] != null)
                 HttpContext.Session.Remove("AuthDetails");
+
+            var cookie = Request.Cookies["token"];
+            cookie.Expires = DateTime.Now.AddDays(-1);
+            Response.Cookies.Add(cookie);
+
             return RedirectToAction("Index", "Home");
         }
 

@@ -1,35 +1,73 @@
 ﻿
+@using Medium_Assignment.Models
+
+@{AuthDetails authDetails = (AuthDetails)Context.Session["AuthDetails"];}
+
+
+
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
 
-<div class="container">
-    <h3>Toast Example</h3>
-    <p>A toast is like an alert box that is only shown for a couple of seconds when something happens (i.e. when a user clicks on a button, submits a form, etc.).</p>
-    <p>In this example, we use a button to show the toast message.</p>
-
-    <button type="button" class="btn btn-primary" id="myBtn">Show Toast</button>
-
-    <div class="toast">
-        <div class="toast-header">
-            Toast Header
-        </div>
-        <div class="toast-body">
-            Some text inside the toast body
-        </div>
-    </div>
-</div>
-
 @section Scripts {
-    
+
     <script>
-        $(document).ready(function () {
-            $("#myBtn").click(function () {
-                $('.toast').toast('show');
+
+
+        function getCookieValue(key) {
+            let kvps = document.cookie.split(';');
+
+            for (let i = 0; i < kvps.length; i++) {
+                let k = kvps[i].split('=')[0];
+                let v = kvps[i].split('=')[1];
+
+                if (k == key) {
+                    return v;
+                }
+
+            }
+
+
+        }
+
+        function errorHandler(jqXHR, status, err) {
+            switch (jqXHR.status) {
+                case 401:
+                    //window.location.href = "https://localhost:44335/error/NotAuthorized";
+                    break;
+                case 404:
+                    window.location.href = "https://localhost:44335/error/NotFound";
+                    break;
+                case 500:
+                    window.location.href = "https://localhost:44335/error/InternalServerError";
+                    break;
+                default:
+                    alert(jqXHR.responseJSON.Message);
+                    break;
+            }
+
+        }
+
+        function getFormData() {
+
+            return $.ajax({
+                type: "get",
+                url: "https://localhost:44357/api/organizations/",
+                datatype: "json",
+                traditional: "true",
+                headers: { "Authorization": "Bearer " + getCookieValue('token')},
+                error: errorHandler
             });
+        }
+
+        $(document).ready(function () {
+            //console.log(document.cookie);
+            console.log(getCookieValue('token'));
+            console.log('@authDetails.AccessToken');
+            getFormData().done((data) => { console.log(data); });
         });
     </script>
-    
+
 }

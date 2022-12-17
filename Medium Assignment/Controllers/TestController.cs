@@ -38,7 +38,7 @@ namespace Medium_Assignment.Controllers
 
     }
 
-
+    [AuthorizeUser]
     public class TestController : Controller
     {
 
@@ -52,6 +52,21 @@ namespace Medium_Assignment.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+
+        public ActionResult Flush() {
+            var requestCookies = Request.Cookies;
+            var responseCookies = Response.Cookies;
+
+            foreach (var key in Request.Cookies.AllKeys) {
+                var cookie = Request.Cookies[key];
+                cookie.Expires = DateTime.Now;
+                cookie.Expires.AddDays(-1);
+                responseCookies.Add(cookie);
+            }
+
+            return RedirectToAction("Index");
         }
 
         

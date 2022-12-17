@@ -22,3 +22,14 @@ select,
 textarea {
     max-width: 280px;
 }
+
+body {
+    /*background-image: url("images/cool-background.png");*/
+    /*background-repeat: repeat-x repeat-y;*/
+    background-color: #cdeefd
+}
+
+table {
+
+    background-color: white
+}

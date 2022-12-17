@@ -137,196 +137,35 @@
 
     <script>
 
-        function errorHandler(jqXHR, status, err) {
-            switch (jqXHR.status) {
-                case 401:
-                    window.location.href = "https://localhost:44335/error/NotAuthorized";
-                    break;
-                case 404:
-                    window.location.href = "https://localhost:44335/error/NotFound";
-                    break;
-                case 500:
-                    window.location.href = "https://localhost:44335/error/InternalServerError";
-                    break;
-                default:
-                    alert(jqXHR.responseJSON.Message);
-                    break;
-            }
-
-        }
-
-        function OrganizationEditModel() {
-            this.Name = "";
-            this.PhoneNumber = "";
-            this.Email = "";
-            this.UserName = "";
-            this.Address1 = "";
-            this.Address2 = "";
-            this.CountryId = "";
-            this.StateId = "";
-            this.CityId = "";
-            this.Status = "";
-            this.Description = "";
-
-        }
-
-        function populateCountries() {
-            return $.ajax({
-                type: "get",
-                url: "https://localhost:44357/api/resources/countries/",
-                datatype: "json",
-                traditional: "true",
-
-                success: function (data) {
-
-                    $("#Countries").empty();
-                    $("#Countries").append("<option value=0> Select Country </option>");
-
-                    $("#States").empty();
-                    $("#States").append("<option value=0> Select State </option>");
-
-                    $("#Cities").empty();
-                    $("#Cities").append("<option value=0> Select City </option>");
-
-
-                    for (var i = 0; i < data.length; i++) {
-                        $("#Countries").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
-
-                    }
-                },
-
-                error: errorHandler
-
-
-
-
-            });
-
-        }
-
-        function populateStates(countryId) {
-            return $.ajax({
-                type: "get",
-                url: "https://localhost:44357/api/resources/states/" + countryId,
-                datatype: "json",
-                traditional: "true",
-                success: function (data) {
-                    $("#States").empty();
-                    $("#States").append("<option value=0> Select State </option>");
-
-                    $("#Cities").empty();
-                    $("#Cities").append("<option value=0> Select City </option>");
-
-
-                    for (var i = 0; i < data.length; i++) {
-                        $("#States").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
-
-                    }
-                },
-
-                error: errorHandler
-
-
-
-
-            });
-        }
-
-        function populateCities(stateId) {
-            return $.ajax({
-                type: "get",
-                url: "https://localhost:44357/api/resources/cities/" + stateId,
-                datatype: "json",
-                traditional: "true",
-                success: function (data) {
-                    $("#Cities").empty();
-                    $("#Cities").append("<option value=0> Select City </option>");
-
-                    for (var i = 0; i < data.length; i++) {
-                        $("#Cities").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
-
-                    }
-
-                },
-
-                error: errorHandler
-
-
-
-
-            });
-        }
-
         function getFormData() {
 
-            return $.ajax({
-                type: "get",
-                url: "https://localhost:44357/api/organizations/" + $("#Id").val(),
-                datatype: "json",
-                traditional: "true",
-                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
-
-                error: errorHandler
-
-
-
-
-            });
-        }
-
-        function createFormModel(data) {
-            var model = new OrganizationEditModel();
-            model.Name = data.Name;
-            model.PhoneNumber = data.PhoneNumber;
-            model.Email = data.Email;
-            model.UserName = data.UserName;
-            model.Address1 = data.Address1;
-            model.Address2 = data.Address2;
-            model.CountryId = data.CountryId;
-            model.StateId = data.StateId;
-            model.CityId = data.CityId;
-            model.Status = data.Status;
-            model.Description = data.Description;
-
-            return model;
-
+            return getRequest("https://localhost:44357/api/organizations/" + $("#Id").val())
         }
 
         async function populateForm() {
 
-            var countriesRequest = populateCountries();
+            let model = new OrganizationEditModel();
 
-            var formRequest = await getFormData();
+            await populateCountries();
 
-            var model = createFormModel(formRequest);
+            await getFormData().done((data) => model.populateModel(data));
 
-            await countriesRequest;
+            console.log(model);
 
-            var statesRequest = populateStates(model.CountryId);
+            await populateStates(model.CountryId);
 
-            await statesRequest;
+            await populateCities(model.StateId);
 
-            var citiesRequest = populateCities(model.StateId);
+            model.populateFields();
+        }
 
-            await citiesRequest;
-
-            $("#Name").val(model.Name);
-            $("#PhoneNumber").val(model.PhoneNumber);
-            $("#Email").val(model.Email);
-            $("#UserName").val(model.UserName);
-            $("#Address1").val(model.Address1);
-            $("#Address2").val(model.Address2);
-            $("#Countries").val(model.CountryId);
-            $("#States").val(model.StateId);
-            $("#Cities").val(model.CityId);
-            $("[name='Status']" + "[value=" + model.Status + "]").prop('checked', true);
-            $("#Description").val(model.Description);
+        function redirectOnSuccess() {
+            alert("Posted.");
+            window.location.href = "https://localhost:44335/organizations/";
         }
 
         function submitForm() {
-            $("#form").validate({
-                debug: true
-            });
+            $("#form").validate();
 
 
             if (!$("#form").valid()) {
@@ -335,34 +174,10 @@
 
             var model = new OrganizationEditModel();
 
-            model.Name = $("#Name").val();
-            model.PhoneNumber = $("#PhoneNumber").val();
-            model.Email = $("#Email").val();
-            model.UserName = $("#UserName").val();
-            model.Address1 = $("#Address1").val();
-            model.Address2 = $("#Address2").val();
-            model.CountryId = $("#Countries").val();
-            model.StateId = $("#States").val();
-            model.CityId = $("#Cities").val();
-            model.Status = $("[name='Status']:checked").val();
-            model.Description = $("#Description").val();
+            model.populateFromForm();
 
-
-            $.ajax({
-                type: "put",
-                url: "https://localhost:44357/api/organizations/" + $("#Id").val(),
-                data: model,
-                datatype: "json",
-                traditional: "true",
-                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
-                success: function (data) {
-                    alert("Posted.");
-                    window.location.href = "https://localhost:44335/organizations/";
-                },
-
-                error: errorHandler
-
-            });
+            postRequest("PUT", model, "https://localhost:44357/api/organizations/" + $("#Id").val())
+                .done(redirectOnSuccess);
 
         }
 
@@ -372,7 +187,6 @@
             $("#States").change(() => populateCities($("#States").val()));
             $("#submit").click(submitForm);
         });
-
 
     </script>
 
