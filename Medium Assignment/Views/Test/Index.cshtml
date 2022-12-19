@@ -11,6 +11,30 @@
 
 <h2>Index</h2>
 
+
+
+<div class="btn-group">
+    <button class="btn btn-primary" title="Edit">
+
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+
+    </button><button class="btn btn-success" title="Details">
+
+        <i class="fa fa-bars" aria-hidden="true"></i>
+
+    </button>
+
+    <button class="btn btn-danger" title="Delete">
+
+        <i class="fa fa-trash" aria-hidden="true" title="Delete"></i>
+
+    </button>
+
+</div>
+
+
+
+
 @section Scripts {
 
     <script>
@@ -57,16 +81,13 @@
                 url: "https://localhost:44357/api/organizations/",
                 datatype: "json",
                 traditional: "true",
-                headers: { "Authorization": "Bearer " + getCookieValue('token')},
+                headers: { "Authorization": "Bearer " + getCookieValue('token') },
                 error: errorHandler
             });
         }
 
         $(document).ready(function () {
-            //console.log(document.cookie);
-            console.log(getCookieValue('token'));
-            console.log('@authDetails.AccessToken');
-            getFormData().done((data) => { console.log(data); });
+            //getFormData().done((data) => { console.log(data); });
         });
     </script>
 

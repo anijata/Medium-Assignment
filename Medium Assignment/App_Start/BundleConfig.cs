@@ -15,7 +15,8 @@ namespace Medium_Assignment
                         "~/Scripts/bootstrap-select.js",
                         "~/Scripts/bootstrap-datepicker.js",
                         "~/Scripts/custom/ajax.js",
-                        "~/Scripts/custom/models.js"));
+                        "~/Scripts/custom/models.js",
+                        "~/Scripts/custom/html.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -33,7 +34,8 @@ namespace Medium_Assignment
                       "~/Content/datatables/css/datatables.bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/bootstrap-select.css",
-                      "~/Content/bootstrap-datepicker.css"));
+                      "~/Content/bootstrap-datepicker.css",
+                      "~/Content/font-awesome.min.css"));
         }
     }
 }

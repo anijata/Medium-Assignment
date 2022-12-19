@@ -54,10 +54,130 @@
 @section Scripts {
     <script>
 
-    function getReviews() {
-        return $.ajax({
-                type: "get",
-                url: "https://localhost:44357/api/reviews/",
+        function getReviews() {
+            return $.ajax({
+                    type: "get",
+                    url: "https://localhost:44357/api/reviews/",
+                    datatype: "json",
+                    traditional: "true",
+                    headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+
+                    error: function (jqXHR, status, err) {
+                        alert(jqXHR.responseJSON.ModelState[""]);
+
+                        console.log(jqXHR.responseJSON);
+                        console.log(jqXHR);
+                        console.log(status);
+                        console.log(err);
+                        alert("Error getting data.");
+                    }
+
+
+
+
+                });
+
+        }
+
+        //function populateTable(reviews) {
+        //    for (let i = 0; i < reviews.length; i++) {
+        //        var rev = reviews[i];
+
+        //        var element = "<tr>";
+
+        //        element += "<td>" + rev.Id + "</td>";
+        //        element += "<td>" + rev.Agenda + "</td>";
+
+        //        if (rev.Reviewer) {
+        //            element += "<td>" + rev.Reviewer + "</td>";
+                
+        //        } else {
+        //            element += "<td>Unassigned</td>";
+                
+
+        //        }
+
+        //        if (rev.Employee) {
+        //            element += "<td>" + rev.Employee + "</td>";
+        //        } else {
+        //            element += "<td>Unassigned</td>";
+        //        }
+            
+        //        element += "<td>";
+        //        element += rev.ReviewStatus;
+        //        element += "</td>";
+
+        //        element += "<td>";
+
+        //        if (rev.ReviewStatus == "New") {
+
+        //            element += "<a href= \"/Reviews/Assign/" + rev.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Assign </a>";
+
+        //            element += "<a href= \"/Reviews/Edit/" + rev.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Edit </a>";
+
+
+        //        }
+
+        //        element += "<button class= \"btn btn-primary delete\" value= \"" + rev.Id + "\"> Delete</button>";
+
+        //        element += "</td>"
+
+        
+
+        //        element += "</tr>";
+
+
+        //        $('#table > tbody').append(element);
+        //    }
+
+        //}
+
+        function populateTable(table, reviews) {
+            for (let i = 0; i < reviews.length; i++) {
+                var rev = reviews[i];
+
+                if (!rev.Reviewer) {
+                    rev.Reviewer = "Unassigned";
+
+                }
+
+                if (!rev.Employee) {
+                    rev.Employee = "Unassigned";
+                }
+
+                let buttons = "";
+
+                if (rev.ReviewStatus == "New") {
+
+                    buttons += "<a href= \"/Reviews/Assign/" + rev.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Assign </a>";
+
+                    buttons += "<a href= \"/Reviews/Edit/" + rev.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Edit </a>";
+                }
+
+                buttons += "<button class= \"btn btn-primary delete\" value= \"" + rev.Id + "\"> Delete</button>";
+
+
+
+                
+
+                table.row.add([rev.Id,
+                    rev.Agenda,
+                    rev.Reviewer,
+                    rev.Employee,
+                    rev.ReviewStatus,
+                    buttons]);
+                
+
+            }
+
+            table.draw();
+
+        }
+
+        function deleteRequest(id) {
+            return $.ajax({
+                type: "DELETE",
+                url: "https://localhost:44357/api/reviews/" + id,
                 datatype: "json",
                 traditional: "true",
                 headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
@@ -72,102 +192,26 @@
                     alert("Error getting data.");
                 }
 
-
-
-
             });
 
-    }
-
-    function populateTable(reviews) {
-        for (let i = 0; i < reviews.length; i++) {
-            var rev = reviews[i];
-
-            var element = "<tr>";
-
-            element += "<td>" + rev.Id + "</td>";
-            element += "<td>" + rev.Agenda + "</td>";
-
-            if (rev.Reviewer) {
-                element += "<td>" + rev.Reviewer + "</td>";
-                
-            } else {
-                element += "<td>Unassigned</td>";
-                
-
-            }
-
-            if (rev.Employee) {
-                element += "<td>" + rev.Employee + "</td>";
-            } else {
-                element += "<td>Unassigned</td>";
-            }
-            
-            element += "<td>";
-            element += rev.ReviewStatus;
-            element += "</td>";
-
-            element += "<td>";
-
-            if (rev.ReviewStatus == "New") {
-
-                element += "<a href= \"/Reviews/Assign/" + rev.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Assign </a>";
-
-                element += "<a href= \"/Reviews/Edit/" + rev.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Edit </a>";
-
-
-            }
-
-            element += "<button class= \"btn btn-primary delete\" value= \"" + rev.Id + "\"> Delete</button>";
-
-            element += "</td>"
-
-        
-
-            element += "</tr>";
-
-
-            $('#table > tbody').append(element);
         }
 
-    }
+        function buttonHandlers() {
+            $('.delete').click(function () {
+                if (confirm("Are you sure you want to delete this employee record?")) {
+                    deleteRequest($(this).val()).done(() => { window.location.reload(); });
+                }
+            });
+        }
 
-    function deleteRequest(id) {
-        return $.ajax({
-            type: "DELETE",
-            url: "https://localhost:44357/api/reviews/" + id,
-            datatype: "json",
-            traditional: "true",
-            headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
 
-            error: function (jqXHR, status, err) {
-                alert(jqXHR.responseJSON.ModelState[""]);
 
-                console.log(jqXHR.responseJSON);
-                console.log(jqXHR);
-                console.log(status);
-                console.log(err);
-                alert("Error getting data.");
-            }
-
+        $(document).ready(function () {
+            let table = $("#table").DataTable();
+            getReviews()
+                .done((data) => { populateTable(table, data.Reviews);})
+                .done(buttonHandlers);
         });
-
-    }
-
-    function deleteButtonHandler() {
-        $('.delete').click(function () {
-            if (confirm("Are you sure you want to delete this review record?")) {
-                deleteRequest($(this).val()).done(() => { window.location.reload(); });
-            }
-        });
-    }
-
-
-    $(document).ready(function () {
-        getReviews()
-            .done((data) => { populateTable(data.Reviews);})
-            .done(() => { $("#table").DataTable(); }).done(deleteButtonHandler);
-    });
     </script>
 
 }

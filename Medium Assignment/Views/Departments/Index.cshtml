@@ -30,10 +30,71 @@
 @section Scripts {
     <script>
 
-    function getDepartments() {
-        return $.ajax({
-                type: "get",
-                url: "https://localhost:44357/api/departments/",
+        function getDepartments() {
+            return $.ajax({
+                    type: "get",
+                    url: "https://localhost:44357/api/departments/",
+                    datatype: "json",
+                    traditional: "true",
+                    headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+
+                    error: function (jqXHR, status, err) {
+                        alert(jqXHR.responseJSON.ModelState[""]);
+
+                        console.log(jqXHR.responseJSON);
+                        console.log(jqXHR);
+                        console.log(status);
+                        console.log(err);
+                        alert("Error getting data.");
+                    }
+
+
+
+
+                });
+
+        }
+
+        //function populateTable(departments) {
+        //    for (let i = 0; i < departments.length; i++) {
+        //        var department = departments[i];
+
+        //        var element = "<tr>";
+        //        element += "<td>" + department.Id + "</td>";
+        //        element += "<td>" + department.Name + "</td>";
+
+
+        //        element += "<td>";
+        //        element += "<a href= \"/Departments/Edit/" + department.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\"> Edit </a>";
+
+        //        element += "<button class= \"btn btn-primary delete\" value= \"" + department.Id + "\"> Delete</button>";
+
+        //        element += "</td>";
+
+        //        element += "</tr>";
+
+        //        $('#table > tbody').append(element);
+        //    }
+
+        //}
+
+        function populateTable(table, departments) {
+            for (let i = 0; i < departments.length; i++) {
+                var department = departments[i];
+
+                table.row.add([department.Id,
+                    department.Name,
+                    tableButtons(department.Id)]);
+            }
+
+            table.draw();
+
+        }
+
+        function deleteRequest(id) {
+            return $.ajax({
+                type: "DELETE",
+                url: "https://localhost:44357/api/departments/" + id,
                 datatype: "json",
                 traditional: "true",
                 headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
@@ -48,75 +109,34 @@
                     alert("Error getting data.");
                 }
 
-
-
-
             });
 
-    }
-
-    function populateTable(departments) {
-        for (let i = 0; i < departments.length; i++) {
-            var department = departments[i];
-
-            var element = "<tr>";
-            element += "<td>" + department.Id + "</td>";
-            element += "<td>" + department.Name + "</td>";
-
-
-            element += "<td>";
-            element += "<a href= \"/Departments/Edit/" + department.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\"> Edit </a>";
-
-            element += "<button class= \"btn btn-primary delete\" value= \"" + department.Id + "\"> Delete</button>";
-
-            element += "</td>";
-
-            element += "</tr>";
-
-            $('#table > tbody').append(element);
         }
 
-    }
+        function buttonHandlers() {
+            $('.edit').click(function () {
+                window.location.href = "https://localhost:44335/Departments/edit/" + $(this).val();
+            });
 
-    function deleteRequest(id) {
-        return $.ajax({
-            type: "DELETE",
-            url: "https://localhost:44357/api/departments/" + id,
-            datatype: "json",
-            traditional: "true",
-            headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+            $('.details').click(function () {
+                window.location.href = "https://localhost:44335/Departments/details/" + $(this).val();
+            });
 
-            error: function (jqXHR, status, err) {
-                alert(jqXHR.responseJSON.ModelState[""]);
-
-                console.log(jqXHR.responseJSON);
-                console.log(jqXHR);
-                console.log(status);
-                console.log(err);
-                alert("Error getting data.");
-            }
-
-        });
-
-    }
-
-    function deleteButtonHandler() {
-        $('.delete').click(function () {
-            if (confirm("Are you sure you want to delete this department record?")) {
-                deleteRequest($(this).val()).done(() => { window.location.reload(); });
-            }
-        });
-    }
+            $('.delete').click(function () {
+                if (confirm("Are you sure you want to delete this department record?")) {
+                    deleteRequest($(this).val()).done(() => { window.location.reload(); });
+                }
+            });
+        }
 
         $(document).ready(function () {
-
+            let table = $("#table").DataTable();
             getDepartments()
-                .done((data) => { populateTable(data.Departments); })
-                .done(() => { $("#table").DataTable(); })
-                .done(deleteButtonHandler);
+                .done((data) => { populateTable(table, data.Departments); })
+                .done(buttonHandlers);
 
         
 
-    });
+        });
     </script>
 }

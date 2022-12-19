@@ -38,7 +38,7 @@ namespace Medium_Assignment.Controllers
 
     }
 
-    [AuthorizeUser]
+    //[AuthorizeUser]
     public class TestController : Controller
     {
 

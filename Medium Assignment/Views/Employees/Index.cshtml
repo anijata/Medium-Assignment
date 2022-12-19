@@ -72,47 +72,78 @@
 
     }
 
-    function populateTable(employees) {
-        for (let i = 0; i < employees.length; i++) {
-            var element = "<tr>";
-            var emp = employees[i];
+        //function populateTable(employees) {
+        //    for (let i = 0; i < employees.length; i++) {
+        //        var element = "<tr>";
+        //        var emp = employees[i];
 
-            element += "<td>" + emp.FirstName + " " + emp.LastName + "</td>";
-            element += "<td>" + emp.UserName + "</td>";
-            element += "<td>" + emp.PhoneNumber + "</td>";
-            element += "<td>" + emp.Email + "</td>";
-            element += "<td>" + emp.DOB + "</td>";
-            element += "<td>" + emp.Gender + "</td>";
-            element += "<td>" + emp.Designation + "</td>";
-            element += "<td>" + emp.DOJ + "</td>";
-            element += "<td>" + emp.Department + "</td>";
+        //        element += "<td>" + emp.FirstName + " " + emp.LastName + "</td>";
+        //        element += "<td>" + emp.UserName + "</td>";
+        //        element += "<td>" + emp.PhoneNumber + "</td>";
+        //        element += "<td>" + emp.Email + "</td>";
+        //        element += "<td>" + emp.DOB + "</td>";
+        //        element += "<td>" + emp.Gender + "</td>";
+        //        element += "<td>" + emp.Designation + "</td>";
+        //        element += "<td>" + emp.DOJ + "</td>";
+        //        element += "<td>" + emp.Department + "</td>";
 
-            if (emp.Address2) {
-                element += "<td>" + emp.Address1 + ", " + emp.Address2 + "</td>";
-            } else {
-                element += "<td>" + emp.Address1 + "</td>";
+        //        if (emp.Address2) {
+        //            element += "<td>" + emp.Address1 + ", " + emp.Address2 + "</td>";
+        //        } else {
+        //            element += "<td>" + emp.Address1 + "</td>";
+        //        }
+
+        //        element += "<td>" + emp.Country + "</td>";
+        //        element += "<td>" + emp.State + "</td>";
+        //        element += "<td>" + emp.City + "</td>";
+        //        element += "<td>" + emp.EmployeeType + "</td>";
+        //        element += "<td>" + emp.Status + "</td>";
+
+        //        element += "<td>"
+        //        element += "<a href= \"/Employees/Details/" + emp.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Details </a>";
+        //        element += "<a href= \"/Employees/Edit/" + emp.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\"> Edit </a>";
+        //        element += "<button class= \"btn btn-primary delete\" value= \"" + emp.Id + "\"> Delete</button>";
+        //        element += "</td>"
+
+        //        element += "</tr>";
+
+        //        $('#table > tbody').append(element);
+        //     }
+
+        //}
+
+        function populateTable(table, employees) {
+            for (let i = 0; i < employees.length; i++) {
+                var emp = employees[i];
+
+
+                table.row.add([
+                    emp.FirstName + " " + emp.LastName,
+                    emp.UserName,
+                    emp.PhoneNumber,
+                    emp.Email,
+                    emp.DOB,
+                    emp.Gender,
+                    emp.Designation,
+                    emp.DOJ,
+                    emp.Department,
+                    emp.Address1 + " " + emp.Address2,
+                    emp.Country,
+                    emp.State,
+                    emp.City,
+                    emp.EmployeeType,
+                    emp.Status,
+                    tableButtons(emp.Id)
+                ]);
+
+                
             }
 
-            element += "<td>" + emp.Country + "</td>";
-            element += "<td>" + emp.State + "</td>";
-            element += "<td>" + emp.City + "</td>";
-            element += "<td>" + emp.EmployeeType + "</td>";
-            element += "<td>" + emp.Status + "</td>";
+            table.draw();
 
-            element += "<td>"
-            element += "<a href= \"/Employees/Details/" + emp.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Details </a>";
-            element += "<a href= \"/Employees/Edit/" + emp.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\"> Edit </a>";
-            element += "<button class= \"btn btn-primary delete\" value= \"" + emp.Id + "\"> Delete</button>";
-            element += "</td>"
+        }
 
-            element += "</tr>";
-
-            $('#table > tbody').append(element);
-         }
-
-    }
-
-    function deleteRequest(id) {
+        function deleteRequest(id) {
         return $.ajax({
             type: "DELETE",
             url: "https://localhost:44357/api/employees/" + id,
@@ -134,22 +165,30 @@
 
     }
 
-    function deleteButtonHandler() {
-        $('.delete').click(function () {
-            if (confirm("Are you sure you want to delete this employee record?")) {
-                deleteRequest($(this).val()).done(() => { window.location.reload(); });
-            }
+        function buttonHandlers() {
+            $('.edit').click(function () {
+                window.location.href = "https://localhost:44335/Employees/edit/" + $(this).val();
+            });
+
+            $('.details').click(function () {
+                window.location.href = "https://localhost:44335/Employees/details/" + $(this).val();
+            });
+
+            $('.delete').click(function () {
+                if (confirm("Are you sure you want to delete this employee record?")) {
+                    deleteRequest($(this).val()).done(() => { window.location.reload(); });
+                }
+            });
+        }
+
+
+        $(document).ready(function () {
+            let table = $("#table").DataTable();
+            getEmployees()
+                .done((data) => { populateTable(table, data.Employees); })
+                .done(buttonHandlers);
+
         });
-    }
-
-
-    $(document).ready(function () {
-
-        getEmployees()
-            .done((data) => { populateTable(data.Employees); })
-            .done(() => { $("#table").DataTable(); }).done(deleteButtonHandler);
-
-    });
 
 
     </script>
