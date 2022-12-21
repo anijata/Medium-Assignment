@@ -25,7 +25,12 @@ namespace Medium_Assignment.Custom_Validation
                 return true;
             }
 
-            return authDetails.Roles.Contains(Roles);
+            var currentUserRoles = authDetails.Roles;
+
+            var allowedRoles = Roles.Split(',').Select(s => s.Trim()).ToList();
+
+
+            return allowedRoles.Intersect(currentUserRoles).Count() != 0;
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext) {

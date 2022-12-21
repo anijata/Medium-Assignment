@@ -184,7 +184,6 @@ namespace Medium_Assignment.Models
     public class ReviewDetailsViewModel : APIBindingModel
     {
         [Required]
-        [Display(Name = "Review Id")]
         public int Id { get; set; }
 
         [Required]
@@ -209,17 +208,19 @@ namespace Medium_Assignment.Models
         public decimal MaxRate { get; set; }
 
         [Required]
-        [Display(Name = "Employees")]
-        [MinLength(1, ErrorMessage = "Select Employee from dropdown.")]
-        public List<int?> EmployeeIds { get; set; }
-
-        [Required]
-        [Display(Name = "Reviewer")]
-        [Range(1, int.MaxValue, ErrorMessage = "Select Reviewer from dropdown.")]
-        public int? ReviewerId { get; set; }
-
-        [Required]
         public string Description { get; set; }
+
+        [Display(Name = "Reviewer")]
+        public string Reviewer { get; set; }
+
+        [Display(Name = "Employee")]
+        public string Employee { get; set; }
+
+        [Required]
+        public int Rating { get; set; }
+
+        [Required]
+        public string Feedback { get; set; }
     }
 
 }

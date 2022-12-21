@@ -151,10 +151,13 @@
 
                     buttons += "<a href= \"/Reviews/Assign/" + rev.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Assign </a>";
 
-                    buttons += "<a href= \"/Reviews/Edit/" + rev.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Edit </a>";
+                    
                 }
 
-                buttons += "<button class= \"btn btn-primary delete\" value= \"" + rev.Id + "\"> Delete</button>";
+                buttons += "<a href= \"/Reviews/Details/" + rev.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Details </a>";
+
+                buttons += "<a href= \"/Reviews/Edit/" + rev.Id + "\" class=\"btn btn-success\" style=\"margin: 2px 2px 2px 2px;\" >Edit </a>";
+                buttons += "<button class= \"btn btn-danger delete\" value= \"" + rev.Id + "\"> Delete</button>";
 
 
 

@@ -77,6 +77,18 @@ namespace Medium_Assignment.Controllers
 
         }
 
+        [AuthorizeUser(Roles = "OrganizationAdmin, Employee")]
+        public ActionResult Details(int id)
+        {
+            var viewModel = new ReviewDetailsViewModel
+            {
+                Id = id
+            };
+
+            return View(viewModel);
+
+        }
+
         public ActionResult Assign(int id)
         {
             var viewModel = new ReviewAssignViewModel

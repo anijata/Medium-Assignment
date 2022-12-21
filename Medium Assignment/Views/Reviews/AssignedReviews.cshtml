@@ -143,9 +143,7 @@
                     buttons += "<a href= \"/Reviews/Submit/" + rev.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Submit </a>";
 
                 }
-
-                buttons += "<button class= \"btn btn-primary delete\" value= \"" + rev.Id + "\"> Delete</button>";
-
+                buttons += "<a href= \"/Reviews/Details/" + rev.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Details </a>";
 
                 table.row.add([rev.Id,
                 rev.Agenda,

@@ -116,8 +116,8 @@
         function populateForm(data) {
             let model = createModel(data);
             $("#Agenda").val(model.Agenda);
-            $("#ReviewCycleStartDate").val(model.ReviewCycleStartDate);
-            $("#ReviewCycleEndDate").val(model.ReviewCycleEndDate);
+            $("#ReviewCycleStartDate").val(new Date(model.ReviewCycleStartDate).toLocaleDateString("en-US"));
+            $("#ReviewCycleEndDate").val(new Date(model.ReviewCycleStartDate).toLocaleDateString("en-US"));
             $("#MinRate").val(model.MinRate);
             $("#MaxRate").val(model.MaxRate);
             $("#Description").val(model.Description);

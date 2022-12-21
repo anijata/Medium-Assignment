@@ -38,7 +38,7 @@ namespace Medium_Assignment.Controllers
 
     }
 
-    //[AuthorizeUser]
+    [AuthorizeUser(Roles = "OrganizationAdmin, Employee")]
     public class TestController : Controller
     {
 
