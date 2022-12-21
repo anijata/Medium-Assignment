@@ -66,7 +66,6 @@ namespace Medium_Assignment.Models
         [Display(Name = "Address field 1")]
         public string Address1 { get; set; }
 
-        [Required]
         [Display(Name = "Address field 2")]
 
         public string Address2 { get; set; }
@@ -151,7 +150,6 @@ namespace Medium_Assignment.Models
         [Display(Name = "Address field 1")]
         public string Address1 { get; set; }
 
-        [Required]
         [Display(Name = "Address field 2")]
 
         public string Address2 { get; set; }
@@ -223,7 +221,6 @@ namespace Medium_Assignment.Models
         [Display(Name = "Address field 1")]
         public string Address1 { get; set; }
 
-        [Required]
         [Display(Name = "Address field 2")]
 
         public string Address2 { get; set; }

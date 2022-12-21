@@ -23,7 +23,7 @@
 
     .field-validation-error {
         color: #a94442;
-        background-color: #fff;
+        background-color: #cdeefd;
     }
 
 </style>
@@ -404,10 +404,10 @@
             $("#UserName").val(model.UserName);
             $("#PhoneNumber").val(model.PhoneNumber);
             $("#Email").val(model.Email);
-            $("#DOB").val(model.DOB);
+            $("#DOB").val(new Date(model.DOB).toLocaleDateString("en-US"));
             $("#Gender").val(model.Gender);
             $("#Designation").val(model.Designation);
-            $("#DOJ").val(model.DOJ);
+            $("#DOJ").val(new Date(model.DOJ).toLocaleDateString("en-US"));
             $("#Departments").val(model.DepartmentId);
             $("#Address1").val(model.Address1);
             $("#Address2").val(model.Address2);

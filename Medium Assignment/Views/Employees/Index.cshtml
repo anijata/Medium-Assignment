@@ -22,15 +22,9 @@
             <th scope="col">User Name</th>
             <th scope="col">Phone Number</th>
             <th scope="col">Email</th>
-            <th scope="col">Date of Birth</th>
             <th scope="col">Gender</th>
             <th scope="col">Designation</th>
-            <th scope="col">Date of Joining</th>
             <th scope="col">Department</th>
-            <th scope="col">Address</th>
-            <th scope="col">Country</th>
-            <th scope="col">State</th>
-            <th scope="col">City</th>
             <th scope="col">EmployeeType</th>
             <th scope="col">Status</th>
             <th scope="col">Actions</th>
@@ -72,46 +66,6 @@
 
     }
 
-        //function populateTable(employees) {
-        //    for (let i = 0; i < employees.length; i++) {
-        //        var element = "<tr>";
-        //        var emp = employees[i];
-
-        //        element += "<td>" + emp.FirstName + " " + emp.LastName + "</td>";
-        //        element += "<td>" + emp.UserName + "</td>";
-        //        element += "<td>" + emp.PhoneNumber + "</td>";
-        //        element += "<td>" + emp.Email + "</td>";
-        //        element += "<td>" + emp.DOB + "</td>";
-        //        element += "<td>" + emp.Gender + "</td>";
-        //        element += "<td>" + emp.Designation + "</td>";
-        //        element += "<td>" + emp.DOJ + "</td>";
-        //        element += "<td>" + emp.Department + "</td>";
-
-        //        if (emp.Address2) {
-        //            element += "<td>" + emp.Address1 + ", " + emp.Address2 + "</td>";
-        //        } else {
-        //            element += "<td>" + emp.Address1 + "</td>";
-        //        }
-
-        //        element += "<td>" + emp.Country + "</td>";
-        //        element += "<td>" + emp.State + "</td>";
-        //        element += "<td>" + emp.City + "</td>";
-        //        element += "<td>" + emp.EmployeeType + "</td>";
-        //        element += "<td>" + emp.Status + "</td>";
-
-        //        element += "<td>"
-        //        element += "<a href= \"/Employees/Details/" + emp.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Details </a>";
-        //        element += "<a href= \"/Employees/Edit/" + emp.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\"> Edit </a>";
-        //        element += "<button class= \"btn btn-primary delete\" value= \"" + emp.Id + "\"> Delete</button>";
-        //        element += "</td>"
-
-        //        element += "</tr>";
-
-        //        $('#table > tbody').append(element);
-        //     }
-
-        //}
-
         function populateTable(table, employees) {
             for (let i = 0; i < employees.length; i++) {
                 var emp = employees[i];
@@ -122,15 +76,9 @@
                     emp.UserName,
                     emp.PhoneNumber,
                     emp.Email,
-                    emp.DOB,
                     emp.Gender,
                     emp.Designation,
-                    emp.DOJ,
                     emp.Department,
-                    emp.Address1 + " " + emp.Address2,
-                    emp.Country,
-                    emp.State,
-                    emp.City,
                     emp.EmployeeType,
                     emp.Status,
                     tableButtons(emp.Id)
@@ -183,7 +131,10 @@
 
 
         $(document).ready(function () {
-            let table = $("#table").DataTable();
+            let table = $("#table").DataTable({
+                columnDefs: [
+                    { width: 200, targets: 9 }
+                ]});
             getEmployees()
                 .done((data) => { populateTable(table, data.Employees); })
                 .done(buttonHandlers);

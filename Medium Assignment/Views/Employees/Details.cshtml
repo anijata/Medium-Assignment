@@ -178,10 +178,10 @@
             $("#UserName").val(model.UserName);
             $("#Email").val(model.Email);
             $("#PhoneNumber").val(model.PhoneNumber);
-            $("#DOB").val(model.DOB);
+            $("#DOB").val(new Date(model.DOB).toLocaleDateString("en-US"));
             $("#Gender").val(model.Gender);
             $("#Designation").val(model.Designation);
-            $("#DOJ").val(model.DOJ);
+            $("#DOJ").val(new Date(model.DOJ).toLocaleDateString("en-US"));
             $("#Department").val(model.Department);
             $("#Address").val(model.Address);
             $("#Country").val(model.Country);

@@ -14,6 +14,7 @@ namespace Medium_Assignment
                         "~/Scripts/datatables/jquery.datatables.js",
                         "~/Scripts/bootstrap-select.js",
                         "~/Scripts/bootstrap-datepicker.js",
+                        "~/Scripts/bootbox.min.js",
                         "~/Scripts/custom/ajax.js",
                         "~/Scripts/custom/models.js",
                         "~/Scripts/custom/html.js"));

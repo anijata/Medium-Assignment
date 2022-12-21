@@ -181,4 +181,45 @@ namespace Medium_Assignment.Models
 
     }
 
+    public class ReviewDetailsViewModel : APIBindingModel
+    {
+        [Required]
+        [Display(Name = "Review Id")]
+        public int Id { get; set; }
+
+        [Required]
+        public string Agenda { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Review Cycle Start Date")]
+        public DateTime ReviewCycleStartDate { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Review Cycle End Date")]
+        public DateTime ReviewCycleEndDate { get; set; }
+
+        [Required]
+        [Display(Name = "Min Rate")]
+        public decimal MinRate { get; set; }
+
+        [Required]
+        [Display(Name = "Max Rate")]
+        public decimal MaxRate { get; set; }
+
+        [Required]
+        [Display(Name = "Employees")]
+        [MinLength(1, ErrorMessage = "Select Employee from dropdown.")]
+        public List<int?> EmployeeIds { get; set; }
+
+        [Required]
+        [Display(Name = "Reviewer")]
+        [Range(1, int.MaxValue, ErrorMessage = "Select Reviewer from dropdown.")]
+        public int? ReviewerId { get; set; }
+
+        [Required]
+        public string Description { get; set; }
+    }
+
 }
