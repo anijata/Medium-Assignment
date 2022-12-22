@@ -1,16 +1,16 @@
-﻿function getRequest(url) {
+﻿////function getRequest(url) {
 
-    return $.ajax({
-        type: "GET",
-        url: url,
-        datatype: "json",
-        traditional: "true",
-        headers: { "Authorization": "Bearer " + getCookieValue('token') },
-        error: errorHandler
-    });
-}
+////    return $.ajax({
+////        type: "GET",
+////        url: url,
+////        datatype: "json",
+////        traditional: "true",
+////        headers: { "Authorization": "Bearer " + getCookieValue('token') },
+////        error: errorHandler
+////    });
+////}
 
-function postRequest(verb, data, url) {
+function ajaxRequest(verb, data, url) {
 
     return $.ajax({
         type: verb,
@@ -42,16 +42,19 @@ function getCookieValue(key) {
 function errorHandler(jqXHR, status, err) {
     switch (jqXHR.status) {
         case 401:
-            window.location.href = "https://localhost:44335/error/NotAuthorized";
+            console.log(jqXHR.responseJSON.Message);
+            //window.location.href = "https://localhost:44335/error/NotAuthorized";
             break;
         case 404:
-            window.location.href = "https://localhost:44335/error/NotFound";
+            console.log(jqXHR.responseJSON.Message);
+            //window.location.href = "https://localhost:44335/error/NotFound";
             break;
         case 500:
-            window.location.href = "https://localhost:44335/error/InternalServerError";
+            console.log(jqXHR.responseJSON.Message);
+            //window.location.href = "https://localhost:44335/error/InternalServerError";
             break;
         default:
-            alert(jqXHR.responseJSON.Message);
+            //(jqXHR.responseJSON.Message);
             break;
     }
 
@@ -78,7 +81,7 @@ function populateCountriesHandler(data) {
 function populateCountries() {
     let url = "https://localhost:44357/api/resources/countries/";
 
-    return getRequest(url).done(populateCountriesHandler);
+    return ajaxRequest("GET", [], url).done(populateCountriesHandler);
 }
 
 function populateCitiesHandler(data) {
@@ -93,7 +96,7 @@ function populateCitiesHandler(data) {
 
 function populateStates(countryId) {
     let url = "https://localhost:44357/api/resources/states/" + countryId;
-    return getRequest(url).done(populateStatesHandler);
+    return ajaxRequest("GET", [], url).done(populateStatesHandler);
 }
 
 function populateStatesHandler(data) {
@@ -113,7 +116,7 @@ function populateStatesHandler(data) {
 
 function populateCities(stateId) {
     let url = "https://localhost:44357/api/resources/cities/" + stateId;
-    return getRequest(url).done(populateCitiesHandler);
+    return ajaxRequest("GET",[],url).done(populateCitiesHandler);
 }
 
 

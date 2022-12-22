@@ -137,18 +137,59 @@
 
     <script>
 
-        function getFormData() {
-
-            return getRequest("https://localhost:44357/api/organizations/" + $("#Id").val())
+        function OrganizationEditModel() {
+            this.Name = "";
+            this.PhoneNumber = "";
+            this.Email = "";
+            this.UserName = "";
+            this.Address1 = "";
+            this.Address2 = "";
+            this.CountryId = "";
+            this.StateId = "";
+            this.CityId = "";
+            this.Status = "";
+            this.Description = "";
         }
 
-        async function populateForm() {
+        function getFormData() {
+            let url = "https://localhost:44357/api/organizations/" + $("#Id").val();
+            return ajaxRequest("GET",[],url);
+        }
 
-            let model = new OrganizationEditModel();
+        function populateModel(model, data) {
+            model.Name = data.Name;
+            model.PhoneNumber = data.PhoneNumber;
+            model.Email = data.Email;
+            model.UserName = data.UserName;
+            model.Address1 = data.Address1;
+            model.Address2 = data.Address2;
+            model.CountryId = data.CountryId;
+            model.StateId = data.StateId;
+            model.CityId = data.CityId;
+            model.Status = data.Status;
+            model.Description = data.Description;
+        }
 
+        function populateFields(model) {
+            $("#Name").val(model.Name);
+            $("#PhoneNumber").val(model.PhoneNumber);
+            $("#Email").val(model.Email);
+            $("#UserName").val(model.UserName);
+            $("#Address1").val(model.Address1);
+            $("#Address2").val(model.Address2);
+            $("#Countries").val(model.CountryId);
+            $("#States").val(model.StateId);
+            $("#Cities").val(model.CityId);
+            $("[name='Status']" + "[value=" + model.Status + "]").prop('checked', true);
+            $("#Description").val(model.Description);
+
+        }
+
+        async function populateForm(model) {
             await populateCountries();
 
-            await getFormData().done((data) => model.populateModel(data));
+            await getFormData().done((data) => { populateModel(model, data);});
+
 
             console.log(model);
 
@@ -156,15 +197,29 @@
 
             await populateCities(model.StateId);
 
-            model.populateFields();
+            populateFields(model);
         }
 
-        function redirectOnSuccess() {
+        function OnSuccessHandler() {
             alert("Posted.");
             window.location.href = "https://localhost:44335/organizations/";
         }
 
-        function submitForm() {
+        function populateFromForm(model) {
+            model.Name = $("#Name").val();
+            model.PhoneNumber = $("#PhoneNumber").val();
+            model.Email = $("#Email").val();
+            model.UserName = $("#UserName").val();
+            model.Address1 = $("#Address1").val();
+            model.Address2 = $("#Address2").val();
+            model.CountryId = $("#Countries").val();
+            model.StateId = $("#States").val();
+            model.CityId = $("#Cities").val();
+            model.Status = $("[name='Status']:checked").val();
+            model.Description = $("#Description").val();
+        }
+
+        function submitForm(model) {
             $("#form").validate();
 
 
@@ -172,20 +227,20 @@
                 return;
             }
 
-            var model = new OrganizationEditModel();
+            populateFromForm(model);
 
-            model.populateFromForm();
 
-            postRequest("PUT", model, "https://localhost:44357/api/organizations/" + $("#Id").val())
-                .done(redirectOnSuccess);
+            ajaxRequest("PUT", model, "https://localhost:44357/api/organizations/" + $("#Id").val())
+                .done(OnSuccessHandler);
 
         }
 
         $(document).ready(function () {
-            populateForm();
+            let model = new OrganizationEditModel();
+            populateForm(model);
             $("#Countries").change(() => populateStates($("#Countries").val()));
             $("#States").change(() => populateCities($("#States").val()));
-            $("#submit").click(submitForm);
+            $("#submit").click(() => { submitForm(model) });
         });
 
     </script>

@@ -148,23 +148,6 @@
 @section Scripts {
 
     <script>
-        function errorHandler(jqXHR, status, err) {
-            switch (jqXHR.status) {
-                case 401:
-                    window.location.href = "https://localhost:44335/error/NotAuthorized";
-                    break;
-                case 404:
-                    window.location.href = "https://localhost:44335/error/NotFound";
-                    break;
-                case 500:
-                    window.location.href = "https://localhost:44335/error/InternalServerError";
-                    break;
-                default:
-                    alert(jqXHR.responseJSON.Message);
-                    break;
-            }
-
-        }
 
         function OrganizationNewModel() {
             this.Name = "";
@@ -182,105 +165,11 @@
 
         }
 
-        function populateCountries() {
-            return $.ajax({
-                type: "get",
-                url: "https://localhost:44357/api/resources/countries/",
-                datatype: "json",
-                traditional: "true",
-
-                success: function (data) {
-
-                    $("#Countries").empty();
-                    $("#Countries").append("<option value=0> Select Country </option>");
-
-                    $("#States").empty();
-                    $("#States").append("<option value=0> Select State </option>");
-
-                    $("#Cities").empty();
-                    $("#Cities").append("<option value=0> Select City </option>");
-
-
-                    for (var i = 0; i < data.length; i++) {
-                        $("#Countries").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
-
-                    }
-                },
-                error: errorHandler
-
-
-
-
-            });
-
+        function onSuccessHandler() {
+            window.location.href = "https://localhost:44335/organizations/";
         }
 
-        function populateStates(countryId) {
-            return $.ajax({
-                type: "get",
-                url: "https://localhost:44357/api/resources/states/" + countryId,
-                datatype: "json",
-                traditional: "true",
-                success: function (data) {
-                    $("#States").empty();
-                    $("#States").append("<option value=0> Select State </option>");
-
-                    $("#Cities").empty();
-                    $("#Cities").append("<option value=0> Select City </option>");
-
-
-                    for (var i = 0; i < data.length; i++) {
-                        $("#States").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
-
-                    }
-                },
-
-                error: errorHandler
-
-
-
-
-            });
-        }
-
-        function populateCities(stateId) {
-            return $.ajax({
-                type: "get",
-                url: "https://localhost:44357/api/resources/cities/" + stateId,
-                datatype: "json",
-                traditional: "true",
-                success: function (data) {
-                    $("#Cities").empty();
-                    $("#Cities").append("<option value=0> Select City </option>");
-
-                    for (var i = 0; i < data.length; i++) {
-                        $("#Cities").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
-
-                    }
-
-                },
-
-                error: errorHandler
-
-
-
-
-            });
-        }
-
-        function submitForm() {
-            $("#form").validate({
-                debug: true
-            });
-
-            
-
-            if (!$("#form").valid()) {
-                return;
-            }
-
-            var model = new OrganizationNewModel();
-
+        function populateFromForm(model) {
             model.Name = $("#Name").val();
             model.PhoneNumber = $("#PhoneNumber").val();
             model.Email = $("#Email").val();
@@ -294,25 +183,25 @@
             model.Status = $("[name='Status']:checked").val();
             model.Description = $("#Description").val();
 
-            $.ajax({
-                type: "post",
-                url: "https://localhost:44357/api/organizations/",
-                data: model,
-                datatype: "json",
-                traditional: "true",
-                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
-                success: function (data) {
-                    alert("Posted.");
-                    window.location.href = "https://localhost:44335/organizations/";
+        }
 
-                },
-
-                error: errorHandler
-
-
-
-
+        function submitForm(model) {
+            $("#form").validate({
+                debug: true
             });
+        
+
+            if (!$("#form").valid()) {
+                return;
+            }
+
+            
+            populateFromForm(model)
+
+            let url = "https://localhost:44357/api/organizations/";
+
+            ajaxRequest("POST", model, url)
+                .done(onSuccessHandler);
 
         }
 
@@ -335,13 +224,15 @@
         }
 
         $(document).ready(function () {
+            let model = new OrganizationNewModel();
+
             addValidations();
 
-            populateCountries().catch(() => { alert("Error retreiving data.");} );
+            populateCountries();
 
             $("#Countries").change(() => populateStates($("#Countries").val()));
             $("#States").change(() => populateCities($("#States").val()));
-            $("#submit").click(submitForm);
+            $("#submit").click(() => { submitForm(model); });
         });
 
 
