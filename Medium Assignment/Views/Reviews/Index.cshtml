@@ -62,15 +62,7 @@
                     traditional: "true",
                     headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
 
-                    error: function (jqXHR, status, err) {
-                        alert(jqXHR.responseJSON.ModelState[""]);
-
-                        console.log(jqXHR.responseJSON);
-                        console.log(jqXHR);
-                        console.log(status);
-                        console.log(err);
-                        alert("Error getting data.");
-                    }
+                    error: errorHandler
 
 
 
@@ -79,58 +71,6 @@
 
         }
 
-        //function populateTable(reviews) {
-        //    for (let i = 0; i < reviews.length; i++) {
-        //        var rev = reviews[i];
-
-        //        var element = "<tr>";
-
-        //        element += "<td>" + rev.Id + "</td>";
-        //        element += "<td>" + rev.Agenda + "</td>";
-
-        //        if (rev.Reviewer) {
-        //            element += "<td>" + rev.Reviewer + "</td>";
-                
-        //        } else {
-        //            element += "<td>Unassigned</td>";
-                
-
-        //        }
-
-        //        if (rev.Employee) {
-        //            element += "<td>" + rev.Employee + "</td>";
-        //        } else {
-        //            element += "<td>Unassigned</td>";
-        //        }
-            
-        //        element += "<td>";
-        //        element += rev.ReviewStatus;
-        //        element += "</td>";
-
-        //        element += "<td>";
-
-        //        if (rev.ReviewStatus == "New") {
-
-        //            element += "<a href= \"/Reviews/Assign/" + rev.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Assign </a>";
-
-        //            element += "<a href= \"/Reviews/Edit/" + rev.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Edit </a>";
-
-
-        //        }
-
-        //        element += "<button class= \"btn btn-primary delete\" value= \"" + rev.Id + "\"> Delete</button>";
-
-        //        element += "</td>"
-
-        
-
-        //        element += "</tr>";
-
-
-        //        $('#table > tbody').append(element);
-        //    }
-
-        //}
 
         function populateTable(table, reviews) {
             for (let i = 0; i < reviews.length; i++) {
@@ -159,10 +99,6 @@
                 buttons += "<a href= \"/Reviews/Edit/" + rev.Id + "\" class=\"btn btn-success\" style=\"margin: 2px 2px 2px 2px;\" >Edit </a>";
                 buttons += "<button class= \"btn btn-danger delete\" value= \"" + rev.Id + "\"> Delete</button>";
 
-
-
-                
-
                 table.row.add([rev.Id,
                     rev.Agenda,
                     rev.Reviewer,
@@ -185,15 +121,7 @@
                 traditional: "true",
                 headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
 
-                error: function (jqXHR, status, err) {
-                    alert(jqXHR.responseJSON.ModelState[""]);
-
-                    console.log(jqXHR.responseJSON);
-                    console.log(jqXHR);
-                    console.log(status);
-                    console.log(err);
-                    alert("Error getting data.");
-                }
+                error: errorHandler
 
             });
 

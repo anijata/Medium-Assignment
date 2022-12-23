@@ -42,19 +42,16 @@ function getCookieValue(key) {
 function errorHandler(jqXHR, status, err) {
     switch (jqXHR.status) {
         case 401:
-            console.log(jqXHR.responseJSON.Message);
-            //window.location.href = "https://localhost:44335/error/NotAuthorized";
+            window.location.href = "https://localhost:44335/error/NotAuthorized";
             break;
         case 404:
-            console.log(jqXHR.responseJSON.Message);
-            //window.location.href = "https://localhost:44335/error/NotFound";
+            window.location.href = "https://localhost:44335/error/NotFound";
             break;
         case 500:
-            console.log(jqXHR.responseJSON.Message);
-            //window.location.href = "https://localhost:44335/error/InternalServerError";
+            window.location.href = "https://localhost:44335/error/InternalServerError";
             break;
         default:
-            //(jqXHR.responseJSON.Message);
+            alert(jqXHR.responseJSON.Message);
             break;
     }
 

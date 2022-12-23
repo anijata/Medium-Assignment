@@ -109,85 +109,72 @@
 
         <script>
 
-        function errorHandler(jqXHR, status, err) {
-            switch (jqXHR.status) {
-                case 401:
-                    window.location.href = "https://localhost:44335/error/NotAuthorized";
-                    break;
-                case 404:
-                    window.location.href = "https://localhost:44335/error/NotFound";
-                    break;
-                case 500:
-                    window.location.href = "https://localhost:44335/error/InternalServerError";
-                    break;
-                default:
-                    alert(jqXHR.responseJSON.Message);
-                    break;
+            function OrganizationDetailsModel() {
+                this.Name = "";
+                this.PhoneNumber = 0;
+                this.Email = "";
+                this.UserName = "";
+                this.Address = "";
+                this.Country = 0;
+                this.State = 0;
+                this.City = 0;
+                this.Status = "";
+                this.Description = "";
             }
 
-        }
+            function populateForm(model) {
+                getFormData(model)
+                    .done((data) => {
+                        populateModel(model, data);
+                        populateFields(model);
+                    });
+                
 
-        function OrganizationDetailsModel(data) {
-            this.Name = data.Name;
-            this.PhoneNumber = data.PhoneNumber;
-            this.Email = data.Email;
-            this.UserName = data.UserName;
-            if (data.Address2) {
-                this.Address = data.Address1 + ", " + data.Address2;
-            } else {
-                this.Address = data.Address1;
+            }
+            
+            function populateModel(model, data) {
+                model.Name = data.Name;
+                model.PhoneNumber = data.PhoneNumber;
+                model.Email = data.Email;
+                model.UserName = data.UserName;
+                if (data.Address2) {
+                    model.Address = data.Address1 + ", " + data.Address2;
+                } else {
+                    model.Address = data.Address1;
+                }
+
+                model.Country = data.Country;
+                model.State = data.State;
+                model.City = data.City;
+                model.Status = data.Status;
+                model.Description = data.Description;
+
             }
 
-            this.Country = data.Country;
-            this.State = data.State;
-            this.City = data.City;
-            this.Status = data.Status;
-            this.Description = data.Description;
+            function populateFields(model) {
+                $("#Name").val(model.Name);
+                $("#PhoneNumber").val(model.PhoneNumber);
+                $("#Email").val(model.Email);
+                $("#UserName").val(model.UserName);
+                $("#Address").val(model.Address);
+                $("#Country").val(model.Country);
+                $("#State").val(model.State);
+                $("#City").val(model.City);
+                $("#Status").val(model.Status);
+                $("#Description").val(model.Description);
 
-        }
+            }
 
-        function populateFields(model) {
-            $("#Name").val(model.Name);
-            $("#PhoneNumber").val(model.PhoneNumber);
-            $("#Email").val(model.Email);
-            $("#UserName").val(model.UserName);
-            $("#Address").val(model.Address);
-            $("#Country").val(model.Country);
-            $("#State").val(model.State);
-            $("#City").val(model.City);
-            $("#Status").val(model.Status);
-            $("#Description").val(model.Description);
+            function getFormData(model) {
+                let url = "https://localhost:44357/api/organizations/" + $("#Id").val();
+                return ajaxRequest("GET", [], url);
+            }
 
-        }
-
-        function getAndPopulate() {
-            $.ajax({
-                type: "get",
-                url: "https://localhost:44357/api/organizations/" + $("#Id").val(),
-                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
-                datatype: "json",
-                traditional: "true",
-                success: function (data) {
-                    var model = new OrganizationDetailsModel(data)
-                    populateFields(model);
-
-
-                    console.log(data);
-
-                },
-
-                error: errorHandler
-
-
-
+            $(document).ready(function () {
+                let model = new OrganizationDetailsModel();
+                populateForm(model);
 
             });
-
-        }
-
-        $(document).ready(function () {
-            getAndPopulate()
-        });
 
 
         </script>

@@ -132,15 +132,7 @@
                 traditional: "true",
                 headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
 
-                error: function (jqXHR, status, err) {
-                    alert(jqXHR.responseJSON.ModelState[""]);
-
-                    console.log(jqXHR.responseJSON);
-                    console.log(jqXHR);
-                    console.log(status);
-                    console.log(err);
-                    alert("Error creating new record.");
-                }
+                error: errorHandler
 
 
 
@@ -179,16 +171,7 @@
 
                 },
 
-                error: function (jqXHR, status, err) {
-                    debugger;
-                    alert(jqXHR.responseJSON.ModelState[""]);
-
-                    console.log(jqXHR.responseJSON);
-                    console.log(jqXHR);
-                    console.log(status);
-                    console.log(err);
-                    alert("Error creating new record.");
-                }
+                error: errorHandler
 
 
 

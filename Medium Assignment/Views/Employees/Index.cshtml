@@ -42,29 +42,21 @@
     <script>
 
         function getEmployees() {
-        return $.ajax({
-                type: "get",
-                url: "https://localhost:44357/api/employees/",
-                datatype: "json",
-                traditional: "true",
-                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+            return $.ajax({
+                    type: "get",
+                    url: "https://localhost:44357/api/employees/",
+                    datatype: "json",
+                    traditional: "true",
+                    headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
 
-                error: function (jqXHR, status, err) {
-                    alert(jqXHR.responseJSON.ModelState[""]);
-
-                    console.log(jqXHR.responseJSON);
-                    console.log(jqXHR);
-                    console.log(status);
-                    console.log(err);
-                    alert("Error getting data.");
-                }
+                    error: errorHandler
 
 
 
 
-            });
+                });
 
-    }
+        }
 
         function populateTable(table, employees) {
             for (let i = 0; i < employees.length; i++) {
@@ -99,15 +91,7 @@
             traditional: "true",
             headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
 
-            error: function (jqXHR, status, err) {
-                alert(jqXHR.responseJSON.ModelState[""]);
-
-                console.log(jqXHR.responseJSON);
-                console.log(jqXHR);
-                console.log(status);
-                console.log(err);
-                alert("Error getting data.");
-            }
+            error: errorHandler
 
         });
 

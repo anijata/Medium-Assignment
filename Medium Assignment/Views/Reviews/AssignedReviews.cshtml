@@ -59,15 +59,7 @@
                     traditional: "true",
                     headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
 
-                    error: function (jqXHR, status, err) {
-                        alert(jqXHR.responseJSON.ModelState[""]);
-
-                        console.log(jqXHR.responseJSON);
-                        console.log(jqXHR);
-                        console.log(status);
-                        console.log(err);
-                        alert("Error getting data.");
-                    }
+                error: errorHandler
 
 
 
@@ -75,53 +67,6 @@
                 });
 
         }
-
-        //function populateTable(reviews) {
-        //    for (let i = 0; i < reviews.length; i++) {
-        //        var element = "<tr>";
-        //        var rev = reviews[i];
-
-        //        element += "<td>" + rev.Id + "</td>";
-        //        element += "<td>" + rev.Agenda + "</td>";
-
-
-        //        if (rev.Reviewer) {
-        //            element += "<td>" + rev.Reviewer + "</td>";
-
-        //        } else {
-        //            element += "<td>Unassigned</td>";
-
-
-        //        }
-
-        //        if (rev.Employee) {
-        //            element += "<td>" + rev.Employee + "</td>";
-        //        } else {
-        //            element += "<td>Unassigned</td>";
-        //        }
-
-        //        element += "<td>"
-        //        element += rev.ReviewStatus;
-        //        element += "</td>"
-
-        //        element += "<td>"
-
-        //        if (rev.ReviewStatus == "Assigned") {
-
-        //            element += "<a href= \"/Reviews/Submit/" + rev.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\" >Submit </a>";
-
-        //        } 
-
-        //        element += "</td>"
-
-
-        //        element += "</tr>";
-
-        //        $('#table > tbody').append(element);
-        //    }
-
-        //}
-
 
         function populateTable(table, reviews) {
             for (let i = 0; i < reviews.length; i++) {
@@ -166,11 +111,6 @@
                 window.location.href = "https://localhost:44335/Employees/details/" + $(this).val();
             });
 
-            $('.delete').click(function () {
-                if (confirm("Are you sure you want to delete this employee record?")) {
-                    deleteRequest($(this).val()).done(() => { window.location.reload(); });
-                }
-            });
         }
 
         $(document).ready(function () {

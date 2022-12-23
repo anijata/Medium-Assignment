@@ -38,15 +38,7 @@
                     traditional: "true",
                     headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
 
-                    error: function (jqXHR, status, err) {
-                        alert(jqXHR.responseJSON.ModelState[""]);
-
-                        console.log(jqXHR.responseJSON);
-                        console.log(jqXHR);
-                        console.log(status);
-                        console.log(err);
-                        alert("Error getting data.");
-                    }
+                    error: errorHandler
 
 
 
@@ -54,29 +46,6 @@
                 });
 
         }
-
-        //function populateTable(departments) {
-        //    for (let i = 0; i < departments.length; i++) {
-        //        var department = departments[i];
-
-        //        var element = "<tr>";
-        //        element += "<td>" + department.Id + "</td>";
-        //        element += "<td>" + department.Name + "</td>";
-
-
-        //        element += "<td>";
-        //        element += "<a href= \"/Departments/Edit/" + department.Id + "\" class=\"btn btn-primary\" style=\"margin: 2px 2px 2px 2px;\"> Edit </a>";
-
-        //        element += "<button class= \"btn btn-primary delete\" value= \"" + department.Id + "\"> Delete</button>";
-
-        //        element += "</td>";
-
-        //        element += "</tr>";
-
-        //        $('#table > tbody').append(element);
-        //    }
-
-        //}
 
         function populateTable(table, departments) {
             for (let i = 0; i < departments.length; i++) {
@@ -99,15 +68,7 @@
                 traditional: "true",
                 headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
 
-                error: function (jqXHR, status, err) {
-                    alert(jqXHR.responseJSON.ModelState[""]);
-
-                    console.log(jqXHR.responseJSON);
-                    console.log(jqXHR);
-                    console.log(status);
-                    console.log(err);
-                    alert("Error getting data.");
-                }
+                error: errorHandler
 
             });
 

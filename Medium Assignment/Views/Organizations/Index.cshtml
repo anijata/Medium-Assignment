@@ -42,29 +42,10 @@
 
 
         function getOrganizations() {
-        return $.ajax({
-                type: "get",
-                url: "https://localhost:44357/api/organizations/",
-                datatype: "json",
-                traditional: "true",
-                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+                let url = "https://localhost:44357/api/organizations/";
+                return ajaxRequest("GET", [], url);
 
-                error: function (jqXHR, status, err) {
-                    alert(jqXHR.responseJSON.ModelState[""]);
-
-                    console.log(jqXHR.responseJSON);
-                    console.log(jqXHR);
-                    console.log(status);
-                    console.log(err);
-                    alert("Error getting data.");
-                }
-
-
-
-
-            });
-
-    }
+             }
 
         function populateTable(table, organizations) {
             for (let i = 0; i < organizations.length; i++) {
@@ -88,24 +69,9 @@
         }
 
         function deleteRequest(id) {
-            return $.ajax({
-                type: "DELETE",
-                url: "https://localhost:44357/api/organizations/" + id,
-                datatype: "json",
-                traditional: "true",
-                headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
+            let url = "https://localhost:44357/api/organizations/" + id;
+            return ajaxRequest("DELETE", [], url);
 
-                error: function (jqXHR, status, err) {
-                    alert(jqXHR.responseJSON.ModelState[""]);
-
-                    console.log(jqXHR.responseJSON);
-                    console.log(jqXHR);
-                    console.log(status);
-                    console.log(err);
-                    alert("Error getting data.");
-                }
-
-            });
 
         }
 

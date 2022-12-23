@@ -401,16 +401,7 @@
                     window.location.href = "https://localhost:44335/employees/";
                 },
 
-                error: function (jqXHR, status, err) {
-                    alert(jqXHR.responseJSON.ModelState[""]);
-                    
-                    console.log(jqXHR.responseJSON);
-                    console.log(jqXHR);
-                    console.log(status);
-                    console.log(err);
-                    alert("Error creating new record.");
-                }
-
+                error: errorHandler
 
 
 
