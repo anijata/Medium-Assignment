@@ -47,6 +47,16 @@ namespace Medium_Assignment.Models
         public string Name { get; set; }
     }
 
+ 
+    public class DepartmentDetailsViewModel
+    {
+        [Required]
+        public int Id { get; set; }
+
+        [Required]
+        public string Name { get; set; }
+    }
+
     public class DepartmentEditViewModel
     {
         [Required]

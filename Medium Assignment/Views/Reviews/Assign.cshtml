@@ -108,7 +108,7 @@
             }
 
             if ($("#Employees").val().includes($("#Reviewer").val().toString())) {
-                alert("Reviewer cannot be part of selected list of employees.");
+                bootbox.alert("Reviewer cannot be part of selected list of employees.");
                 return;
             }
 
@@ -126,7 +126,6 @@
                 traditional: "true",
                 headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
                 success: function (data) {
-                    alert("Posted.");
                     window.location.href = "https://localhost:44335/reviews/";
 
                 },

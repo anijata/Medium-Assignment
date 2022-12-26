@@ -108,17 +108,13 @@ namespace Medium_Assignment.Controllers
             };
 
             HttpContext.Session["AuthDetails"] = authDetails;
-
+            HttpContext.Session.Timeout = 30;
 
             HttpCookie cookie = new HttpCookie("token", authDetails.AccessToken);
             cookie.Expires = DateTime.Now.AddDays(1);
 
 
             Response.Cookies.Add(cookie);
-
-            //HttpContext.Session["AuthToken"] = token;
-            //HttpContext.Session["IsAuthenticated"] = true;
-            //HttpContext.Session["UserName"] = model.UserName;
 
             return RedirectToLocal(returnUrl);
 

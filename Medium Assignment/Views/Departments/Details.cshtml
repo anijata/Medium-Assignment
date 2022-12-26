@@ -1,51 +1,36 @@
-﻿@model Medium_Assignment.Models.DepartmentEditViewModel
+﻿@model Medium_Assignment.Models.DepartmentDetailsViewModel
 
 @using Medium_Assignment.Models
 
 @{AuthDetails authDetails = (AuthDetails)Context.Session["AuthDetails"];}
 
-<style>
-
-    .field-validation-error {
-        color: #a94442;
-        background-color: #cdeefd;
-    }
-</style>
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Details";
 }
 
-<h2>Edit</h2>
+<h2>Details</h2>
 
 @Html.AntiForgeryToken()
-@Html.HiddenFor(m => m.Id, new { id = "Id"})
+@Html.HiddenFor(m => m.Id, new { id = "Id" })
 
-<form id="form">
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name, new { @class = "form-control text-danger" })
-        @Html.ValidationMessageFor(m => m.Name)
-    </div>
-
-</form>
-
-<button type="submit" id="submit" class="btn btn-primary">
-    Save
-</button>
+<div class="form-group">
+    @Html.LabelFor(m => m.Name)
+    @Html.TextBoxFor(m => m.Name, new { @class = "form-control text-danger", @disabled = "disabled" })
+    @Html.ValidationMessageFor(m => m.Name)
+</div>
 
 @section Scripts {
     <script>
 
-        function DepartmentEditModel() {
+        function DepartmentDetailsModel() {
             this.Id = 0;
             this.Name = "";
 
         }
 
         function createFormModel(data) {
-            let model = new DepartmentEditModel();
+            let model = new DepartmentDetailsModel();
             model.Id = data.Id;
             model.Name = data.Name;
             return model
@@ -100,7 +85,7 @@
             let formRequest = await getFormData();
 
             let model = createFormModel(formRequest);
-            
+
             $("#Id").val(model.Id);
             $("#Name").val(model.Name);
 
@@ -108,7 +93,6 @@
 
         $(document).ready(function () {
             populateForm();
-            $("#submit").click(submitForm);
 
         });
 

@@ -424,7 +424,6 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\custom\ajax.js" />
     <Content Include="Scripts\custom\html.js" />
-    <Content Include="Scripts\custom\models.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -883,6 +882,7 @@
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\ChangePasswordConfirmation.cshtml" />
     <Content Include="Views\Reviews\Details.cshtml" />
+    <Content Include="Views\Departments\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

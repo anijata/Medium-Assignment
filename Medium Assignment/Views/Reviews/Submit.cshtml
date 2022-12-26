@@ -123,7 +123,6 @@
             traditional: "true",
             headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
             success: function (data) {
-                alert("Posted.");
                 window.location.href = "https://localhost:44335/reviews/assignedreviews";
 
             },

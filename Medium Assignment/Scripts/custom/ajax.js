@@ -1,17 +1,4 @@
-﻿////function getRequest(url) {
-
-////    return $.ajax({
-////        type: "GET",
-////        url: url,
-////        datatype: "json",
-////        traditional: "true",
-////        headers: { "Authorization": "Bearer " + getCookieValue('token') },
-////        error: errorHandler
-////    });
-////}
-
-function ajaxRequest(verb, data, url) {
-
+﻿function ajaxRequest(verb, data, url) {
     return $.ajax({
         type: verb,
         url: url,
@@ -51,7 +38,7 @@ function errorHandler(jqXHR, status, err) {
             window.location.href = "https://localhost:44335/error/InternalServerError";
             break;
         default:
-            alert(jqXHR.responseJSON.Message);
+            bootbox.alert(jqXHR.responseJSON.Message);
             break;
     }
 

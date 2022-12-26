@@ -147,6 +147,11 @@
                 return;
             }
 
+            if ($("#ReviewCycleStartDate").val() > $("#ReviewCycleEndDate").val()) {
+                bootbox.alert("Review end date must be greater than or equal to reveiw start date.");
+                return;
+            }
+
 
             var model = new ReviewEditModel();
 
@@ -165,8 +170,6 @@
                 traditional: "true",
                 headers: {"Authorization": '@("Bearer " + authDetails.AccessToken)'},
                 success: function (data) {
-                    debugger;
-                    alert("Posted.");
                     window.location.href = "https://localhost:44335/reviews/";
 
                 },

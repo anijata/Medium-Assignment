@@ -60,6 +60,19 @@ namespace Medium_Assignment.Controllers
             return View(viewModel);
         }
 
+        public ActionResult Details(int id)
+        {
+
+            var viewModel = new DepartmentDetailsViewModel
+            {
+                Id = id
+            };
+
+            return View(viewModel);
+
+
+        }
+
         public ActionResult Edit(int id)
         {
 

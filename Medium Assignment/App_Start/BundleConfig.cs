@@ -16,7 +16,6 @@ namespace Medium_Assignment
                         "~/Scripts/bootstrap-datepicker.js",
                         "~/Scripts/bootbox.min.js",
                         "~/Scripts/custom/ajax.js",
-                        "~/Scripts/custom/models.js",
                         "~/Scripts/custom/html.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(

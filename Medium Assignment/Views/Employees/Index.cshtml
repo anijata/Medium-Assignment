@@ -107,9 +107,12 @@
             });
 
             $('.delete').click(function () {
-                if (confirm("Are you sure you want to delete this employee record?")) {
-                    deleteRequest($(this).val()).done(() => { window.location.reload(); });
-                }
+                let id = $(this).val();
+                bootbox.confirm("Are you sure you want to delete this employee record?", function (result) {
+                    if (result) {
+                        deleteRequest(id).done(() => { window.location.reload(); });
+                    }
+                });
             });
         }
 
